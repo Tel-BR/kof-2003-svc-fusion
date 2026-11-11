@@ -127,3 +127,14 @@ See the table below. In short: the MVS single-battle soft DIP (if confirmed) is 
 - fbneo-training-mode (`games/kof2003/kof2003.lua`, `changelog`) — https://github.com/peon2/fbneo-training-mode
 - HBMAME kof2003 driver (hack list) — https://github.com/Robbbert/hbmame/blob/master/src/hbmame/drivers/kof2003.cpp
 - libretro mame2010 cheat credits (Pugsy kof2003 entry) — https://github.com/libretro/mame2010-libretro
+
+## Addendum: owner's checks (2026-11-11)
+
+Checked by the owner on his own cartridge set (MAME `kof2003`, NGM-2710 Export, verified good by MAME 0.289), running in MAME 0.289 and Fightcade FBNeo.
+
+- **MVS soft DIPs, Europe BIOS:** 10 items: PLAY TIME, DEMO SOUND, HOW TO PLAY, DIFFICULTY, VERSUS LIMIT, CONT. SERVICE, CREDIT/LEVEL, BLOOD/FLASH, LANGUAGE, COUNTRY. **No single-battle item.** (VERIFIED)
+- **MVS soft DIPs, Japan BIOS (`-bios japan`):** the same items in Japanese (プレイタイム, デモサウンド, 遊び方説明, 難易度, たいせんせいげん, コンティニュー/サービス, クレジット/レベル, しゅっけつ/フラッシュ, …). **No single-battle item** among those seen; the bottom of the list was not captured. (VERIFIED, partial)
+- **Console (AES) mode via Universe BIOS 4.0:** the owner saw a **single** option in the game's menu. How it plays (one fighter per side, rounds or one bout, health) is **not yet confirmed**. (VERIFIED that the option exists; behaviour UNKNOWN)
+- **Consequence:** the claim that the MVS game settings have a single battle is **not supported** for the Export set; the 1v1 path is the cartridge's own console (AES) mode. Confirming its behaviour is the remaining step when this ticket is reviewed.
+
+_PT-BR: conferido pelo dono com o próprio romset (kof2003 Export, MAME 0.289 diz que está bom). Nas configurações do fliperama (BIOS europeia e japonesa) não há luta single. No modo console (AES), via Universe BIOS, o dono viu uma opção single no menu; falta confirmar como ela funciona (um lutador por lado, rounds ou luta única, vida). O caminho para o 1x1 é o modo console do próprio cartucho._
