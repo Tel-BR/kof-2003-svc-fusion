@@ -1,0 +1,46 @@
+# Material dos jogos fornecido pelo usuario: NUNCA versionar.
+# Game material supplied by the user: NEVER commit it.
+# ROMs, BIOS, C gerado a partir das ROMs, tiles/sprites extraidos, dumps de RAM,
+# traces com dados do jogo e save states ficam em private/.
+private/
+
+# Segunda barreira: ROMs, BIOS e arquivos de chip MVS em qualquer lugar do repo.
+# Second barrier: ROMs, BIOS and MVS chip files anywhere in the repo.
+*.zip
+*.7z
+*.rar
+*.bin
+*.rom
+*.neo
+*.chd
+*.p[0-9]
+*.p[0-9][0-9]
+*.c[0-9]
+*.c[0-9][0-9]
+*.m[0-9]
+*.s[0-9]
+*.v[0-9]
+*.v[0-9][0-9]
+*.sp1
+*.sp2
+
+# Save states, NVRAM, dumps de memoria e traces de emuladores.
+# Save states, NVRAM, memory dumps and emulator traces.
+*.sta
+*.state
+*.fs
+*.mst
+*.nv
+*.nvram
+*.dmp
+*.trace
+*.inp
+
+# Build e lixo de sistema / Build output and OS junk
+build/
+out/
+target/
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store
