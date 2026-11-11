@@ -6,7 +6,7 @@ mode: AFK
 status: open
 assignee:
 blocked_by: []
-research:
+research: research/05-kof2003-1v1-fight:docs/wayfinder/base-direction/research/05-kof2003-1v1-fight.md
 ---
 
 ## Question

@@ -6,7 +6,7 @@ mode: AFK
 status: open
 assignee:
 blocked_by: []
-research:
+research: research/03-rosters-both-directions:docs/wayfinder/base-direction/research/03-rosters-both-directions.md
 ---
 
 ## Question
