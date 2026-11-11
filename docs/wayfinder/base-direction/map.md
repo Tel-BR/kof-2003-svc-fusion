@@ -57,6 +57,8 @@ _PT-BR:_
 
 <!-- one line per closed ticket: [title](tickets/NN-slug.md): one-line gist -->
 
+- [Dump the cartridges](tickets/01-cartridge-dumps.md): the owner's original carts are covered by the MAME-verified `kof2003` (Export), `svc` and `neogeo` zips in `private/`, accepted as the working dumps; per-chip hashes recorded. / _os zips verificados pelo MAME são os dumps de trabalho; hashes por chip registrados._
+
 ## Not yet specified
 
 - **Conversion prototype in both directions:** which Shared Character and which move. Only enters if [Shared art](tickets/07-shared-art.md), [Animation format](tickets/08-animation-format.md) and [Run the KOF 2003 port with my dumps](tickets/09-run-kof2003-port.md) don't settle the question.
