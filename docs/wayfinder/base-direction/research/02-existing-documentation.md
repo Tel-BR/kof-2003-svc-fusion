@@ -231,3 +231,18 @@ Secondary (REPORTED):
 - **SuperCombo Wiki and mamecheat.co.uk:** both still sit behind an anti-bot verification page, even in the browser on the owner's computer. The SuperCombo sentence about SVC being built on the KOF 2003 engine therefore remains **unread**; it needs the owner to pass the human check before an agent can read it.
 
 _PT-BR: os repositórios do city41 foram apagados (só sobraram cópias do visualizador de sprites, que é genérico); impacto baixo. A SuperCombo e o mamecheat continuam atrás de verificação anti-robô mesmo no navegador do dono; a frase sobre o motor compartilhado segue sem leitura até ele passar a verificação._
+
+## Addendum: SuperCombo Wiki read by the owner (2026-11-11)
+
+The owner opened https://wiki.supercombo.gg/w/SvC_Chaos:_SNK_Vs_Capcom on his own computer and pasted the page text. What it says about the engine:
+
+- The intro paragraph says SVC "is based on the King of Fighters 2003 engine". **No footnote, reference or source** is attached to the sentence. (VERIFIED that the wiki says it; the claim itself stays REPORTED/unsourced)
+- An editor's to-do note on the same page repeats it in passing ("KOF2003 since they share the same engine"), asking for a hitbox viewer for both games. Also unsourced.
+- The page itself warns that it was first written by two people in the mid-2010s, picked up again in 2020, and that a lot of older character info is "outdated or straight up false/misleading". This lowers the weight of unsourced claims on it.
+- **Counter-signal in the same text:** the page says SVC follows the older KOF "4-frame rule" for normals, a rule it describes as varying by game, with KOF 2003 "only 1-frame … essentially negating the rule". If accurate, the two games handle that input rule differently, which fits this report's memory-layout finding (SVC's fighter record matches KOF '96–2002, not KOF 2003).
+- Release dates on the page agree with MAME's software list: MVS 24 July 2003; AES 13 November 2003. (SVC predates KOF 2003's MVS release of 12 December 2003.)
+- Roster: the page says 36 characters, matching ticket 03's "playable in some way" count.
+
+**Updated rating for Q1:** the "same engine as KOF 2003" claim has one public source, a community wiki, with no citation; the technical evidence gathered so far (memory layout, input rule, release order) points to SVC sharing lineage with KOF '96–2002 rather than being built on KOF 2003. The Animation format ticket (08) is where this gets measured.
+
+_PT-BR: a SuperCombo diz que o SVC é "baseado no motor do KOF 2003", mas sem fonte nenhuma, e a própria página avisa que tem muita informação antiga errada. O mesmo texto diz que o SVC segue a "regra dos 4 frames" do KOF antigo, que no KOF 2003 virou só 1 frame — mais um sinal de que os dois motores diferem. Datas de lançamento conferem (SVC saiu antes do KOF 2003). A página fala em 36 personagens, igual à contagem "jogável de algum jeito" do ticket 03. Conclusão: a hipótese do motor compartilhado tem uma única fonte comunitária sem referência; a evidência técnica aponta para o SVC ser parente do KOF 96–2002. O ticket 08 é onde isso se mede._
