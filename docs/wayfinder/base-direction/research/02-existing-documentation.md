@@ -224,3 +224,10 @@ Secondary (REPORTED):
 - neogeodev wiki, NEO-PVC: https://wiki.neogeodev.org/index.php/NEO-PVC
 - neogeodev wiki, Neo Sprite Viewer: https://wiki.neogeodev.org/index.php/Neo_Sprite_Viewer
 - ecosyste.ms listing of city41/mameneogeodevplugin: https://awesome.ecosyste.ms/projects/github.com%2Fcity41%2Fmameneogeodevplugin
+
+## Addendum: follow-up from the owner's browser (2026-11-11)
+
+- **city41 repositories:** `city41/mameneogeodevplugin` and `city41/neospriteviewer` no longer exist on the city41 GitHub account (a repository search for "neo" there returns nothing), which is why cloning asked for authentication. Only third-party copies of neospriteviewer survive (e.g. `Almahmudrony/neospriteviewer`, last updated January 2019), and it is a generic Neo Geo tile viewer. The MAME plugin has no surviving copy found. Low impact: neither held game-specific data. (VERIFIED via GitHub search, https://github.com/search?q=neospriteviewer+OR+mameneogeodevplugin&type=repositories)
+- **SuperCombo Wiki and mamecheat.co.uk:** both still sit behind an anti-bot verification page, even in the browser on the owner's computer. The SuperCombo sentence about SVC being built on the KOF 2003 engine therefore remains **unread**; it needs the owner to pass the human check before an agent can read it.
+
+_PT-BR: os repositórios do city41 foram apagados (só sobraram cópias do visualizador de sprites, que é genérico); impacto baixo. A SuperCombo e o mamecheat continuam atrás de verificação anti-robô mesmo no navegador do dono; a frase sobre o motor compartilhado segue sem leitura até ele passar a verificação._
