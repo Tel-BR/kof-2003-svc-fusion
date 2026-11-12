@@ -28,7 +28,7 @@ _PT-BR: decidir qual jogo é o **jogo base** (KOF 2003 ou SVC Chaos), com a just
 - **First tests in a 1v1 fight**, whatever the Base Game. Afterwards the format follows the Base Game.
 - **Shared Characters:** at first only the Base Game's version.
 - **Rules:** Imported Characters follow the Base Game's rules (juggle, priority, damage), with values derived from the correlation with the Shared Characters.
-- **Roster count:** every playable fighter in some way, including hidden and unlockable ones. Bosses count with lower weight.
+- **Roster count:** see the official MVS selection and boss weighting in [Rosters in both directions](tickets/03-rosters-both-directions.md).
 - **Distribution:** open source, PC only (Windows, Linux, macOS).
 - **Hard rule:** no game data in the repository, tickets or research notes (see `AGENTS.md`). Hashes, addresses, sizes and counts are fine.
 - **Tracker:** local Markdown; moves to GitHub Issues once there is something the community can try.
@@ -46,7 +46,7 @@ _PT-BR:_
 - _**Testes iniciais em luta 1x1**, qualquer que seja o jogo base. Depois o formato segue o jogo base._
 - _**Personagens compartilhados:** primeiro só a versão do jogo base._
 - _**Regras:** personagens importados seguem as regras do jogo base (juggle, prioridade, dano), com valores derivados da correlação com os personagens compartilhados._
-- _**Contagem de elenco:** todos os jogáveis de alguma forma, incluindo ocultos e liberáveis. Chefes com peso menor._
+- _**Contagem de elenco:** ver seleção oficial do MVS e peso dos chefes em [Rosters in both directions](tickets/03-rosters-both-directions.md)._
 - _**Distribuição:** código aberto, só PC (Windows, Linux, macOS)._
 - _**Regra obrigatória:** nenhum dado dos jogos no repositório, nos tickets ou nas notas de pesquisa. Hashes, endereços, tamanhos e contagens podem._
 - _**Tracker:** markdown local; vira GitHub Issues quando houver algo experimentável._
@@ -58,6 +58,9 @@ _PT-BR:_
 <!-- one line per closed ticket: [title](tickets/NN-slug.md): one-line gist -->
 
 - [Dump the cartridges](tickets/01-cartridge-dumps.md): the owner's original carts are covered by the MAME-verified `kof2003` (Export), `svc` and `neogeo` zips in `private/`, accepted as the working dumps; per-chip hashes recorded. / _os zips verificados pelo MAME são os dumps de trabalho; hashes por chip registrados._
+- [Existing documentation of both engines](tickets/02-existing-documentation.md): FBNeo has training and hitbox modules for both games. Shared hardware is documented and engine lineage remains unverified. / _O FBNeo tem módulos de treino e hitbox para os dois jogos. O hardware compartilhado está documentado e o parentesco dos motores segue sem comprovação._
+- [Rosters in both directions](tickets/03-rosters-both-directions.md): official MVS selection yields 6 Shared Characters, 26 SVC exclusives (weighted 22) and 28 KOF 2003 exclusives (weighted 27). / _A seleção oficial do MVS dá 6 compartilhados, 26 exclusivos do SVC (peso 22) e 28 do KOF 2003 (peso 27)._
+- [1v1 fight in KOF 2003](tickets/05-kof2003-1v1-fight.md): the Export cart shows an AES Single option and the checked MVS settings showed no equivalent. AES fight behavior and native runtime support remain to be verified. / _O cartucho Export mostra a opção Single no AES. Os menus MVS conferidos não mostraram opção equivalente. Falta verificar a luta no AES e o suporte no runtime nativo._
 
 ## Not yet specified
 
