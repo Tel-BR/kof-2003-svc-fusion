@@ -61,6 +61,7 @@ _PT-BR:_
 - [Existing documentation of both engines](tickets/02-existing-documentation.md): FBNeo has training and hitbox modules for both games. Shared hardware is documented and engine lineage remains unverified. / _O FBNeo tem módulos de treino e hitbox para os dois jogos. O hardware compartilhado está documentado e o parentesco dos motores segue sem comprovação._
 - [Rosters in both directions](tickets/03-rosters-both-directions.md): official MVS selection yields 6 Shared Characters, 26 SVC exclusives (weighted 22) and 28 KOF 2003 exclusives (weighted 27). / _A seleção oficial do MVS dá 6 compartilhados, 26 exclusivos do SVC (peso 22) e 28 do KOF 2003 (peso 27)._
 - [1v1 fight in KOF 2003](tickets/05-kof2003-1v1-fight.md): the Export cart shows an AES Single option and the checked MVS settings showed no equivalent. AES fight behavior and native runtime support remain to be verified. / _O cartucho Export mostra a opção Single no AES. Os menus MVS conferidos não mostraram opção equivalente. Falta verificar a luta no AES e o suporte no runtime nativo._
+- [Mechanics equivalence](tickets/04-mechanics-equivalence.md): signature supers and cancels follow the Base Game, with Multi-Shift in KOF 2003 team play after the 1v1 test. / _Supers de assinatura e cancelamentos seguem o jogo base, com Multi-Shift nas lutas em equipe do KOF 2003 após o teste 1x1._
 
 ## Not yet specified
 
