@@ -54,8 +54,10 @@ add_custom_command(
     DEPENDS kof2003_generator "${program}" "${bios}" "${KOF2003_ENTRIES}"
     VERBATIM
 )
+add_custom_target(kof2003_generate DEPENDS ${native_sources} "${generated}/recomp_common.h")
 
 add_executable(kof2003_player "${KOF2003_SOURCE}/src/main.c" "${cartridge}" ${native_sources})
+add_dependencies(kof2003_player kof2003_generate)
 set_target_properties(kof2003_player PROPERTIES OUTPUT_NAME "KOF 2003")
 target_compile_definitions(kof2003_player PRIVATE KOF2003_HAVE_RECOMP)
 target_link_libraries(kof2003_player PRIVATE neogeorecomp)
@@ -71,4 +73,12 @@ if(MSVC)
     set_source_files_properties(${native_sources} PROPERTIES COMPILE_OPTIONS "/bigobj;/O1")
 else()
     set_source_files_properties(${native_sources} PROPERTIES COMPILE_OPTIONS "-O1")
+endif()
+if(WIN32 AND CMAKE_C_COMPILER_ID STREQUAL "Clang" AND NOT MSVC)
+    # The MinGW SDL2 package links with -mwindows. Keep the CLI synchronous
+    # in PowerShell and link the Clang runtime so the player runs outside PATH.
+    target_link_libraries(kof2003_player PRIVATE "-Wl,--subsystem,console")
+    target_link_options(kof2003_player PRIVATE -static-libstdc++ -static-libgcc)
+    # This part contains a large dispatch function that takes minutes to optimize.
+    set_source_files_properties("${generated}/recomp_06.c" PROPERTIES COMPILE_OPTIONS "-O0")
 endif()

@@ -48,21 +48,68 @@ cmake -S tools/kof2003 -B $build -G Ninja -DCMAKE_BUILD_TYPE=Release `
     "-DKOF2003_ROMS=$roms" "-DSDL2_DIR=$sdl"
 ```
 
-Consult the project owner before starting the compilation on their machine. Once approved, compile with one job. Profile the reference input with the resulting player and rebuild to include entry points discovered at runtime.
+Consult the project owner before starting the compilation on their machine. Run each phase with one job and keep the same build directory. If interrupted, rerun the last unfinished command. Ninja reuses completed outputs whose inputs have not changed. Profiling can change `entries.txt` and require regeneration and recompilation of the game's generated C. The generator and runtime libraries are reusable in that case.
+
+To resume after reopening PowerShell, restore the variables from the project root with the block below, then continue at the unfinished phase. The existing CMake cache supplies the same input paths used to configure the build.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $true
+$work = (Resolve-Path private/work).Path
+$build = Join-Path $work 'mvs-native-build'
+$cache = Get-Content -LiteralPath (Join-Path $build 'CMakeCache.txt')
+$roms = ($cache | Where-Object { $_ -like 'KOF2003_ROMS:PATH=*' }) -replace '^KOF2003_ROMS:PATH=', ''
+$port = ($cache | Where-Object { $_ -like 'KOF2003_SOURCE:PATH=*' }) -replace '^KOF2003_SOURCE:PATH=', ''
+$play = Join-Path $port 'tests/play.txt'
+```
+
+### Compile the generator and runtime
+
+```powershell
+cmake --build $build --target kof2003_generator neogeorecomp --parallel 1
+```
+
+### Generate the native C
+
+```powershell
+cmake --build $build --target kof2003_generate --parallel 1
+```
+
+### Compile and link the player
 
 ```powershell
 cmake --build $build --target kof2003_player --parallel 1
+```
+
+### Collect entry points reached at runtime
+
+```powershell
 $player = Join-Path $build 'KOF 2003.exe'
 $entries = Join-Path $build 'entries.txt'
-& $player --headless --rom-path $roms --bios sp-s2.sp1 --frames 6000 --input $play --dump-misses $entries
-cmake --build $build --target kof2003_player --parallel 1
+$profile = Join-Path $build 'entries-profile.txt'
+Copy-Item -LiteralPath $entries -Destination $profile -Force
+& $player --headless --rom-path $roms --bios sp-s2.sp1 --frames 6000 --input $play --dump-misses $profile *> (Join-Path $build 'profile.log')
+$profileSummary = Select-String -LiteralPath (Join-Path $build 'profile.log') -Pattern '^\[exec\] \d+ new entry points;'
+if (!$profileSummary) { throw 'The player did not finish writing its profile.' }
+if ((Get-FileHash -LiteralPath $profile).Hash -ne (Get-FileHash -LiteralPath $entries).Hash) {
+    Move-Item -LiteralPath $profile -Destination $entries -Force
+}
+$profileSummary.Line
+```
+
+If profiling added entry points, rerun the generation and player compilation phases before verifying. Once the profile is sufficient, keep `entries.txt` with the local build so an interrupted verification can resume directly at this phase.
+
+### Verify the rebuilt player
+
+```powershell
+$player = Join-Path $build 'KOF 2003.exe'
 & $player --headless --verify --rom-path $roms --bios sp-s2.sp1 --frames 6000 --input $play *> (Join-Path $build 'verify.log')
 Get-Content (Join-Path $build 'verify.log') | Select-String '^\[verify\] \d+ blocks checked','^\[exec\] native blocks'
 ```
 
 Apply the same verification criteria to the rebuilt player. Read the summary for zero state mismatches and zero interpreted instructions, since the player's exit code alone does not verify either metric. Record cycle differences separately.
 
-The release replay and ROM preparation passed locally. The local build configuration generated a Ninja build with Clang 22.1.8 and CMake 3.31.12. Compilation and replay from the resulting executable are pending.
+The complete build and replay passed with Clang 22.1.8 and CMake 3.31.12. On this machine, the executable is at `private/work/mvs-native-build/KOF 2003.exe` and the prepared ROM directory is `private/work/mvs-control-v0.1.0/roms`. The Windows Clang build links the compiler runtimes statically and compiles one oversized generated C file at `-O0` to avoid a long optimization pass. [Local measurements](issues/01-reproduce-native-mvs.md#resolution--resolução)
 
 # KOF 2003 nativo em MVS no Windows
 
@@ -70,6 +117,7 @@ Use Windows x64, PowerShell 7.4 ou superior, Git, CMake 3.21 ou superior, Ninja 
 
 1. Baixe o pacote Windows x64 da versão `v0.1.0` para `private/work/` e confira o SHA-256 acima. O primeiro bloco prepara os dumps em uma extração nova e roda o roteiro original de 6.000 quadros. Confira o código de saída e o resumo de `--verify`. O controle deve ter zero divergências de estado e zero instruções executadas pelo interpretador. Registre a cobertura e as diferenças de ciclos. [Versão publicada](https://github.com/omegakatana92/The-King-of-Fighters-2003/releases/tag/v0.1.0) · [Medições do ticket 01](issues/01-reproduce-native-mvs.md)
 2. Baixe o SDK SDL2 para `private/work/`, confira o SHA-256 acima e rode o segundo bloco. O autor publicou a descrição do cartucho e os pontos de entrada do executável e do gerador no repositório do KOF 2003. O bloco obtém de outro port do mesmo autor uma versão do runtime com suporte a NEO-PVC e à seleção de bancos da camada fixa. [SDL2 2.32.10](https://github.com/libsdl-org/SDL/releases/tag/release-2.32.10) · [Runtime adaptado](https://github.com/omegakatana92/Samurai-Shodown-Recomp/tree/c745e97211a81eefdfb436a1cabd8570d3eae90d/neogeorecomp) · [Configuração CMake](../../../tools/kof2003/CMakeLists.txt)
-3. Consulte o dono antes de iniciar a compilação na máquina dele. Com a aprovação, rode o terceiro bloco com um processo por vez. Ele compila o executável, usa o roteiro original para encontrar pontos de entrada descobertos durante a execução, recompila e roda o mesmo controle MVS. Confirme zero divergências de estado e zero instruções interpretadas no resumo. Registre as diferenças de ciclos à parte.
+3. Consulte o dono antes de iniciar a compilação na máquina dele. Com a aprovação, execute um bloco por vez. As etapas compilam as ferramentas e o runtime, geram o C, compilam o executável, fazem o perfil da execução e rodam a verificação MVS. Se interromper, mantenha a mesma pasta de build e repita o último comando incompleto. Se fechar o PowerShell, restaure as variáveis pelo bloco de retomada antes de repetir o comando. O Ninja reaproveita as saídas concluídas cujas entradas continuem iguais.
+4. Se o perfil acrescentar entradas, repita as etapas de geração e de compilação do executável. Guarde `entries.txt` para poder retomar direto da verificação. Confirme zero divergências de estado e zero instruções interpretadas no resumo. Registre as diferenças de ciclos à parte.
 
-A preparação dos dumps e o controle com o executável publicado passaram. A configuração local gerou um build Ninja com Clang 22.1.8 e CMake 3.31.12. A compilação e o teste com o executável resultante estão pendentes.
+O build completo e a repetição do controle passaram com Clang 22.1.8 e CMake 3.31.12. Nesta máquina, o executável está em `private/work/mvs-native-build/KOF 2003.exe` e as ROMs preparadas em `private/work/mvs-control-v0.1.0/roms`. O build Windows com Clang vincula estaticamente as bibliotecas do compilador e usa `-O0` em um arquivo C gerado de tamanho excepcional para evitar uma etapa demorada de otimização. [Medições do build local](issues/01-reproduce-native-mvs.md#resolution--resolução)
