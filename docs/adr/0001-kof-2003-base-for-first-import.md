@@ -1,0 +1,11 @@
+# KOF 2003 is the Base Game for the first import
+
+Use KOF 2003 as the Base Game for the first milestone and bring in one SVC Chaos exclusive under KOF 2003's rules. KOF 2003 completed the native MVS verification run on Windows with zero state divergences. SVC reached its first round in the same runtime's interpreter with incomplete graphics. This gives KOF 2003 a verified starting point while the cost of converting either full roster remains unknown. [KOF 2003 native run](../wayfinder/base-direction/tickets/09-run-kof2003-port.md) · [SVC runtime test](../wayfinder/base-direction/tickets/10-svc-native-cost.md)
+
+During the first import, record which work becomes reusable tooling and which work requires manual adaptation for that fighter. Before expanding the roster, run a small KOF 2003 → SVC conversion test using a working SVC reference execution. Compare the reusable work and per-fighter effort in both directions, including how much work would carry over to a second fighter. Evaluate native SVC support on its own merits for the future SVC ruleset. [Versus fusion map](../wayfinder/versus-fusion/map.md)
+
+## KOF 2003 é o jogo base da primeira importação
+
+Usar KOF 2003 como jogo base para o primeiro marco e importar um exclusivo do SVC Chaos sob as regras do KOF 2003. O KOF 2003 completou a verificação nativa de MVS no Windows com zero divergências de estado. O SVC chegou ao primeiro round no interpretador do mesmo runtime, com gráficos incompletos. O KOF 2003 tem assim um ponto de partida verificado, e o custo de converter um elenco inteiro em qualquer sentido segue em aberto. [Execução nativa do KOF 2003](../wayfinder/base-direction/tickets/09-run-kof2003-port.md) · [Teste do SVC no runtime](../wayfinder/base-direction/tickets/10-svc-native-cost.md)
+
+Durante a primeira importação, registrar o que vira ferramenta reaproveitável e o que exige adaptação manual para aquele lutador. Antes de ampliar o elenco, fazer um teste pequeno de conversão KOF 2003 → SVC com uma execução funcional do SVC como referência. Comparar o trabalho reaproveitável e o esforço por lutador nos dois sentidos, incluindo quanto do trabalho se aproveita num segundo lutador. Avaliar o suporte nativo do SVC pelo que ele oferece para o futuro modo com regras de SVC. [Mapa da fusão no Versus](../wayfinder/versus-fusion/map.md)

@@ -1,7 +1,7 @@
 ---
 label: wayfinder:map
 title: "Map: choosing the Base Game / Direção da base"
-status: open
+status: closed
 ---
 
 # Map: choosing the Base Game
@@ -62,14 +62,19 @@ _PT-BR:_
 - [Rosters in both directions](tickets/03-rosters-both-directions.md): official MVS selection yields 6 Shared Characters, 26 SVC exclusives (weighted 22) and 28 KOF 2003 exclusives (weighted 27). / _A seleção oficial do MVS dá 6 compartilhados, 26 exclusivos do SVC (peso 22) e 28 do KOF 2003 (peso 27)._
 - [1v1 fight in KOF 2003](tickets/05-kof2003-1v1-fight.md): the Export cart shows an AES Single option and the checked MVS settings showed no equivalent. AES fight behavior and native runtime support remain to be verified. / _O cartucho Export mostra a opção Single no AES. Os menus MVS conferidos não mostraram opção equivalente. Falta verificar a luta no AES e o suporte no runtime nativo._
 - [Mechanics equivalence](tickets/04-mechanics-equivalence.md): signature supers and cancels follow the Base Game, with Multi-Shift in KOF 2003 team play after the 1v1 test. / _Supers de assinatura e cancelamentos seguem o jogo base, com Multi-Shift nas lutas em equipe do KOF 2003 após o teste 1x1._
+- [Run the KOF 2003 port with my dumps](tickets/09-run-kof2003-port.md): MVS ran natively on Windows with zero state divergences. Single mode validation remains pending. / _O MVS rodou em modo nativo no Windows com zero divergências de estado. A validação do modo Single segue pendente._
+- [Decryption with existing tools](tickets/06-decryption-existing-tools.md): the existing KOF 2003 decryptor and the local SVC adaptations matched MAME 0.289 byte for byte in all five cartridge regions tested per game. / _O descriptografador existente do KOF 2003 e as adaptações locais para SVC bateram byte a byte com o MAME 0.289 nas cinco regiões de cartucho testadas de cada jogo._
+- [Shared art](tickets/07-shared-art.md): 59,291 distinct nonzero 16×16 tile hashes match. Five Shared Characters have paired anchors, and Kyo uses separate anchors in each game. / _Há 59.291 hashes distintos de tiles 16×16 não zerados em comum. Cinco personagens compartilhados têm âncoras pareadas, e Kyo usa âncoras próprias em cada jogo._
+- [Animation format](tickets/08-animation-format.md) — Iori's idle and standing light punch match in sampled sprite composition and timing. Frame references and collision layouts differ, and conversion cost by direction remains open. / _A espera e o soco fraco em pé do Iori coincidem na composição dos sprites e nas durações amostradas. As referências de quadro e os formatos de colisão diferem, e o custo por sentido de conversão segue em aberto._
+
+- [Cost of making SVC native](tickets/10-svc-native-cost.md) — SVC reached the first round in the KOF 2003 runtime's interpreter after a loader workaround. Rendering was incomplete and native execution remains unverified. / _O SVC chegou ao primeiro round no interpretador do runtime do KOF 2003 após contornar a limitação do carregador. A renderização ficou incompleta e a execução nativa segue sem verificação._
+- [Direction decision](tickets/11-direction-decision.md) — KOF 2003 is the Base Game for the first SVC exclusive. Compare conversion effort in both directions before expanding the roster. / _KOF 2003 é o jogo base para o primeiro exclusivo do SVC. Comparar o esforço de conversão nos dois sentidos antes de ampliar o elenco._
 
 ## Not yet specified
 
-- **Conversion prototype in both directions:** which Shared Character and which move. Only enters if [Shared art](tickets/07-shared-art.md), [Animation format](tickets/08-animation-format.md) and [Run the KOF 2003 port with my dumps](tickets/09-run-kof2003-port.md) don't settle the question.
-- **Deriving the Base Game's rules** (juggle, priority, damage) for Imported Characters.
-- **Per-character quirks:** Shared Characters that differ a lot between the games (e.g. Terry, Kim).
+The first-import spec will define the fighter, acceptance criteria and how to measure the conversion work. The [Versus fusion map](../versus-fusion/map.md) carries the remaining questions about Shared Character versions and both rulesets.
 
-_PT-BR: protótipo de conversão nos dois sentidos (qual personagem compartilhado e qual golpe; só entra se os tickets 07, 08 e 09 não decidirem); como derivar as regras do jogo base (juggle, prioridade, dano) para personagens importados; tratamento das particularidades de cada personagem (ex.: Terry e Kim diferentes entre os jogos)._
+_PT-BR: a especificação da primeira importação vai definir o lutador, os critérios de aceitação e como medir o trabalho de conversão. As questões sobre as versões dos personagens compartilhados e os dois conjuntos de regras seguem no [mapa da fusão no Versus](../versus-fusion/map.md)._
 
 ## Out of scope
 
@@ -78,5 +83,5 @@ Ruled beyond this map's destination; each may become its own future map. / _Fora
 - **Foundation and licence** (first subject of the next map). Options: fork/use of the PolyForm Noncommercial KOF 2003 port, neogeorecomp (MIT, C), neogeo-recomp/cps2recomp (GPL-3, C++, with rollback and training mode in the lineage) or a foundation of our own. The language belongs here too (Rust is wanted; the existing ecosystem is C/C++). Note: PolyForm NC and GPL do not mix. / _**Fundação e licença** (primeiro assunto do próximo mapa). Opções: fork/uso do port PolyForm NC do KOF 2003, neogeorecomp (MIT, C), neogeo-recomp/cps2recomp (GPL-3, C++, com rollback e treino na linhagem) ou fundação própria. A linguagem também entra aqui (Rust desejado; o ecossistema existente é C/C++). Atenção: PolyForm NC e GPL não se misturam._
 - **Rollback netplay:** next map. State isolation and determinism become requirements there. / _Netplay com rollback: próximo mapa. O isolamento de estado e o determinismo entram como requisito._
 - **Console modes** (single vs, team vs, etc.) beyond the 1v1 used for tests. / _Modos de console além do 1x1 para testes._
-- **Variants of Shared Characters** (e.g. both Terrys side by side). / _Variantes de personagens compartilhados._
+- **Combined roster and stages under either game's rules**, including both versions of Shared Characters. Planned in [KOF 2003 and SVC Chaos Versus fusion](../versus-fusion/map.md). / _Elenco e cenários combinados sob as regras de qualquer um dos jogos, incluindo as duas versões dos personagens compartilhados. Planejado em [KOF 2003 and SVC Chaos Versus fusion](../versus-fusion/map.md)._
 - **Running on real MVS hardware.** / _Rodar no MVS real._

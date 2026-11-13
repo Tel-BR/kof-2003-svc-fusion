@@ -121,3 +121,16 @@ Use Windows x64, PowerShell 7.4 ou superior, Git, CMake 3.21 ou superior, Ninja 
 4. Se o perfil acrescentar entradas, repita as etapas de geração e de compilação do executável. Guarde `entries.txt` para poder retomar direto da verificação. Confirme zero divergências de estado e zero instruções interpretadas no resumo. Registre as diferenças de ciclos à parte.
 
 O build completo e a repetição do controle passaram com Clang 22.1.8 e CMake 3.31.12. Nesta máquina, o executável está em `private/work/mvs-native-build/KOF 2003.exe` e as ROMs preparadas em `private/work/mvs-control-v0.1.0/roms`. O build Windows com Clang vincula estaticamente as bibliotecas do compilador e usa `-O0` em um arquivo C gerado de tamanho excepcional para evitar uma etapa demorada de otimização. [Medições do build local](issues/01-reproduce-native-mvs.md#resolution--resolução)
+
+## Manual tests / Testes manuais
+
+Apply the owner's Player 1 layout whenever preparing a manual test on either runtime. The [MAME controller profile](../../../tools/kof2003/manual-p1.cfg) is reusable. For the KOF 2003 AES reference, run `./tools/kof2003/Start-ManualAes.ps1` in PowerShell. Its Universe BIOS 4.0 settings are stored in `private/work/manual-kof2003/`. Confirm `Mode: CONSOLE` at boot.
+
+Use o mapa de teclas do jogador 1 definido pelo dono ao preparar testes manuais em qualquer runtime. O [perfil do MAME](../../../tools/kof2003/manual-p1.cfg) pode ser reaproveitado. Para abrir a referência AES de KOF 2003, execute `./tools/kof2003/Start-ManualAes.ps1` no PowerShell. As configurações da Universe BIOS 4.0 ficam em `private/work/manual-kof2003/`. Confirme `Mode: CONSOLE` na inicialização.
+
+| Action / Ação | Key / Tecla |
+| --- | --- |
+| Left, down, right / Esquerda, baixo, direita | A, S, D |
+| Up (jump) / Cima (pulo) | Space / Espaço |
+| Start, Coin / Iniciar, ficha | 1, 5 |
+| Buttons / Botões A, B, C, D | Num4, Num5, Num1, Num2 |

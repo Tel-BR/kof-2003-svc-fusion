@@ -1,43 +1,63 @@
-# KOF 2003 × SVC Chaos Recomp
+# KOF 2003 SVC Fusion
 
-_[Português abaixo](#português)_
+_[Português abaixo](#português-brasil)_
 
-A planned open-source native PC port (Windows, Linux, macOS) that unites the rosters of **The King of Fighters 2003** and **SNK vs. Capcom: SVC Chaos**, two Neo Geo MVS games, in one game. Fighters are brought from one game into the other step by step; online play with rollback is a later goal.
+An experimental native PC project bringing fighters from **SNK vs. Capcom: SVC Chaos** into **The King of Fighters 2003**, with the long-term goal of making both rosters available in local Versus play.
 
-**Status:** planning, no code yet. The current map decides which game is the base game: [`docs/wayfinder/base-direction/map.md`](docs/wayfinder/base-direction/map.md). Terms are defined in [`GLOSSARY.md`](GLOSSARY.md).
+The first milestone uses KOF 2003 as the base game and aims to import one SVC-exclusive fighter under KOF 2003 rules. The first match will use the original MVS team format. The fighter has not yet been selected.
 
-## No game data here
+## Current status
 
-This repository contains nothing from either game: no ROMs, no BIOS, no code generated from the ROMs, no extracted graphics, sound or memory dumps. It never will.
+- A modifiable Windows build of an existing KOF 2003 port was prepared locally. A 6,000-frame MVS control reported zero state divergences and zero interpreter fallback.
+- No SVC fighter has been imported yet. The next baseline is a complete, reproducible team match with original KOF 2003 fighters.
+- The project is in research and prototyping. There is no release ready for players.
 
-## Bring your own ROM
+Read the [first import specification](docs/specs/first-svc-character-import/spec.md), [implementation tickets](docs/specs/first-svc-character-import/issues/), and [long-term Versus map](docs/wayfinder/versus-fusion/map.md). The [Windows build guide](docs/specs/first-svc-character-import/native-mvs-windows.md) documents the local reference build.
 
-Each user dumps their own cartridges (or uses dumps of cartridges they own) and keeps them locally in `private/`, a folder git ignores. The project will read them from there; it never distributes them.
+## Contributing
 
-## Licence
+Contributions to research, testing, native recompilation, Neo Geo hardware knowledge, graphics and animation formats, and game mechanics are welcome. The project uses local Markdown tickets while the first playable milestone is being developed. Describe your findings without posting game data.
 
-Not decided yet. Until it is, no third-party code is copied into this repository.
+## Game files and third-party code
 
-Not affiliated with or endorsed by SNK or Capcom. All trademarks belong to their owners.
+Supply your own cartridge and BIOS dumps. ROMs, BIOS files, generated game code, extracted assets, captures and traces containing game data stay in the git-ignored `private/` directory. Do not upload them to the repository, issues, or pull requests.
+
+The existing KOF 2003 port and its adapted toolkit are separate third-party projects. Their source and licenses remain with those projects and are kept outside this repository's tracked files.
+
+## License and affiliation
+
+The license for this project has not been decided. Third-party code must not be copied into this repository until it is decided.
+
+This independent fan project is not affiliated with or endorsed by SNK or Capcom. All trademarks belong to their respective owners.
 
 ---
 
-## Português
+# Português (Brasil)
 
-Um port nativo para PC, de código aberto e ainda em planejamento (Windows, Linux, macOS), que une os elencos de **The King of Fighters 2003** e **SNK vs. Capcom: SVC Chaos**, dois jogos do Neo Geo MVS, num só jogo. Os personagens são trazidos de um jogo para o outro aos poucos; o online com rollback é um objetivo para depois.
+Um projeto experimental de port nativo para PC que traz lutadores de **SNK vs. Capcom: SVC Chaos** para **The King of Fighters 2003**. O objetivo de longo prazo é disponibilizar os dois elencos em partidas Versus locais.
 
-**Situação:** planejamento, ainda sem código. O mapa atual decide qual jogo é o jogo base: [`docs/wayfinder/base-direction/map.md`](docs/wayfinder/base-direction/map.md). Os termos estão definidos no [`GLOSSARY.md`](GLOSSARY.md).
+O primeiro marco usa KOF 2003 como jogo base e busca importar um personagem exclusivo do SVC sob as regras do KOF 2003. A primeira luta usará o formato original de equipes do MVS. O personagem ainda será escolhido.
 
-### Nenhum dado dos jogos aqui
+## Situação atual
 
-Este repositório não contém nada de nenhum dos dois jogos: nem ROMs, nem BIOS, nem código gerado a partir das ROMs, nem gráficos, sons ou dumps de memória extraídos. E nunca vai conter.
+- Um build Windows modificável de um port existente de KOF 2003 foi preparado localmente. Um controle MVS de 6.000 quadros registrou zero divergências de estado e zero retornos ao interpretador.
+- Nenhum personagem do SVC foi importado ainda. A próxima referência é uma luta completa e reproduzível de equipes com lutadores originais do KOF 2003.
+- O projeto está em pesquisa e prototipação. Ainda não há uma versão disponível para jogadores.
 
-### Traga a sua própria ROM
+Consulte a [especificação da primeira importação](docs/specs/first-svc-character-import/spec.md), os [tickets de implementação](docs/specs/first-svc-character-import/issues/) e o [mapa do Versus](docs/wayfinder/versus-fusion/map.md). O [guia de build Windows](docs/specs/first-svc-character-import/native-mvs-windows.md) documenta a preparação local.
 
-Cada usuário faz o dump dos próprios cartuchos (ou usa dumps de cartuchos que possui) e guarda os arquivos localmente em `private/`, uma pasta que o git ignora. O projeto vai ler os arquivos dali e nunca os distribui.
+## Como contribuir
 
-### Licença
+São bem-vindas contribuições em pesquisa, testes, recompilação nativa, hardware Neo Geo, formatos de gráficos e animação e mecânicas de luta. O projeto usa tickets locais em Markdown durante o desenvolvimento do primeiro marco jogável. Descreva suas descobertas sem publicar dados dos jogos.
 
-Ainda não decidida. Até lá, nenhum código de terceiros é copiado para este repositório.
+## Arquivos dos jogos e código de terceiros
 
-Sem vínculo com a SNK ou a Capcom e sem endosso delas. Todas as marcas pertencem aos seus donos.
+Cada participante fornece seus próprios dumps dos cartuchos e da BIOS. ROMs, BIOS, código gerado dos jogos, recursos extraídos, capturas e traces com dados dos jogos ficam na pasta `private/`, ignorada pelo Git. Não envie esses arquivos para o repositório, issues ou pull requests.
+
+O port existente de KOF 2003 e seu toolkit adaptado são projetos de terceiros separados. Seus códigos e licenças permanecem nesses projetos e ficam fora dos arquivos versionados aqui.
+
+## Licença e vínculo
+
+A licença deste projeto ainda não foi decidida. Até essa decisão, código de terceiros não deve ser copiado para este repositório.
+
+Este é um projeto independente de fãs, sem vínculo ou endosso da SNK ou da Capcom. As marcas pertencem aos respectivos proprietários.

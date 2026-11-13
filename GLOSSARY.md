@@ -28,6 +28,11 @@ _Avoid_: common character, repeated character
 
 _PT-BR — **Personagem compartilhado**: presente nos dois jogos; referência para correlacionar os motores. Evitar: personagem comum, repetido._
 
+**Character Version**:
+A Shared Character as represented in one of the two games, such as Terry from KOF 2003 or Terry from SVC Chaos. In the planned local Versus mode, either version can be selected under either game's rules.
+
+_PT-BR — **Versão do personagem**: um personagem compartilhado tal como aparece em um dos jogos, como Terry do KOF 2003 ou Terry do SVC Chaos. No Versus local planejado, qualquer uma das versões pode ser escolhida sob as regras de qualquer um dos jogos._
+
 **Exclusive Character**:
 A fighter present only in the Donor Game.
 
