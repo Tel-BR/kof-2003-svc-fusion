@@ -34,9 +34,13 @@ The SVC list comes from StrategyWiki's move list for the arcade game. The "delta
 - Guard Cancel Front Step costs part of a level. Guard Cancel Attack (C+D while blocking) costs one level and does no damage. [SNK official system page](https://game.snk-corp.co.jp/official/svc/english/system/system_top.html) · [SuperCombo: Mechanics](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Mechanics)
 - Exceed: one per character, usable once per match when health is at half or less, according to the Japanese Wikipedia text. The official page also mentions a Power Gauge condition. Read through a summarizing tool, it gave "less than half", which conflicts with the health condition and needs checking. Guile's Exceed summons a large Sonic Boom in front of him. [Weblio (Japanese Wikipedia)](https://www.weblio.jp/content/SVC+CHAOS) · [SNK official system page](https://game.snk-corp.co.jp/official/svc/english/system/system_top.html) · [SuperCombo: Guile](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Guile)
 
+## Owner's check
+
+On 2026-11-15 the owner checked the Exceed in the MVS game. It needs no Power Gauge. The only condition is health at half or less, and it can be used once per fight.
+
 ## Open points for the owner's recorded reference
 
-- Exceed condition (health, gauge or both), its exact buttons and whether it needs any gauge.
+- The Exceed's exact buttons.
 - Exact motion and timing of the Somersault Slash and Strike, and of Total Wipeout.
 - Whether the neutral requirement between charge and release applies to this MVS version.
 - Which cancels work outside MAX: normal into special, and special into super.
@@ -84,9 +88,13 @@ A lista do SVC vem do StrategyWiki para a versão arcade. O movimento em "delta"
 - Guard Cancel Front Step custa parte de um nível. Guard Cancel Attack (C+D defendendo) custa um nível e não causa dano.
 - Exceed: um por personagem, utilizável uma vez por partida com a vida pela metade ou menos, segundo o texto da Wikipédia japonesa. A página oficial também menciona uma condição de barra. Lida por uma ferramenta de resumo, ela indicou "menos da metade", o que conflita com a condição de vida e precisa ser conferido. O Exceed do Guile cria um Sonic Boom grande à frente dele.
 
+## Conferência do dono
+
+Em 15/11/2026 o dono conferiu o Exceed no jogo MVS. Ele não precisa de barra de poder. A única condição é estar com metade da vida ou menos, e ele pode ser usado uma vez por luta.
+
 ## Pontos em aberto para a referência gravada pelo dono
 
-- Condição do Exceed (vida, barra ou ambas), botões exatos e se ele gasta barra.
+- Botões exatos do Exceed.
 - Movimento exato e tempo dos supers Somersault Slash e Strike e do Total Wipeout.
 - Se a exigência de posição neutra entre a carga e o comando vale nesta versão MVS.
 - Quais cancelamentos funcionam fora do MAX: normal em especial e especial em super.
