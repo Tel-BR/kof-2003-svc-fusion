@@ -17,9 +17,9 @@ Owner selection of the SVC Exclusive Character.
 
 ## Acceptance criteria
 
-- [ ] Confirm the owner's choice from the approved SVC MVS roster and record the moveset used as the reference for the import.
-- [ ] Replay recorded inputs in a working SVC reference and capture commands, animation timing, observable attack behavior and the relevant cancel sequences.
-- [ ] Record Exceed eligibility, cost and when it becomes available again. Keep raw captures and game-derived data private.
+- [x] Confirm the owner's choice from the approved SVC MVS roster and record the moveset used as the reference for the import.
+- [x] Replay recorded inputs in a working SVC reference and capture commands, animation timing, observable attack behavior and the relevant cancel sequences.
+- [x] Record Exceed eligibility, cost and when it becomes available again. Keep raw captures and game-derived data private.
 
 ## Português (Brasil)
 
@@ -31,9 +31,9 @@ Escolha do personagem exclusivo do SVC pelo dono.
 
 ### Critérios de aceitação
 
-- [ ] Confirmar a escolha do dono na lista aprovada do SVC MVS e registrar o repertório que servirá de referência para a importação.
-- [ ] Repetir entradas gravadas numa referência funcional do SVC e registrar comandos, duração das animações, comportamento observável dos ataques e sequências de cancelamento relevantes.
-- [ ] Registrar as condições de uso do Exceed, o custo e quando volta a ficar disponível. Manter capturas brutas e dados derivados do jogo em área privada.
+- [x] Confirmar a escolha do dono na lista aprovada do SVC MVS e registrar o repertório que servirá de referência para a importação.
+- [x] Repetir entradas gravadas numa referência funcional do SVC e registrar comandos, duração das animações, comportamento observável dos ataques e sequências de cancelamento relevantes.
+- [x] Registrar as condições de uso do Exceed, o custo e quando volta a ficar disponível. Manter capturas brutas e dados derivados do jogo em área privada.
 
 ## Comments
 
@@ -92,3 +92,41 @@ _PT-BR: o dono relata que, no SVC, Guile não consegue cancelar um movimento esp
 The owner adds that Guile can cancel certain normal attacks. Decision: imported fighters keep the cancels found in their SVC data and get no new ones ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md)).
 
 _PT-BR: o dono acrescenta que Guile cancela certos golpes normais. Decisão: os importados mantêm os cancelamentos encontrados nos dados do SVC e não ganham novos ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md))._
+
+### 2026-11-15 — Animation timing, attack outcomes and a cancel
+
+Measured in MAME from Player 1's animation pointer (`$10A100` object, offset `$28`) with scripted inputs from the start of the owner's fight. Frame counts start at the first animation frame. Normal attacks start 5 frames after the button and special moves 3 frames after the final input.
+
+| Action | Animation length (frames) |
+|---|---:|
+| Standing A, B, C, D (far) | 12, 23, 31, 30 |
+| Crouching A | 12 |
+| Jump, including 3 frames of take-off and 4 of landing | 44 |
+| Sonic Boom | 31 |
+| Somersault Kick, including landing | 65 |
+| Walk forward | about 3.1 pixels per frame |
+
+Hit, block and whiff were measured with the same standing C in versus mode against a scripted Player 2 (Ryu), so the CPU could not interfere. Up close, Guile uses a different close-range C. On hit, Ryu's health went from 224 to 207 and he entered a hit animation. On block, holding back from the moment of contact, his health was unchanged and he entered a guard animation. In both cases Guile's animation froze for 12 frames at impact. From a distance, the far C missed and nothing changed. Player 2's health is at `$10A4B9` and Player 1's at `$10A239`.
+
+Normal into special cancel: with down-back charged, crouching C followed 3 frames later by forward + A cut the crouching C after 5 of its 33 frames and started the Sonic Boom.
+
+Every criterion is now covered. The cost of carried-over cancels is left for ticket 05 ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md)).
+
+### 15/11/2026 — Duração das animações, resultados de golpe e um cancelamento
+
+Medido no MAME pelo ponteiro de animação do jogador 1 (objeto em `$10A100`, deslocamento `$28`), com entradas por roteiro a partir do início da luta do dono. As contagens começam no primeiro quadro da animação. Golpes normais começam 5 quadros depois do botão, e especiais 3 quadros depois da última entrada.
+
+| Ação | Duração da animação (quadros) |
+|---|---:|
+| A, B, C, D em pé (de longe) | 12, 23, 31, 30 |
+| A agachado | 12 |
+| Pulo, com 3 quadros de impulso e 4 de aterrissagem | 44 |
+| Sonic Boom | 31 |
+| Somersault Kick, com aterrissagem | 65 |
+| Caminhada para a frente | cerca de 3,1 pixels por quadro |
+
+Acerto, defesa e golpe no vazio foram medidos com o mesmo C em pé, no modo versus contra um jogador 2 por roteiro (Ryu), sem interferência da CPU. De perto, Guile usa um C de curta distância diferente. No acerto, a vida do Ryu caiu de 224 para 207 e ele entrou na animação de golpe recebido. Na defesa, segurando para trás desde o contato, a vida não mudou e ele entrou na animação de defesa. Nos dois casos, a animação de Guile congelou 12 quadros no impacto. De longe, o C longo não alcançou e nada mudou. A vida do jogador 2 fica em `$10A4B9` e a do jogador 1 em `$10A239`.
+
+Cancelamento de normal em especial: com baixo-trás carregado, C agachado seguido 3 quadros depois de frente + A cortou o C agachado após 5 de seus 33 quadros e iniciou o Sonic Boom.
+
+Todos os critérios estão cobertos. O custo dos cancelamentos mantidos fica para o ticket 05 ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md)).
