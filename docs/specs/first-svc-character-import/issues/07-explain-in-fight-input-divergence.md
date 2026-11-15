@@ -1,6 +1,6 @@
 ---
 title: "Explain the in-fight input divergence between native and MAME"
-triage: needs-triage
+triage: wontfix
 ---
 
 # 07 Explain the in-fight input divergence between native and MAME
@@ -42,3 +42,9 @@ Nenhum. Encontrado no ticket [02 Complete a native team match](02-complete-nativ
 With identical inputs through coin, start and team selection, both runtimes stay identical up to the fight. A plain walk forward from frame 5,600 for 30 frames makes the CPU-controlled Whip react differently by frame 5,605: she attacks low in MAME and stays standing in the native player. Without in-fight input both runs stay identical to at least frame 6,000. Shifting MAME's input alignment by one frame either way does not remove the difference. Details in [ticket 02](02-complete-native-single-match.md#2026-11-15--replay-tooling-and-first-comparison).
 
 _PT-BR: com as mesmas entradas nas fichas, no start e na seleção, os dois runtimes ficam idênticos até a luta. Uma caminhada simples para a frente a partir do quadro 5.600, por 30 quadros, faz a Whip controlada pela CPU reagir de forma diferente já no quadro 5.605: ela ataca agachada no MAME e continua de pé no nativo. Sem comandos durante a luta, as duas execuções ficam idênticas até pelo menos o quadro 6.000. Deslocar o alinhamento das entradas do MAME em um quadro para qualquer lado não elimina a diferença._
+
+### 2026-11-15 — Closed by the owner
+
+Both runtimes had the same opponent, Whip, on the same stage with identical teams, and the captures matched up to frame 5,600. The owner closed the ticket as wontfix. Later comparisons check each runtime on its own instead of expecting a scripted fight to stay identical across them.
+
+_PT-BR: os dois runtimes tinham o mesmo adversário, Whip, no mesmo cenário e com equipes idênticas, e as capturas coincidiam até o quadro 5.600. O dono fechou o ticket como wontfix. As próximas comparações avaliam cada runtime por conta própria, sem esperar que uma luta por roteiro continue idêntica entre eles._
