@@ -58,7 +58,7 @@ The owner also reports that every SVC super costs one gauge level. Measurements 
 | A+B | Throw | Evasive roll |
 | C+D | Throw, or Guard Cancel Attack while blocking | Change of team member, or Guard Cancel Attack while blocking |
 
-**Air throws (owner's report).** Both games have air throws that behave the same way. SVC uses A+B or C+D in the air, and an air throw that misses has no animation and no gauge cost. KOF 2003 uses C or D in the air. Imported fighters use KOF 2003's air throw input as well.
+**Air throws (owner's report).** Both games have air throws that behave the same way. SVC uses A+B or C+D in the air. An air throw that misses has no throw whiff animation and no gauge cost: the fighter performs the normal jumping attack of the buttons pressed. KOF 2003 uses C or D in the air. Imported fighters use KOF 2003's air throw input as well.
 
 Giant Bomb's description that a missed throw costs a quarter of a gauge level in SVC fits the whiff animation. Imported fighters must use KOF 2003's throw input, because A+B and C+D are already system actions in KOF 2003. Guile's throws will need their KOF trigger and no whiff animation. [Giant Bomb](https://www.giantbomb.com/-/3030-8521/)
 
@@ -134,7 +134,7 @@ O dono também informa que todo super do SVC custa um nível da barra. As mediç
 | A+B | Arremesso | Esquiva |
 | C+D | Arremesso, ou Guard Cancel Attack ao defender | Troca de membro da equipe, ou Guard Cancel Attack ao defender |
 
-**Arremessos aéreos (relato do dono).** Os dois jogos têm arremesso aéreo com o mesmo comportamento. O SVC usa A+B ou C+D no ar, e um arremesso aéreo que não pega não tem animação nem custo de barra. O KOF 2003 usa C ou D no ar. Os importados também usam o comando de arremesso aéreo do KOF 2003.
+**Arremessos aéreos (relato do dono).** Os dois jogos têm arremesso aéreo com o mesmo comportamento. O SVC usa A+B ou C+D no ar. Um arremesso aéreo que não pega não tem animação de agarrão no vazio nem custo de barra: o personagem executa o golpe normal no ar dos botões apertados. O KOF 2003 usa C ou D no ar. Os importados também usam o comando de arremesso aéreo do KOF 2003.
 
 A descrição do Giant Bomb de que errar um arremesso no SVC custa um quarto de nível da barra é coerente com essa animação. Os personagens importados precisam usar o comando de arremesso do KOF 2003, porque A+B e C+D já são ações do sistema no KOF 2003. Os arremessos do Guile vão precisar do acionamento do KOF e não terão animação no vazio.
 
