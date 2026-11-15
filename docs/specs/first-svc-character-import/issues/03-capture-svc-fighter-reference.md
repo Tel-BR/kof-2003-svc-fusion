@@ -88,3 +88,7 @@ _PT-BR: o dono gravou uma segunda sessão e executou o arremesso aéreo de Guile
 The owner reports that Guile cannot cancel a special move into a super in SVC, even in MAX mode. He could not do it and has never seen it done.
 
 _PT-BR: o dono relata que, no SVC, Guile não consegue cancelar um movimento especial em super, nem mesmo no modo MAX. Ele não conseguiu fazer isso e nunca viu ninguém fazer._
+
+The owner adds that Guile can cancel certain normal attacks. Decision: imported fighters keep the cancels found in their SVC data and get no new ones ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md)).
+
+_PT-BR: o dono acrescenta que Guile cancela certos golpes normais. Decisão: os importados mantêm os cancelamentos encontrados nos dados do SVC e não ganham novos ([ADR 0003](../../../adr/0003-imported-cancels-come-from-svc-data.md))._
