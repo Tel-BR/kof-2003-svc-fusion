@@ -58,7 +58,7 @@ The owner played a recorded MAME session with Guile against the CPU (Iori) using
 
 In the owner's session, 5 of 11 Somersault Kick attempts came out cleanly, all with 2–3 frames at neutral. Two attempts were interrupted by hits, one had only 8 frames of charge, and three were inconclusive.
 
-Still open for this ticket: SVC's cancel rules outside MAX for Guile, and confirmation that the Exceed cannot be used a second time in the same fight.
+The owner's report that the Exceed can be used only once per fight is accepted. Still open for this ticket: Guile's air throw and SVC's cancels in MAX mode, which the owner will record in a new session.
 
 ### 15/11/2026 — Medições no MAME
 
@@ -75,4 +75,4 @@ O dono jogou uma sessão gravada no MAME com Guile contra a CPU (Iori), usando a
 
 Na sessão do dono, 5 de 11 tentativas de Somersault Kick saíram de forma limpa, todas com 2 a 3 quadros na posição neutra. Duas foram interrompidas por golpes, uma teve só 8 quadros de carga e três foram inconclusivas.
 
-Ainda em aberto neste ticket: as regras de cancelamento do SVC fora do MAX para Guile e a confirmação de que o Exceed não pode ser usado uma segunda vez na mesma luta.
+O relato do dono de que o Exceed só pode ser usado uma vez por luta está aceito. Ainda em aberto neste ticket: o arremesso aéreo de Guile e os cancelamentos do SVC no modo MAX, que o dono vai gravar em uma nova sessão.
