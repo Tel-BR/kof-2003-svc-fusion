@@ -1,0 +1,15 @@
+# Imported SVC fighters get KOF 2003 evasive rolls built from their recovery roll
+
+SVC Chaos has no evasive roll, because A+B is a throw there. KOF 2003 uses A+B for its evasive rolls, including the roll performed as a Guard Cancel while blocking. Both games have a knockdown recovery roll, triggered by A+B before landing, and the owner reports that it looks very close to KOF 2003's backward roll and differs mainly in travel distance. He checked that every SVC fighter has it, Earthquake included. [Guile research](../specs/first-svc-character-import/research-guile-svc.md)
+
+Every fighter imported from SVC into KOF 2003 receives KOF 2003's evasive rolls, drawn from that fighter's own SVC recovery roll animation. The backward roll plays the recovery animation and the forward roll plays it in reverse. The same animations serve the Guard Cancel roll. KOF 2003 supplies everything that defines how a roll behaves in a fight: travel distance in each direction, total duration, invulnerability and vulnerable frames, collision rules, and the Guard Cancel roll's cost. The animation is retimed to fit KOF 2003's duration. No new sprites are made, and small visual imperfections, such as how the reversed forward roll looks, are accepted.
+
+This keeps imported fighters on equal terms with the base roster and avoids per-fighter art work. It is one of the system adaptations to record as reusable work under [ADR 0001](0001-kof-2003-base-for-first-import.md).
+
+## Personagens importados do SVC recebem as esquivas do KOF 2003 a partir da cambalhota de recuperação
+
+O SVC Chaos não tem esquiva, porque A+B é arremesso nele. O KOF 2003 usa A+B para as esquivas, incluindo a esquiva feita como Guard Cancel durante a defesa. Os dois jogos têm a recuperação de queda, acionada com A+B antes de tocar o chão. Segundo o dono, ela é muito parecida com a esquiva para trás do KOF 2003 e difere principalmente no deslocamento. Ele conferiu que todos os lutadores do SVC a possuem, inclusive o Earthquake. [Pesquisa do Guile](../specs/first-svc-character-import/research-guile-svc.md)
+
+Todo lutador importado do SVC para o KOF 2003 recebe as esquivas do KOF 2003, desenhadas a partir da animação de recuperação de queda do próprio lutador no SVC. A esquiva para trás usa a animação de recuperação, e a esquiva para frente usa a mesma animação tocada ao contrário. As mesmas animações servem para a esquiva de Guard Cancel. O KOF 2003 define tudo o que determina o comportamento da esquiva em luta: deslocamento em cada direção, duração total, quadros de invencibilidade e de vulnerabilidade, regras de colisão e o custo da esquiva de Guard Cancel. A animação é reajustada para caber na duração do KOF 2003. Nenhum sprite novo é produzido, e pequenas imperfeições visuais, como a aparência da esquiva para frente invertida, são aceitas.
+
+Assim os importados ficam em pé de igualdade com o elenco original, sem trabalho de arte por lutador. É uma das adaptações de sistema a registrar como trabalho reaproveitável, conforme a [ADR 0001](0001-kof-2003-base-for-first-import.md).

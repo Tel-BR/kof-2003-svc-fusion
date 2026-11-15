@@ -66,6 +66,8 @@ Giant Bomb's description that a missed throw costs a quarter of a gauge level in
 - Guard Cancel Attack: C+D while blocking, costing one gauge level in SVC and one stock in KOF 2003.
 - Knockdown recovery: pressing A+B before landing from a knockdown makes the fighter recover with a roll.
 
+SVC has no evasive roll. Imported fighters get KOF 2003's rolls built from their recovery roll: [ADR 0002](../../adr/0002-evasive-rolls-from-recovery-animation.md).
+
 
 KOF 2003 uses whole stocks, with a limit from 3 to 5 and a Leader Super. SVC uses three gauge levels with an automatic MAX mode and an Exceed. Guile's supers map naturally to one KOF stock each. KOF 2003 has no Exceed, so how to treat Sonic Hurricane in KOF is an owner decision for later. SVC's charge rule with a neutral position differs from SNK's usual input, so importing Guile also means deciding which charge rule applies in KOF 2003, where Ash already uses charge commands.
 
@@ -138,6 +140,8 @@ A descrição do Giant Bomb de que errar um arremesso no SVC custa um quarto de 
 
 - Guard Cancel Attack: C+D durante a defesa, consumindo um nível da barra no SVC e um estoque no KOF 2003.
 - Recuperação de queda: apertar A+B antes de tocar o chão após uma queda faz o personagem se recuperar com uma cambalhota.
+
+O SVC não tem esquiva. Os importados recebem as esquivas do KOF 2003 feitas a partir da cambalhota de recuperação: [ADR 0002](../../adr/0002-evasive-rolls-from-recovery-animation.md).
 
 
 O KOF 2003 usa estoques inteiros, com limite de 3 a 5 e Leader Super. O SVC usa três níveis de barra, com modo MAX automático e Exceed. Os supers do Guile se encaixam naturalmente em um estoque do KOF cada. O KOF 2003 não tem Exceed, então como tratar o Sonic Hurricane no KOF é uma decisão do dono para depois. A regra de carga do SVC, com posição neutra, difere do comando usual da SNK. Importar o Guile também exige decidir qual regra de carga vale no KOF 2003, onde o Ash já usa comandos de carga.
