@@ -41,6 +41,7 @@ def main(argv=None):
     options.add_argument("--shots", default="")
     options.add_argument("--last", type=int, required=True)
     options.add_argument("--probe", action="store_true")
+    options.add_argument("--lua", type=Path, help="another autoboot script that runs replay.lua itself")
     args = options.parse_args(argv)
     if (args.session is None) != (args.cut is None):
         options.error("--session and --cut go together")
@@ -70,7 +71,8 @@ def main(argv=None):
         (out / "shots.tsv").write_text("".join(f"{s}\tf{s:05d}.png\n" for s in shots))
         environment.update(REPLAY_TRANSITIONS=str(out / "transitions.tsv"),
                            REPLAY_SHOTS=str(out / "shots.tsv"))
-        command += ["-autoboot_script", str(HERE / ("probe.lua" if args.probe else "replay.lua"))]
+        lua = args.lua.resolve() if args.lua else HERE / ("probe.lua" if args.probe else "replay.lua")
+        command += ["-autoboot_script", str(lua)]
     with (out / "mame.log").open("w") as log:
         subprocess.run(command, cwd=MAME.parent, env=environment, stdout=log,
                        stderr=subprocess.STDOUT, check=True)
