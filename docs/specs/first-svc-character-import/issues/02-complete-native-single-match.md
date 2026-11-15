@@ -18,7 +18,7 @@ Replay a complete MVS team match with original KOF 2003 fighters on the modifiab
 ## Acceptance criteria
 
 - [x] Replay fixed inputs from a known state through team selection and the normal match result. Record evidence of native execution, fallback and verification divergences.
-- [ ] Compare the match flow and Leader Super eligibility and meter cost with a working MVS reference.
+- [x] Compare the match flow and Leader Super eligibility and meter cost with a working MVS reference.
 
 ## Português (Brasil)
 
@@ -31,7 +31,7 @@ Repetir uma luta completa de equipes no MVS com lutadores originais do KOF 2003 
 ### Critérios de aceitação
 
 - [x] Repetir entradas fixas a partir de um estado conhecido, da seleção das equipes ao resultado normal da luta. Registrar execução nativa, fallback e eventuais divergências de verificação.
-- [ ] Comparar o fluxo da luta, as condições de uso e o custo de barra do Leader Super com uma referência MVS funcional.
+- [x] Comparar o fluxo da luta, as condições de uso e o custo de barra do Leader Super com uma referência MVS funcional.
 
 ## Comments
 
@@ -90,3 +90,19 @@ Em aberto: em até cinco quadros após o primeiro comando do jogador durante a l
 The owner chose to track the in-fight divergence separately in [07 Explain the in-fight input divergence](07-explain-in-fight-input-divergence.md) and to check Leader Super eligibility and stock cost in MVS team play by hand. `tools/kof2003/Start-ManualMvs.ps1` opens the MAME MVS reference with the same Europe MVS v2 BIOS as the native player and the owner's controls. The first criterion is met. The second stays open until the owner's MVS observation and the matching native check.
 
 _PT-BR: o dono decidiu acompanhar a divergência durante a luta em separado, no ticket 07, e conferir manualmente quando o Leader Super pode ser usado e quantos estoques custa no modo de equipes do MVS. `tools/kof2003/Start-ManualMvs.ps1` abre a referência MVS no MAME com a mesma BIOS Europe MVS v2 do executável nativo e os controles do dono. O primeiro critério está cumprido. O segundo continua aberto até a observação do dono no MVS e a conferência correspondente no nativo._
+
+### 2026-11-15 — Owner's MVS team-play rules and resolution
+
+The owner reports the KOF 2003 MVS team-play stock rules. The team starts with 3 stocks. The stock limit starts at 3 and rises by one for each defeated member, up to 5, and the stocks already held carry over to the next member. A super costs 1 stock. The Leader Super costs 2 stocks, can be used at any time, and only the Leader has it. Canceling a special move into a super or the Leader Super costs 1 more stock. The owner knows of Iori's shoryuken as a cancelable special, up to its second hit while he is still on the ground. A blue-and-white glow over a darkened screen marks a super. A red-and-white glow marks a Leader Super.
+
+Supporting observations: MAME's work RAM holds Player 1's stock count at `$102EAC` and Player 2's at `$102EAD`, and the bar's progress toward the next stock at `$102FDA`. In a scripted MAME run, the CPU-controlled Whip used a blue-glow super and her count fell from 3 to 2. In the owner's recorded MAME session, Iori's Leader Super at the start of the first fight showed the red glow and the HUD count fell from 3 to 1. The scripted Leader Super inputs did not produce the move: Iori was hit during the motion, or the game read only the first half-circle as a special move.
+
+Resolution: the native match flow matches the MVS reference through the normal end of the match. The owner judged the stock rules to be game logic that the port does not change and closed the second criterion on that basis. The Leader Super was not separately exercised in the native player. The in-fight divergence stays open in [ticket 07](07-explain-in-fight-input-divergence.md).
+
+### 15/11/2026 — Regras de estoque do MVS em equipes e resolução
+
+O dono informou as regras de estoque do KOF 2003 no modo de equipes do MVS. A equipe começa com 3 estoques. O limite começa em 3 e sobe um a cada membro derrotado, até 5, e os estoques acumulados passam para o próximo membro. Um super custa 1 estoque. O Leader Super custa 2 estoques, pode ser usado a qualquer momento e só o líder o possui. Cancelar um movimento especial em super ou Leader Super custa 1 estoque a mais. O cancelamento que o dono conhece com certeza é o shoryuken de Iori, até o segundo hit, enquanto ele ainda está no chão. Brilho azul e branco com a tela escurecida indica super. Brilho vermelho e branco indica Leader Super.
+
+Observações de apoio: na RAM de trabalho do MAME, o número de estoques do jogador 1 fica em `$102EAC`, o do jogador 2 em `$102EAD`, e o progresso da barra rumo ao próximo estoque em `$102FDA`. Em uma execução por roteiro no MAME, a Whip controlada pela CPU usou um super de brilho azul e seus estoques caíram de 3 para 2. Na sessão do MAME gravada pelo dono, o Leader Super de Iori no início da primeira luta teve brilho vermelho e o número no HUD caiu de 3 para 1. Os comandos de Leader Super por roteiro não executaram o golpe: Iori foi atingido durante o movimento, ou o jogo leu apenas a primeira meia-lua como movimento especial.
+
+Resolução: o fluxo da partida no nativo coincide com a referência MVS até o fim normal da partida. O dono considerou as regras de estoque lógica do jogo, que o port não altera, e fechou o segundo critério com base nisso. O Leader Super não foi exercitado separadamente no executável nativo. A divergência durante a luta continua aberta no [ticket 07](07-explain-in-fight-input-divergence.md).
