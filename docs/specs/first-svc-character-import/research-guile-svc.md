@@ -1,0 +1,97 @@
+# Guile in SVC Chaos: moves and system research
+
+Reference research for [ticket 03](issues/03-capture-svc-fighter-reference.md). Button names follow the Neo Geo layout: A light punch, B light kick, C strong punch, D strong kick. `[←]` means hold back to charge.
+
+## Moves
+
+| Type | Move | Input |
+|---|---|---|
+| Command normal | Knee Bazooka | ← or → + B |
+| Command normal | Rolling Sobat | ← or → + D |
+| Command normal | Slide Kick | ↘ + B |
+| Command normal | Spin Back Knuckle | → + C |
+| Special | Sonic Boom | [←] → + punch |
+| Special | Somersault Kick (Flash Kick) | [↓] ↑ + kick |
+| Super | Somersault Slash | [↙] ↘ ↙ ↗ + punch |
+| Super | Somersault Strike | [↙] ↘ ↙ ↗ + kick |
+| Super | Total Wipeout | [←] → ← → + kick |
+| Exceed | Sonic Hurricane | [←] → ← → + two punches |
+
+The SVC list comes from StrategyWiki's move list for the arcade game. The "delta" motion for the Somersault supers is read from StrategyWiki's stick icons (charge down-back, then down-forward, down-back, up-forward), following the same notation in Street Fighter Alpha 3. [StrategyWiki: Guile](https://strategywiki.org/wiki/SVC_Chaos:_SNK_vs._Capcom/Guile) · [SuperCombo: Guile (SFA3)](https://srk.shib.live/w/Guile_(SFA3)) · [Critical Hits: SVC special moves](https://criticalhits.com.br/dicas/svc-chaos-snk-vs-capcom-todos-os-golpes-especiais/)
+
+## Charge input
+
+- SuperCombo describes SVC charge moves as needing 30 frames of charge, and calls Guile the only full-charge character that adapts well to SVC. [SuperCombo: Guile](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Guile)
+- SVC requires the stick to pass through neutral on the way from a down charge to up. The PS2 and Xbox releases offer an option for SNK's usual input instead. [Weblio (Japanese Wikipedia)](https://www.weblio.jp/content/SVC+CHAOS)
+- A character can start charging again only after returning to neutral. Supers can be charged while dashing, special moves cannot. [SuperCombo: Mechanics](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Mechanics)
+- Holding down-back charges both Sonic Boom and Flash Kick. A review of the 2024 re-release reports that the stick must first go to down or back before down-back charges both. [SuperCombo: FAQ](https://wiki.supercombo.gg/w/SvC_Chaos:_SNK_Vs_Capcom/FAQ) · [Final Weapon review](https://finalweapon.net/2024/08/03/snk-vs-capcom-svc-chaos-review-its-m-u-g-e-n-but-you-have-to-pay-for-it)
+
+## Power Gauge, MAX and Exceed
+
+- SVC's Power Gauge has three levels: LVL.1, LVL.2 and MAXIMUM. Supers, Guard Cancel Attack and Guard Cancel Front Step are available from LVL.1. MAXIMUM adds Cancel Anywhere. [SNK official system page](https://game.snk-corp.co.jp/official/svc/english/system/system_top.html)
+- Reaching MAXIMUM starts MAX Activation automatically. The gauge becomes a draining timer and drops back to LVL.2 when it runs out. Each super uses one gauge level. [Wikipedia](https://en.wikipedia.org/wiki/SNK_vs._Capcom:_SVC_Chaos) · [Giant Bomb](https://www.giantbomb.com/-/3030-8521/)
+- The gauge fills on taking damage, using special moves, landing attacks and being taunted. Every character starts the match at level 1. A missed throw costs a quarter of a level. [SuperCombo: Mechanics](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Mechanics) · [Giant Bomb](https://www.giantbomb.com/-/3030-8521/)
+- Guard Cancel Front Step costs part of a level. Guard Cancel Attack (C+D while blocking) costs one level and does no damage. [SNK official system page](https://game.snk-corp.co.jp/official/svc/english/system/system_top.html) · [SuperCombo: Mechanics](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Mechanics)
+- Exceed: one per character, usable once per match when health is at half or less, according to the Japanese Wikipedia text. The official page also mentions a Power Gauge condition. Read through a summarizing tool, it gave "less than half", which conflicts with the health condition and needs checking. Guile's Exceed summons a large Sonic Boom in front of him. [Weblio (Japanese Wikipedia)](https://www.weblio.jp/content/SVC+CHAOS) · [SNK official system page](https://game.snk-corp.co.jp/official/svc/english/system/system_top.html) · [SuperCombo: Guile](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Guile)
+
+## Open points for the owner's recorded reference
+
+- Exceed condition (health, gauge or both), its exact buttons and whether it needs any gauge.
+- Exact motion and timing of the Somersault Slash and Strike, and of Total Wipeout.
+- Whether the neutral requirement between charge and release applies to this MVS version.
+- Which cancels work outside MAX: normal into special, and special into super.
+- How much gauge each Guile super costs and how fast the gauge refills.
+
+## Differences that affect the import
+
+KOF 2003 uses whole stocks, with a limit from 3 to 5 and a Leader Super. SVC uses three gauge levels with an automatic MAX mode and an Exceed. Guile's supers map naturally to one KOF stock each. KOF 2003 has no Exceed, so how to treat Sonic Hurricane in KOF is an owner decision for later. SVC's charge rule with a neutral position differs from SNK's usual input, so importing Guile also means deciding which charge rule applies in KOF 2003, where Ash already uses charge commands.
+
+---
+
+# Guile no SVC Chaos: pesquisa de golpes e sistema
+
+Pesquisa de referência para o [ticket 03](issues/03-capture-svc-fighter-reference.md). Os botões seguem o padrão Neo Geo: A soco fraco, B chute fraco, C soco forte, D chute forte. `[←]` significa segurar para trás para carregar.
+
+## Golpes
+
+| Tipo | Golpe | Comando |
+|---|---|---|
+| Golpe de comando | Knee Bazooka | ← ou → + B |
+| Golpe de comando | Rolling Sobat | ← ou → + D |
+| Golpe de comando | Slide Kick | ↘ + B |
+| Golpe de comando | Spin Back Knuckle | → + C |
+| Especial | Sonic Boom | [←] → + soco |
+| Especial | Somersault Kick (Flash Kick) | [↓] ↑ + chute |
+| Super | Somersault Slash | [↙] ↘ ↙ ↗ + soco |
+| Super | Somersault Strike | [↙] ↘ ↙ ↗ + chute |
+| Super | Total Wipeout | [←] → ← → + chute |
+| Exceed | Sonic Hurricane | [←] → ← → + dois socos |
+
+A lista do SVC vem do StrategyWiki para a versão arcade. O movimento em "delta" dos supers Somersault foi lido dos ícones do StrategyWiki (carregar baixo-trás e então baixo-frente, baixo-trás, cima-frente), com a mesma notação do Street Fighter Alpha 3. Fontes na versão em inglês acima.
+
+## Comandos de carga
+
+- O SuperCombo descreve 30 quadros de carga para golpes de carga no SVC e considera o Guile o único personagem de carga completa bem adaptado ao jogo.
+- O SVC exige que a alavanca passe pela posição neutra entre a carga para baixo e o comando para cima. As versões de PS2 e Xbox têm opção para o comando usual da SNK.
+- Só é possível carregar de novo depois de voltar à posição neutra. Supers podem ser carregados durante a corrida, especiais não.
+- Segurar baixo-trás carrega Sonic Boom e Flash Kick juntos. Uma análise do relançamento de 2024 relata que é preciso ir primeiro para baixo ou para trás antes de baixo-trás carregar os dois.
+
+## Barra de poder, MAX e Exceed
+
+- A barra do SVC tem três níveis: LVL.1, LVL.2 e MAXIMUM. Supers, Guard Cancel Attack e Guard Cancel Front Step ficam disponíveis a partir do LVL.1. O MAXIMUM acrescenta o Cancel Anywhere.
+- Ao chegar ao MAXIMUM, a MAX Activation começa automaticamente. A barra vira um cronômetro que se esvazia e volta ao LVL.2 quando acaba. Cada super gasta um nível.
+- A barra enche ao receber dano, usar especiais, acertar golpes e ser provocado. Todos começam a partida no nível 1. Errar um arremesso custa um quarto de nível.
+- Guard Cancel Front Step custa parte de um nível. Guard Cancel Attack (C+D defendendo) custa um nível e não causa dano.
+- Exceed: um por personagem, utilizável uma vez por partida com a vida pela metade ou menos, segundo o texto da Wikipédia japonesa. A página oficial também menciona uma condição de barra. Lida por uma ferramenta de resumo, ela indicou "menos da metade", o que conflita com a condição de vida e precisa ser conferido. O Exceed do Guile cria um Sonic Boom grande à frente dele.
+
+## Pontos em aberto para a referência gravada pelo dono
+
+- Condição do Exceed (vida, barra ou ambas), botões exatos e se ele gasta barra.
+- Movimento exato e tempo dos supers Somersault Slash e Strike e do Total Wipeout.
+- Se a exigência de posição neutra entre a carga e o comando vale nesta versão MVS.
+- Quais cancelamentos funcionam fora do MAX: normal em especial e especial em super.
+- Quanto de barra cada super do Guile gasta e com que rapidez a barra enche.
+
+## Diferenças que afetam a importação
+
+O KOF 2003 usa estoques inteiros, com limite de 3 a 5 e Leader Super. O SVC usa três níveis de barra, com modo MAX automático e Exceed. Os supers do Guile se encaixam naturalmente em um estoque do KOF cada. O KOF 2003 não tem Exceed, então como tratar o Sonic Hurricane no KOF é uma decisão do dono para depois. A regra de carga do SVC, com posição neutra, difere do comando usual da SNK. Importar o Guile também exige decidir qual regra de carga vale no KOF 2003, onde o Ash já usa comandos de carga.
