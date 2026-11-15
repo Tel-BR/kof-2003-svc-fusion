@@ -42,3 +42,37 @@ Escolha do personagem exclusivo do SVC pelo dono.
 The owner chose Guile as the first SVC Exclusive Character to import. His reasons: Guile has charge moves like Ash Crimson in KOF 2003, and he has fewer moves than Ryu. The owner accepts that Guile's supers may be problematic. Ryu was the alternative considered for his motion-based commands.
 
 _PT-BR: o dono escolheu Guile como o primeiro personagem exclusivo do SVC a importar. Motivos dele: Guile tem golpes de carga como os de Ash Crimson no KOF 2003, e tem menos golpes que Ryu. O dono aceita que os supers de Guile possam dar problema. Ryu foi a alternativa considerada, por usar comandos de movimento._
+
+### 2026-11-15 — Measured in MAME
+
+The owner played a recorded MAME session with Guile against the CPU (Iori) using the Europe MVS v2 BIOS. The session inputs were logged frame by frame and replayed exactly. Scripted tests then started from the same state at the beginning of the fight. A scripted replay of the owner's own inputs matched the recorded playback pixel for pixel. Recordings, logs and captures stay in `private/work/svc-guile/`.
+
+| Check | Result |
+|---|---|
+| Sonic Boom, [←] → + A | Comes out with 30 or more frames of charge, not with 29. Matches the 30-frame figure in the research. |
+| Somersault Kick, [↓] ↑ + D | Comes out after 59 frames of charge both with and without frames at neutral between down and up. The neutral rule described for SVC does not apply to this move in the MVS game. |
+| Total Wipeout, [←] → ← → + D | Super activates. |
+| Somersault Slash and Strike, [↙] ↘ ↙ ↗ + A or D | Both supers activate. The delta motion read from the research is correct. |
+| Throw that misses, A+B away from the opponent | Guile performs the throw whiff animation. |
+| Exceed, Sonic Hurricane, [←] → ← → + A+C | In the owner's session, the first attempt was interrupted when Iori hit Guile. The second came out with Guile below half health, and the gauge level did not change. A giant Sonic Boom travels toward the opponent. |
+
+In the owner's session, 5 of 11 Somersault Kick attempts came out cleanly, all with 2–3 frames at neutral. Two attempts were interrupted by hits, one had only 8 frames of charge, and three were inconclusive.
+
+Still open for this ticket: SVC's cancel rules outside MAX for Guile, and confirmation that the Exceed cannot be used a second time in the same fight.
+
+### 15/11/2026 — Medições no MAME
+
+O dono jogou uma sessão gravada no MAME com Guile contra a CPU (Iori), usando a BIOS Europe MVS v2. As entradas da sessão foram registradas quadro a quadro e repetidas com exatidão. Os testes por roteiro partiram do mesmo estado no início da luta. Uma repetição por roteiro das próprias entradas do dono coincidiu pixel a pixel com a gravação. Gravações, logs e capturas ficam em `private/work/svc-guile/`.
+
+| Conferência | Resultado |
+|---|---|
+| Sonic Boom, [←] → + A | Sai com 30 ou mais quadros de carga, e não com 29. Coincide com os 30 quadros da pesquisa. |
+| Somersault Kick, [↓] ↑ + D | Sai após 59 quadros de carga, com e sem quadros na posição neutra entre baixo e cima. A regra do neutro descrita para o SVC não se aplica a esse golpe no jogo MVS. |
+| Total Wipeout, [←] → ← → + D | O super é ativado. |
+| Somersault Slash e Strike, [↙] ↘ ↙ ↗ + A ou D | Os dois supers são ativados. O movimento em delta lido na pesquisa está correto. |
+| Arremesso no vazio, A+B longe do adversário | Guile faz a animação de agarrão no vazio. |
+| Exceed, Sonic Hurricane, [←] → ← → + A+C | Na sessão do dono, a primeira tentativa foi interrompida quando Iori atingiu Guile. A segunda saiu com Guile abaixo de meia vida, e o nível da barra não mudou. Um Sonic Boom gigante avança em direção ao adversário. |
+
+Na sessão do dono, 5 de 11 tentativas de Somersault Kick saíram de forma limpa, todas com 2 a 3 quadros na posição neutra. Duas foram interrompidas por golpes, uma teve só 8 quadros de carga e três foram inconclusivas.
+
+Ainda em aberto neste ticket: as regras de cancelamento do SVC fora do MAX para Guile e a confirmação de que o Exceed não pode ser usado uma segunda vez na mesma luta.

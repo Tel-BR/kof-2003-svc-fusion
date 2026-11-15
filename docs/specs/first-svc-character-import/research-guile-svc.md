@@ -40,13 +40,12 @@ On 2026-11-15 the owner checked the Exceed in the MVS game. It needs no Power Ga
 
 The owner also confirmed in the game that C+D while blocking performs the Guard Cancel Attack and costs one gauge level.
 
+The owner also reports that every SVC super costs one gauge level. Measurements in MAME are in [ticket 03](issues/03-capture-svc-fighter-reference.md#2026-11-15--measured-in-mame).
+
 ## Open points for the owner's recorded reference
 
-- The Exceed's exact buttons.
-- Exact motion and timing of the Somersault Slash and Strike, and of Total Wipeout.
-- Whether the neutral requirement between charge and release applies to this MVS version.
 - Which cancels work outside MAX: normal into special, and special into super.
-- How much gauge each Guile super costs and how fast the gauge refills.
+- How fast the gauge refills.
 
 ## Differences that affect the import
 
@@ -115,13 +114,12 @@ Em 15/11/2026 o dono conferiu o Exceed no jogo MVS. Ele não precisa de barra de
 
 O dono também confirmou no jogo que C+D durante a defesa executa o Guard Cancel Attack e consome um nível da barra.
 
+O dono também informa que todo super do SVC custa um nível da barra. As medições no MAME estão no [ticket 03](issues/03-capture-svc-fighter-reference.md#2026-11-15--measured-in-mame).
+
 ## Pontos em aberto para a referência gravada pelo dono
 
-- Botões exatos do Exceed.
-- Movimento exato e tempo dos supers Somersault Slash e Strike e do Total Wipeout.
-- Se a exigência de posição neutra entre a carga e o comando vale nesta versão MVS.
 - Quais cancelamentos funcionam fora do MAX: normal em especial e especial em super.
-- Quanto de barra cada super do Guile gasta e com que rapidez a barra enche.
+- Com que rapidez a barra enche.
 
 ## Diferenças que afetam a importação
 
