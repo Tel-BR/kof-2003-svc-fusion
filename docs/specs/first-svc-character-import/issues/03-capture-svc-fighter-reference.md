@@ -76,3 +76,9 @@ O dono jogou uma sessão gravada no MAME com Guile contra a CPU (Iori), usando a
 Na sessão do dono, 5 de 11 tentativas de Somersault Kick saíram de forma limpa, todas com 2 a 3 quadros na posição neutra. Duas foram interrompidas por golpes, uma teve só 8 quadros de carga e três foram inconclusivas.
 
 O relato do dono de que o Exceed só pode ser usado uma vez por luta está aceito. Ainda em aberto neste ticket: o arremesso aéreo de Guile e os cancelamentos do SVC no modo MAX, que o dono vai gravar em uma nova sessão.
+
+### 2026-11-15 — Air throws
+
+The owner recorded a second session and performed Guile's air throw on Kim with both A+B and C+D. An air throw that misses has no animation and costs no gauge. The owner reports that KOF 2003's air throw behaves the same way, triggered with C or D, so the import uses KOF 2003's input. The input log shows A+B and C+D presses shortly after jumps. The fight could not be replayed: the owner used MAME's soft reset (F3) to change opponents, the recording does not capture resets, and a replay from power-on reached a different opponent. Future recording sessions should restart MAME instead of using F3. MAX-mode cancels remain open.
+
+_PT-BR: o dono gravou uma segunda sessão e executou o arremesso aéreo de Guile contra Kim, com A+B e com C+D. Um arremesso aéreo que não pega não tem animação nem custo de barra. Segundo o dono, o arremesso aéreo do KOF 2003 se comporta igual, acionado com C ou D, então a importação usa o comando do KOF 2003. O log de entradas mostra A+B e C+D logo depois de pulos. A luta não pôde ser repetida: o dono usou o reset do MAME (F3) para trocar de adversário, a gravação não registra resets, e uma repetição a partir da inicialização chegou a outro adversário. Nas próximas sessões gravadas, é melhor reabrir o MAME do que usar F3. Os cancelamentos no modo MAX continuam em aberto._
