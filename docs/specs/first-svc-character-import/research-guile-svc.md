@@ -48,6 +48,18 @@ On 2026-11-15 the owner checked the Exceed in the MVS game. It needs no Power Ga
 
 ## Differences that affect the import
 
+**Throws (owner's report, 2026-11-15).** Both games have two close-range throws, but the systems differ:
+
+| | SVC Chaos | KOF 2003 |
+|---|---|---|
+| Throw input | A+B or C+D near the opponent | Back or forward + C or D near the opponent |
+| Throw that misses | The fighter performs a throw whiff animation | No throw animation |
+| A+B | Throw | Evasive roll |
+| C+D | Throw, or Guard Cancel Attack while blocking | Change of team member |
+
+Giant Bomb's description that a missed throw costs a quarter of a gauge level in SVC fits the whiff animation. Imported fighters must use KOF 2003's throw input, because A+B and C+D are already system actions in KOF 2003. Guile's throws will need their KOF trigger and no whiff animation. [Giant Bomb](https://www.giantbomb.com/-/3030-8521/)
+
+
 KOF 2003 uses whole stocks, with a limit from 3 to 5 and a Leader Super. SVC uses three gauge levels with an automatic MAX mode and an Exceed. Guile's supers map naturally to one KOF stock each. KOF 2003 has no Exceed, so how to treat Sonic Hurricane in KOF is an owner decision for later. SVC's charge rule with a neutral position differs from SNK's usual input, so importing Guile also means deciding which charge rule applies in KOF 2003, where Ash already uses charge commands.
 
 ---
@@ -101,5 +113,17 @@ Em 15/11/2026 o dono conferiu o Exceed no jogo MVS. Ele não precisa de barra de
 - Quanto de barra cada super do Guile gasta e com que rapidez a barra enche.
 
 ## Diferenças que afetam a importação
+
+**Arremessos (relato do dono, 15/11/2026).** Os dois jogos têm dois arremessos de curta distância, mas os sistemas diferem:
+
+| | SVC Chaos | KOF 2003 |
+|---|---|---|
+| Comando do arremesso | A+B ou C+D perto do adversário | Trás ou frente + C ou D perto do adversário |
+| Arremesso que não pega | O personagem faz uma animação de agarrão no vazio | Não há animação de agarrão |
+| A+B | Arremesso | Esquiva |
+| C+D | Arremesso, ou Guard Cancel Attack ao defender | Troca de membro da equipe |
+
+A descrição do Giant Bomb de que errar um arremesso no SVC custa um quarto de nível da barra é coerente com essa animação. Os personagens importados precisam usar o comando de arremesso do KOF 2003, porque A+B e C+D já são ações do sistema no KOF 2003. Os arremessos do Guile vão precisar do acionamento do KOF e não terão animação no vazio.
+
 
 O KOF 2003 usa estoques inteiros, com limite de 3 a 5 e Leader Super. O SVC usa três níveis de barra, com modo MAX automático e Exceed. Os supers do Guile se encaixam naturalmente em um estoque do KOF cada. O KOF 2003 não tem Exceed, então como tratar o Sonic Hurricane no KOF é uma decisão do dono para depois. A regra de carga do SVC, com posição neutra, difere do comando usual da SNK. Importar o Guile também exige decidir qual regra de carga vale no KOF 2003, onde o Ash já usa comandos de carga.
