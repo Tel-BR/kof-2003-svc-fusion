@@ -124,9 +124,9 @@ O build completo e a repetição do controle passaram com Clang 22.1.8 e CMake 3
 
 ## Manual tests / Testes manuais
 
-Apply the owner's Player 1 layout whenever preparing a manual test on either runtime. The [MAME controller profile](../../../tools/kof2003/manual-p1.cfg) is reusable. For the KOF 2003 AES reference, run `./tools/kof2003/Start-ManualAes.ps1` in PowerShell. Its Universe BIOS 4.0 settings are stored in `private/work/manual-kof2003/`. Confirm `Mode: CONSOLE` at boot.
+Apply the owner's Player 1 layout whenever preparing a manual test on either runtime. The [MAME controller profile](../../../tools/kof2003/manual-p1.cfg) is reusable. For the KOF 2003 AES reference, run `./tools/kof2003/Start-ManualAes.ps1` in PowerShell. Its Universe BIOS 4.0 settings are stored in `private/work/manual-kof2003/`. Confirm `Mode: CONSOLE` at boot. For the MVS reference with the native player's Europe MVS v2 BIOS, run `./tools/kof2003/Start-ManualMvs.ps1`. Its settings are stored in `private/work/manual-kof2003-mvs/`.
 
-Use o mapa de teclas do jogador 1 definido pelo dono ao preparar testes manuais em qualquer runtime. O [perfil do MAME](../../../tools/kof2003/manual-p1.cfg) pode ser reaproveitado. Para abrir a referência AES de KOF 2003, execute `./tools/kof2003/Start-ManualAes.ps1` no PowerShell. As configurações da Universe BIOS 4.0 ficam em `private/work/manual-kof2003/`. Confirme `Mode: CONSOLE` na inicialização.
+Use o mapa de teclas do jogador 1 definido pelo dono ao preparar testes manuais em qualquer runtime. O [perfil do MAME](../../../tools/kof2003/manual-p1.cfg) pode ser reaproveitado. Para abrir a referência AES de KOF 2003, execute `./tools/kof2003/Start-ManualAes.ps1` no PowerShell. As configurações da Universe BIOS 4.0 ficam em `private/work/manual-kof2003/`. Confirme `Mode: CONSOLE` na inicialização. Para a referência MVS com a BIOS Europe MVS v2 do executável nativo, execute `./tools/kof2003/Start-ManualMvs.ps1`. As configurações ficam em `private/work/manual-kof2003-mvs/`.
 
 | Action / Ação | Key / Tecla |
 | --- | --- |

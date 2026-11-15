@@ -1,0 +1,27 @@
+# Ticket 02: one complete MVS team match with original KOF 2003 fighters.
+# Frames count from power-on (frame 0) at the Neo Geo's ~59.19 Hz, with the
+# native neogeorecomp script meaning. A single-frame line is held 6 frames.
+#
+# Coin, start and team selection as in the port's tests/coin_start.txt:
+# the default picks give Iori as Leader (A), fighting first, vs. Whip.
+1200 coin
+1500 coin
+1800 coin
+2400 start
+3600 a
+4200 a
+4700 a
+5200 start
+
+# Iori's Leader Super Special Move (facing right): down, down-forward,
+# forward, down-back, down, back + A+C. Owner's AES reference: 2 stocks.
+5600-5602 down
+5603-5605 down+right
+5606-5608 right
+5609-5611 down+left
+5612-5614 down
+5615-5618 left
+5617-5620 a+c
+
+# No further input: the CPU eliminates the team and the game shows the
+# normal end of the match.

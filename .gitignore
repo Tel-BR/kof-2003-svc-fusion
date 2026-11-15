@@ -44,3 +44,7 @@ target/
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Python bytecode / Bytecode Python
+__pycache__/
+*.pyc
