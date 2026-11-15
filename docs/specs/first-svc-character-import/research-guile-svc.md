@@ -38,6 +38,8 @@ The SVC list comes from StrategyWiki's move list for the arcade game. The "delta
 
 On 2026-11-15 the owner checked the Exceed in the MVS game. It needs no Power Gauge. The only condition is health at half or less, and it can be used once per fight.
 
+The owner also confirmed in the game that C+D while blocking performs the Guard Cancel Attack and costs one gauge level.
+
 ## Open points for the owner's recorded reference
 
 - The Exceed's exact buttons.
@@ -103,6 +105,8 @@ A lista do SVC vem do StrategyWiki para a versão arcade. O movimento em "delta"
 ## Conferência do dono
 
 Em 15/11/2026 o dono conferiu o Exceed no jogo MVS. Ele não precisa de barra de poder. A única condição é estar com metade da vida ou menos, e ele pode ser usado uma vez por luta.
+
+O dono também confirmou no jogo que C+D durante a defesa executa o Guard Cancel Attack e consome um nível da barra.
 
 ## Pontos em aberto para a referência gravada pelo dono
 
