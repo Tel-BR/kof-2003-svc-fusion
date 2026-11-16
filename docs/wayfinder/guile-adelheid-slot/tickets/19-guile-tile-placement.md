@@ -1,0 +1,26 @@
+---
+id: 19
+title: "Choose where Guile's tiles go in the graphics files"
+label: wayfinder:grilling
+mode: HITL
+status: closed
+assignee: owner
+blocked_by: [06, 18]
+research:
+---
+
+## Question
+
+KOF 2003's 64 MiB graphics set has only 2,399 blank tiles, the longest run 47 ([How many fighter IDs KOF 2003's tables hold and how much free space its files have](03-slot-capacity.md)). [How KOF 2003's sprite-frame records number their tiles](18-sprite-frame-tiles.md) measured Adelheid's own graphics as one solid block of 7,211 tiles (`$68031`–`$69C5B`), with Mukai's tiles directly after it, and Guile's observed need for this slice as at least 2,145 tiles, inside an SVC block of about 9,100. [How many tiles Guile's complete SVC frame data uses](21-guile-total-tiles.md) will size his total; it does not block this decision (owner, 2026-11-16), because this slice fits Adelheid's block either way and growing the set does not depend on his total. The routes are writing Guile's tiles over Adelheid's block, or growing the set past 64 MiB up to the 128 MiB of the hardware tile format. The game's frame data and drawing code accept tile numbers of `$80000` and above, read in the code and not yet tested. Growing means raising the fixed `crom_size` in the port descriptor, adding or enlarging C-file pairs ([How the native port's generator handles changed or added 68000 code and data](04-port-generator.md)) and a tile cache of 256 MiB of RAM in place of 128; every slot strategy beyond Adelheid's slot needs it anyway. The spec's plan assumed no table would need enlarging.
+
+Where do Guile's tiles go for this slice, and does the choice follow the slot strategy of [Choose how fighter slots are found for the SVC Exclusive Characters](06-slot-strategy.md)? How the converted files are produced and fed to the native build belongs to [Choose how Guile's frames and collision become KOF 2003 data](08-frames-and-collision.md).
+
+_PT-BR: o conjunto gráfico de 64 MiB do KOF 2003 só tem 2.399 tiles vazios, com o maior trecho de 47 (pesquisa 03). A pesquisa 18 mediu os gráficos da Adelheid como um bloco único de 7.211 tiles (`$68031`–`$69C5B`), com os tiles do Mukai logo em seguida, e a necessidade observada do Guile nesta fatia em pelo menos 2.145 tiles, dentro de um bloco de cerca de 9.100 no SVC. O ticket 21 vai dimensionar o total dele; ele não bloqueia esta decisão (dono, 16/11/2026), porque esta fatia cabe no bloco da Adelheid de qualquer forma e crescer o conjunto não depende do total. Os caminhos são gravar os tiles do Guile por cima do bloco da Adelheid ou crescer o conjunto além de 64 MiB, até os 128 MiB do formato do hardware. Os dados de quadro e o código de desenho do jogo aceitam tiles a partir de `$80000`; isso foi lido no código e ainda não foi testado. Crescer exige aumentar o `crom_size` fixo no descritor do port, acrescentar ou aumentar pares de arquivos C (pesquisa 04) e um cache de tiles de 256 MiB de RAM em vez de 128; qualquer estratégia de vagas além da vaga da Adelheid vai precisar disso de todo modo. O plano do spec supunha que nenhuma tabela precisaria ser ampliada. Onde ficam os tiles do Guile nesta fatia, e a escolha segue a estratégia de vagas do ticket 06? Como os arquivos convertidos são produzidos e chegam ao build nativo fica com o ticket 08._
+
+## Resolution
+
+**Grow the graphics set to 128 MiB already in Guile's slice; his tiles go into the added space.** The owner (2026-11-16) chose this over writing them over Adelheid's block, because Guile may not fit or work well in her slot and the goal is to import as many SVC Exclusive Characters as possible. Consequences recorded for the plan: the fixed `crom_size` in the port descriptor is raised, C-file pairs are added or enlarged ([How the native port's generator handles changed or added 68000 code and data](04-port-generator.md)), the tile cache grows from 128 to 256 MiB of RAM, and the first native drawing of a tile at `$80000` or above, so far only read in the code ([How KOF 2003's sprite-frame records number their tiles](18-sprite-frame-tiles.md)), becomes part of Guile's slice rather than a later test. Adelheid's block stays untouched. The size of the added space follows Guile's total, measured by [How many tiles Guile's complete SVC frame data uses](21-guile-total-tiles.md); the choice follows the slot strategy, which now creates new slots ([Choose how fighter slots are found for the SVC Exclusive Characters](06-slot-strategy.md)).
+
+**PT-BR**
+
+**Ampliar os gráficos para 128 MiB já na fatia do Guile; os tiles dele vão para o espaço acrescentado.** O dono (16/11/2026) escolheu isso em vez de gravar por cima do bloco da Adelheid, porque o Guile pode não caber nem funcionar bem na vaga dela e a meta é importar o máximo possível de exclusivos do SVC. Consequências registradas para o plano: o `crom_size` fixo no descritor do port sobe, pares de arquivos C são acrescentados ou aumentados (pesquisa 04), o cache de tiles passa de 128 para 256 MiB de RAM, e o primeiro desenho nativo de um tile a partir de `$80000`, hoje só lido no código (pesquisa 18), entra na fatia do Guile em vez de ficar para um teste posterior. O bloco da Adelheid fica intocado. O tamanho do espaço acrescentado segue o total do Guile, medido pelo ticket 21; a escolha acompanha a estratégia de vagas, que agora cria vagas novas (ticket 06).
