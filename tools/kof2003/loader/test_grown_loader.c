@@ -23,6 +23,9 @@ static int s_failures;
 #define CHECK(cond, msg) do { if (!(cond)) { fprintf(stderr, "FAIL: %s\n", msg); s_failures++; } \
                               else printf("ok:   %s\n", msg); } while (0)
 
+/* File name of pair i; ab is 'a' or 'b'. */
+static void pair_name(char out[32], int i, char ab) { snprintf(out, 32, "syn-c%d-%c.bin", i, ab); }
+
 static int write_file(const char *dir, const char *name, const uint8_t *data, size_t n) {
     char path[1024];
     snprintf(path, sizeof path, "%s/%s", dir, name);
@@ -36,8 +39,8 @@ static int write_file(const char *dir, const char *name, const uint8_t *data, si
  * test marker is placed. */
 static int make_pair(const char *dir, int i, const uint8_t *a_head, const uint8_t *b_head, size_t head) {
     char na[32], nb[32];
-    snprintf(na, sizeof na, "syn-c%d-a.bin", i);
-    snprintf(nb, sizeof nb, "syn-c%d-b.bin", i);
+    pair_name(na, i, 'a');
+    pair_name(nb, i, 'b');
     uint8_t *a = malloc(PAIR_FILE_BYTES), *b = malloc(PAIR_FILE_BYTES);
     if (!a || !b) return 0;
     memset(a, 0x11 + i, PAIR_FILE_BYTES);
@@ -51,8 +54,8 @@ static int make_pair(const char *dir, int i, const uint8_t *a_head, const uint8_
 
 static void fill_names(char names[8][2][32], int pairs) {
     for (int i = 0; i < pairs; i++) {
-        snprintf(names[i][0], 32, "syn-c%d-a.bin", i);
-        snprintf(names[i][1], 32, "syn-c%d-b.bin", i);
+        pair_name(names[i][0], i, 'a');
+        pair_name(names[i][1], i, 'b');
     }
 }
 
@@ -73,12 +76,12 @@ int main(int argc, char **argv) {
     /* Markers: first bytes of the first pair (tile 0) and of the fifth pair
      * (tile $80000). Tile 0 gets A0=0x00, B0=0xFF (A1=B1=0) -> colour 4 on the right half of row 0.
      * Tile $80000 gets A0=0xFF, B0=0xFF (A1=B1=0) -> colour 5 there. */
-    static const uint8_t t0_a[4] = {0x00, 0x00, 0x02, 0x03}, t0_b[4] = {0xFF, 0x00, 0x06, 0x07};
-    static const uint8_t t5_a[4] = {0xFF, 0x00, 0x0A, 0x0B}, t5_b[4] = {0xFF, 0x00, 0x0E, 0x0F};
+    static const uint8_t first_a[4] = {0x00, 0x00, 0x02, 0x03}, first_b[4] = {0xFF, 0x00, 0x06, 0x07};
+    static const uint8_t fifth_a[4] = {0xFF, 0x00, 0x0A, 0x0B}, fifth_b[4] = {0xFF, 0x00, 0x0E, 0x0F};
 
     /* Files: four 16 MiB pairs fill 64 MiB; the fifth pair is the Added Space. */
     for (int i = 0; i < 5; i++)
-        if (!make_pair(dir, i, i == 0 ? t0_a : i == 4 ? t5_a : NULL, i == 0 ? t0_b : i == 4 ? t5_b : NULL, 4)) {
+        if (!make_pair(dir, i, i == 0 ? first_a : i == 4 ? fifth_a : NULL, i == 0 ? first_b : i == 4 ? fifth_b : NULL, 4)) {
             fprintf(stderr, "cannot write synthetic files in %s\n", dir);
             return 2;
         }
@@ -96,27 +99,35 @@ int main(int argc, char **argv) {
     if (!crom) return 1;
 
     /* Interleave: even byte from the first file of the pair, odd from the second. */
-    size_t p5 = 64u * MIB;
+    size_t fifth_start = 64u * MIB;
     CHECK(crom[0] == 0x00 && crom[1] == 0xFF && crom[4] == 0x02 && crom[5] == 0x06,
           "128 MiB: pair 1 bytes interleave (even byte from file A, odd from file B)");
     CHECK(crom[16u * MIB] == 0x12 && crom[16u * MIB + 1] == 0x23 && crom[48u * MIB + 1] == 0x25,
           "128 MiB: pairs are laid end to end, 16 MiB apart");
-    CHECK(crom[p5] == 0xFF && crom[p5 + 1] == 0xFF && crom[p5 + 4] == 0x0A && crom[p5 + 5] == 0x0E,
+    CHECK(crom[fifth_start] == 0xFF && crom[fifth_start + 1] == 0xFF && crom[fifth_start + 4] == 0x0A && crom[fifth_start + 5] == 0x0E,
           "128 MiB: the fifth pair starts at byte 64 MiB, interleaved");
-    CHECK(crom[p5 + 16u * MIB - 2] == 0x15 && crom[p5 + 16u * MIB - 1] == 0x26,
+    CHECK(crom[fifth_start + 16u * MIB - 2] == 0x15 && crom[fifth_start + 16u * MIB - 1] == 0x26,
           "128 MiB: last two bytes of the fifth pair come from its files A and B");
 
     int zero = 1;
-    for (size_t k = p5 + 16u * MIB; k < 128u * MIB; k++) if (crom[k]) { zero = 0; break; }
+    for (size_t k = fifth_start + 16u * MIB; k < 128u * MIB; k++) if (crom[k]) { zero = 0; break; }
     CHECK(zero, "128 MiB: the part no file covers reads as zero");
 
     decode_all(crom, g.crom_size);
     CHECK(s_spr_tiles_mask == 0xFFFFFu, "128 MiB: tile mask has 20 bits");
     CHECK(tile_pixel(ADDED_SPACE_TILE, 0, 8) == 5, "128 MiB: tile $80000 is the tile at the first byte of the fifth pair");
+    {
+        int row0_ok = 1;
+        for (int x = 8; x < 16; x++) if (tile_pixel(ADDED_SPACE_TILE, 0, x) != 5) row0_ok = 0;
+        CHECK(row0_ok, "128 MiB: tile $80000 row 0, whole right half decodes as colour 5");
+        /* Row 1 of the right half comes from bytes 4..7 of the tile: planes 0x0A, 0x0E, 0x0B, 0x0F. */
+        CHECK(tile_pixel(ADDED_SPACE_TILE, 1, 8) == 10 && tile_pixel(ADDED_SPACE_TILE, 1, 9) == 15,
+              "128 MiB: tile $80000 row 1 decodes from the right bit planes");
+    }
     CHECK(tile_pixel(0, 0, 8) == 4, "128 MiB: tile 0 is the first pair's tile");
     CHECK(tile_pixel(ADDED_SPACE_TILE, 0, 8) != tile_pixel(0, 0, 8), "128 MiB: tile $80000 differs from tile 0 (no wrap)");
     int tail_zero = 1;
-    uint32_t first_unfilled = (uint32_t)((p5 + 16u * MIB) / 128);
+    uint32_t first_unfilled = (uint32_t)((fifth_start + 16u * MIB) / 128);
     for (int y = 0; y < 16 && tail_zero; y++)
         for (int x = 0; x < 16; x++) if (tile_pixel(first_unfilled, y, x)) { tail_zero = 0; break; }
     CHECK(tail_zero, "128 MiB: a tile in the uncovered part decodes as blank");
@@ -132,7 +143,7 @@ int main(int argc, char **argv) {
     CHECK(s_spr_tiles_mask == 0x7FFFFu, "64 MiB: tile mask has 19 bits");
     CHECK(tile_pixel(ADDED_SPACE_TILE, 0, 8) == tile_pixel(0, 0, 8) && tile_pixel(ADDED_SPACE_TILE, 0, 8) == 4,
           "64 MiB: tile $80000 wraps to tile 0");
-    CHECK(tile_pixel(ADDED_SPACE_TILE + 1, 5, 3) == tile_pixel(1, 5, 3),
+    CHECK(((ADDED_SPACE_TILE + 1) & s_spr_tiles_mask) == 1 && ((ADDED_SPACE_TILE + 0x7FFFFu) & s_spr_tiles_mask) == 0x7FFFFu,
           "64 MiB: a tile number at or above $80000 wraps to the low half");
     free(crom);
 
