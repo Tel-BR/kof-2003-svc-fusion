@@ -43,3 +43,23 @@ Any fighter brought from the Donor Game into the Base Game, whether shared or ex
 _Avoid_: ported character, converted character
 
 _PT-BR — **Personagem importado**: qualquer personagem trazido do jogo doador para o jogo base, seja compartilhado ou exclusivo. Evitar: portado, convertido._
+
+### Graphics / Gráficos
+
+**Graphics Set**:
+All the tile data the native player loads and draws from; 64 MiB today, growing to 128 MiB, the most a tile number can address.
+_Avoid_: crom, graphics set size, tile ROM
+
+_PT-BR — **Conjunto gráfico**: todos os dados de tiles que o player nativo carrega e de onde desenha; hoje 64 MiB, crescendo para 128 MiB, o máximo que um número de tile alcança. Evitar: crom, tile ROM._
+
+**Added Space**:
+The half of the grown Graphics Set above tile `$80000`, which holds no KOF 2003 data and is reserved for tiles of Imported Characters.
+_Avoid_: expansion, extra graphics, new C files
+
+_PT-BR — **Espaço acrescentado**: a metade do conjunto gráfico ampliado acima do tile `$80000`, que não guarda dados do KOF 2003 e é reservada aos tiles dos personagens importados. Evitar: expansão, gráficos extras, arquivos C novos._
+
+**Rehearsal**:
+The trial that precedes Guile: a complex regular fighter is cloned into a new ID with its tiles in the Added Space, to prove the growth of the Graphics Set, the relocated ID tables and a new ID before any Imported Character depends on them.
+_Avoid_: dry run, clone test
+
+_PT-BR — **Ensaio**: a prova que antecede o Guile: um lutador regular e complexo é clonado num ID novo com os tiles no espaço acrescentado, para provar a ampliação do conjunto gráfico, as tabelas de ID movidas e um ID novo antes de qualquer personagem importado depender deles. Evitar: teste a seco, teste de clone._
