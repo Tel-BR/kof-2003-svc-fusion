@@ -31,7 +31,7 @@ Runs and captures go under `private/work/graphics-growth/runs/`. Exit code 1 mea
 
 ### Grown loader test (graphics-set growth, ticket 03)
 
-`../loader/test_grown_loader.c` loads synthetic graphics file pairs at the 128 MiB size and at the 64 MiB size and checks pair interleaving, the tile at the fifth pair (tile number `$80000`), zero fill, and the 20-bit versus 19-bit tile mask. It uses no game data and compiles against the private toolkit (`private/work/samsho-runtime-source/neogeorecomp`, or `NEOGEORECOMP_SOURCE`). It needs a C compiler (clang or gcc) and writes about 160 MiB of temporary files under `private/`. From `tools/kof2003`:
+`../loader/test_grown_loader.c` loads synthetic graphics file pairs at the 128 MiB size and at the 64 MiB size and checks pair interleaving, the tile at the fifth pair (tile number `$80000`), zero fill, and the 20-bit versus 19-bit tile mask. It uses no game data and compiles against the private toolkit (`private/work/samsho-runtime-source/neogeorecomp`, or `NEOGEORECOMP_SOURCE`). It needs a C compiler (clang or gcc) and writes about 80 MiB of temporary files under `private/`. From `tools/kof2003`:
 
 ```
 py -3 -m loader.run_loader_test
@@ -72,7 +72,7 @@ Rodadas e capturas ficam em `private/work/graphics-growth/runs/`. Código de sa�
 
 ### Teste do carregador ampliado (ampliação do Conjunto gráfico, ticket 03)
 
-O `../loader/test_grown_loader.c` carrega pares sintéticos de arquivos gráficos com o tamanho de 128 MiB e com o de 64 MiB e confere a intercalação dos pares, o tile do quinto par (número de tile `$80000`), o preenchimento com zeros e a máscara de tile de 20 contra 19 bits. Não usa dados dos jogos e compila contra o kit privado (`private/work/samsho-runtime-source/neogeorecomp`, ou `NEOGEORECOMP_SOURCE`). Precisa de um compilador C (clang ou gcc) e grava cerca de 160 MiB de arquivos temporários em `private/`. A partir de `tools/kof2003`:
+O `../loader/test_grown_loader.c` carrega pares sintéticos de arquivos gráficos com o tamanho de 128 MiB e com o de 64 MiB e confere a intercalação dos pares, o tile do quinto par (número de tile `$80000`), o preenchimento com zeros e a máscara de tile de 20 contra 19 bits. Não usa dados dos jogos e compila contra o kit privado (`private/work/samsho-runtime-source/neogeorecomp`, ou `NEOGEORECOMP_SOURCE`). Precisa de um compilador C (clang ou gcc) e grava cerca de 80 MiB de arquivos temporários em `private/`. A partir de `tools/kof2003`:
 
 ```
 py -3 -m loader.run_loader_test

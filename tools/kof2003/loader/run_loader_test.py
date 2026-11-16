@@ -6,7 +6,7 @@ One command, from tools/kof2003:
 
 The toolkit is third-party code kept under private/. Point NEOGEORECOMP_SOURCE at it,
 or leave it unset to use private/work/samsho-runtime-source/neogeorecomp. The test uses
-no game data; it writes ~160 MiB of synthetic files into a temporary folder under
+no game data; it writes 80 MiB of synthetic files into a temporary folder under
 private/work/graphics-growth/loader-test/ (override with LOADER_TEST_WORK) and removes
 them afterwards.
 """
@@ -40,7 +40,8 @@ def main():
            "-I", str(toolkit / "src"), "-I", str(toolkit / "include"),
            str(HERE / "test_grown_loader.c"), str(toolkit / "src" / "romload.c"),
            "-o", str(exe)]
-    subprocess.run(cmd, check=True)
+    if subprocess.run(cmd).returncode != 0:
+        sys.exit("error: the test did not compile; see the compiler output above")
     files = work / "files"
     files.mkdir(exist_ok=True)
     try:

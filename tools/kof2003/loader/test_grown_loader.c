@@ -6,7 +6,7 @@
  * decoder's private state; the toolkit is third-party code that stays under
  * private/ and is found through -I (see run_loader_test.py).
  *
- * Usage: test_grown_loader WORK_DIR   (WORK_DIR receives ~128 MiB of temporary files)
+ * Usage: test_grown_loader WORK_DIR   (WORK_DIR receives 80 MiB of temporary files, five 16 MiB pairs)
  */
 #include "video.c"        /* toolkit src/: decode_sprites, s_spr, s_spr_tiles_mask */
 #include "romload.h"      /* ng_load_crom */
