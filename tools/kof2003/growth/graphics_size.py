@@ -36,22 +36,34 @@ def read_size(path):
     return int(_find(Path(path).read_bytes()).group(2), 16)
 
 
-def _set(path, old, new):
-    """Change the size from old to new. Returns False if it already is new."""
-    path = Path(path)
-    data = path.read_bytes()
+def set_size(data, old, new):
+    """`data` with the size changed from old to new, or None if it already is new."""
     match = _find(data)
     current = int(match.group(2), 16)
     if current == new:
-        return False
+        return None
     if current != old:
         raise ValueError(f"the graphics size is {match.group(2).decode()}; "
                          f"expected 0x{old:X} or 0x{new:X}")
     literal = f"0x{new:X}".encode()
-    changed = data[:match.start(2)] + literal + data[match.end(2):]
+    return data[:match.start(2)] + literal + data[match.end(2):]
+
+
+def write_atomically(path, data):
+    """Replace `path` with `data` through a scratch file, so a failure leaves it whole."""
+    path = Path(path)
     scratch = path.with_name(path.name + ".tmp")
-    scratch.write_bytes(changed)
+    scratch.write_bytes(data)
     scratch.replace(path)
+
+
+def _set(path, old, new):
+    """Change the size from old to new. Returns False if it already is new."""
+    path = Path(path)
+    changed = set_size(path.read_bytes(), old, new)
+    if changed is None:
+        return False
+    write_atomically(path, changed)
     return True
 
 

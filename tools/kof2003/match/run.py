@@ -40,12 +40,12 @@ def _run_to_log(command, stream):
     subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=True)
 
 
-def run_native(script_path, frames, shots, out, player=PLAYER, runner=_run_to_log):
+def run_native(script_path, frames, shots, out, player=PLAYER, runner=_run_to_log, rom_path=None):
     if len(shots) > NATIVE_MAX_SHOTS:
         raise ValueError(f"the native player takes at most {NATIVE_MAX_SHOTS} captures per run")
     out.mkdir(parents=True)
     command = [str(player), "--headless", "--verify", "--mute",
-               "--rom-path", str(cached_path("KOF2003_ROMS")), "--bios", "sp-s2.sp1",
+               "--rom-path", str(rom_path or cached_path("KOF2003_ROMS")), "--bios", "sp-s2.sp1",
                "--frames", str(frames), "--input", str(script_path)]
     for frame in shots:
         command += ["--screenshot", f"{frame}:{out / shot_name(frame)}"]

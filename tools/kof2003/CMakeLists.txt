@@ -7,6 +7,10 @@ set(KOF2003_SOURCE "" CACHE PATH "Public KOF 2003 port source")
 set(NEOGEORECOMP_SOURCE "" CACHE PATH "Adapted neogeorecomp toolkit source")
 set(KOF2003_ROMS "" CACHE PATH "Prepared KOF 2003 and Europe MVS v2 ROMs")
 set(KOF2003_ENTRIES "${CMAKE_BINARY_DIR}/entries.txt" CACHE FILEPATH "Extra entry points from profiling")
+# Build C of the graphics-set growth (docs/specs/graphics-set-growth/, ticket 04): the
+# player plants one sprite pointing at the first tile of the Added Space. Off by
+# default, so builds A and B carry neither the file nor the macro.
+option(KOF2003_ADDED_SPACE_PROOF "Plant one sprite from the Added Space (graphics-set growth, ticket 04)" OFF)
 
 if(NOT EXISTS "${KOF2003_SOURCE}/src/recomp_main.c")
     message(FATAL_ERROR "Set KOF2003_SOURCE to the KOF 2003 port checkout.")
@@ -61,6 +65,13 @@ add_dependencies(kof2003_player kof2003_generate)
 set_target_properties(kof2003_player PROPERTIES OUTPUT_NAME "KOF 2003")
 target_compile_definitions(kof2003_player PRIVATE KOF2003_HAVE_RECOMP)
 target_link_libraries(kof2003_player PRIVATE neogeorecomp)
+if(KOF2003_ADDED_SPACE_PROOF)
+    # The renderer's call to the planter is compiled only under this macro, so the
+    # toolkit needs it too; growth/added_space_patch.py inserts that call.
+    target_sources(kof2003_player PRIVATE "${CMAKE_CURRENT_LIST_DIR}/growth/added_space_proof.c")
+    target_compile_definitions(kof2003_player PRIVATE KOF2003_ADDED_SPACE_PROOF)
+    target_compile_definitions(neogeorecomp PRIVATE KOF2003_ADDED_SPACE_PROOF)
+endif()
 if(WIN32)
     target_link_libraries(kof2003_player PRIVATE dbghelp)
     add_custom_command(TARGET kof2003_player POST_BUILD

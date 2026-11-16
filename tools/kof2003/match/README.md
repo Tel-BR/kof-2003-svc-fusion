@@ -31,7 +31,7 @@ py -3 -m match.compare_captures RUN_A_DIR RUN_B_DIR
 
 Runs and captures go under `private/work/graphics-growth/runs/`. Exit code 1 means a difference; the first differing frame is printed.
 
-Build B (128 MiB) and its comparison with A: see `../growth/README.md` (ticket 02).
+Build B (128 MiB) and its comparison with A: see `../growth/README.md` (ticket 02). Build C, which draws one synthetic tile from the Added Space: the same file (ticket 04).
 
 ### Grown loader test (graphics-set growth, ticket 03)
 
@@ -76,7 +76,7 @@ py -3 -m match.compare_captures PASTA_RODADA_A PASTA_RODADA_B
 
 Rodadas e capturas ficam em `private/work/graphics-growth/runs/`. Código de saída 1 indica diferença; o primeiro quadro diferente é impresso.
 
-Build B (128 MiB) e a comparação com o A: veja `../growth/README.md` (ticket 02).
+Build B (128 MiB) e a comparação com o A: veja `../growth/README.md` (ticket 02). O build C, que desenha um tile sintético do Espaço acrescentado: o mesmo arquivo (ticket 04).
 
 ### Teste do carregador ampliado (ampliação do Conjunto gráfico, ticket 03)
 
