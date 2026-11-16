@@ -15,6 +15,8 @@ Scripted, silent runs of the native KOF 2003 player and of MAME's Neo Geo games.
 | `probe.lua` | Logs animation pointer, position and health each frame. Defaults are SVC Chaos offsets. |
 | `compare_captures.py` | Compares two capture sets by hash; reports equal or the first differing frame (graphics-set growth, ticket 01). |
 | `repeat_reference.py` | Runs one build twice on `scripts/coin-start.txt` and `scripts/team-match.txt`, then compares the two capture sets. |
+| `compare_builds.py` | Runs two builds (default A and B) once on both scripts, compares the captures by hash, checks B's `--verify` is not worse, and measures B's memory (graphics-set growth, ticket 02). |
+| `memory_probe.py` | Measures a Windows process's peak and steady memory while it runs. |
 
 Recording a session: start MAME with `-record <name>.inp -autoboot_script log_inputs.lua` and `INPUT_LOG` set. Do not use MAME's soft reset (F3) while recording. Close MAME and start again instead. Tests: `py -3 -m pytest match` from `tools/kof2003`.
 
@@ -28,6 +30,8 @@ py -3 -m match.compare_captures RUN_A_DIR RUN_B_DIR
 ```
 
 Runs and captures go under `private/work/graphics-growth/runs/`. Exit code 1 means a difference; the first differing frame is printed.
+
+Build B (128 MiB) and its comparison with A: see `../growth/README.md` (ticket 02).
 
 ### Grown loader test (graphics-set growth, ticket 03)
 
@@ -56,6 +60,8 @@ Execuções por roteiro e sem som do executável nativo do KOF 2003 e dos jogos 
 | `probe.lua` | Registra ponteiro de animação, posição e vida a cada quadro. Os padrões são deslocamentos do SVC Chaos. |
 | `compare_captures.py` | Compara dois conjuntos de capturas por hash; informa igual ou o primeiro quadro diferente (ampliação do Conjunto gráfico, ticket 01). |
 | `repeat_reference.py` | Roda um build duas vezes com `scripts/coin-start.txt` e `scripts/team-match.txt` e compara os dois conjuntos de capturas. |
+| `compare_builds.py` | Roda dois builds (por padrão A e B) uma vez nos dois roteiros, compara as capturas por hash, confere que o `--verify` do B não é pior e mede a memória do B (ampliação do Conjunto gráfico, ticket 02). |
+| `memory_probe.py` | Mede o pico e o regime de memória de um processo do Windows enquanto ele roda. |
 
 Para gravar uma sessão, abra o MAME com `-record <nome>.inp -autoboot_script log_inputs.lua` e `INPUT_LOG` definido. Não use o reset do MAME (F3) durante a gravação. Feche e abra o MAME de novo. Testes: `py -3 -m pytest match` a partir de `tools/kof2003`.
 
@@ -69,6 +75,8 @@ py -3 -m match.compare_captures PASTA_RODADA_A PASTA_RODADA_B
 ```
 
 Rodadas e capturas ficam em `private/work/graphics-growth/runs/`. Código de saída 1 indica diferença; o primeiro quadro diferente é impresso.
+
+Build B (128 MiB) e a comparação com o A: veja `../growth/README.md` (ticket 02).
 
 ### Teste do carregador ampliado (ampliação do Conjunto gráfico, ticket 03)
 

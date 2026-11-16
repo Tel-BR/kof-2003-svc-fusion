@@ -36,7 +36,11 @@ def shot_name(frame):
     return f"frame-{frame:05d}.png"
 
 
-def run_native(script_path, frames, shots, out, player=PLAYER):
+def _run_to_log(command, stream):
+    subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=True)
+
+
+def run_native(script_path, frames, shots, out, player=PLAYER, runner=_run_to_log):
     if len(shots) > NATIVE_MAX_SHOTS:
         raise ValueError(f"the native player takes at most {NATIVE_MAX_SHOTS} captures per run")
     out.mkdir(parents=True)
@@ -47,7 +51,7 @@ def run_native(script_path, frames, shots, out, player=PLAYER):
         command += ["--screenshot", f"{frame}:{out / shot_name(frame)}"]
     log = out / "player.log"
     with log.open("w") as stream:
-        subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=True)
+        runner(command, stream)
     return read_report(log.read_text())
 
 
