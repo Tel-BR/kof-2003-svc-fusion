@@ -1,0 +1,11 @@
+# Graphics Set growth, ticket 01: coin, start and team selection only.
+# Frames count from power-on at ~59.19 Hz, native neogeorecomp semantics.
+# Same inputs as the port's tests/coin_start.txt.
+1200 coin
+1500 coin
+1800 coin
+2400 start
+3600 a
+4200 a
+4700 a
+5200 start

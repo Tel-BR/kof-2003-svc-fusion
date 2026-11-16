@@ -36,11 +36,11 @@ def shot_name(frame):
     return f"frame-{frame:05d}.png"
 
 
-def run_native(script_path, frames, shots, out):
+def run_native(script_path, frames, shots, out, player=PLAYER):
     if len(shots) > NATIVE_MAX_SHOTS:
         raise ValueError(f"the native player takes at most {NATIVE_MAX_SHOTS} captures per run")
     out.mkdir(parents=True)
-    command = [str(PLAYER), "--headless", "--verify", "--mute",
+    command = [str(player), "--headless", "--verify", "--mute",
                "--rom-path", str(cached_path("KOF2003_ROMS")), "--bios", "sp-s2.sp1",
                "--frames", str(frames), "--input", str(script_path)]
     for frame in shots:
