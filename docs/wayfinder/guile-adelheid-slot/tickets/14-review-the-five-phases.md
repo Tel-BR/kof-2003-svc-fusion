@@ -5,7 +5,7 @@ label: wayfinder:grilling
 mode: HITL
 status: open
 assignee:
-blocked_by: [06, 07, 08, 09, 10, 11, 12, 13, 15, 16, 17, 19, 22, 23, 24]
+blocked_by: [06, 07, 08, 09, 10, 11, 12, 13, 15, 16, 17, 19, 22, 23, 24, 27]
 research:
 ---
 
