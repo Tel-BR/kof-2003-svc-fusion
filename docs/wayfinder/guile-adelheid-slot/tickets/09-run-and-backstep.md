@@ -31,6 +31,8 @@ Decided with the owner on 2026-11-16, looking at frame strips captured from SVC 
 
 **Backstep.** The backstep (state `$24`, actions `$47`-`$49`) is his SVC back-step hop as it is (25 frames, 86 px, height 16), with only its timing adjusted to fit the state.
 
+**Scope (owner).** This holds for every SVC fighter imported, not only Guile, like the jumps of [ticket 10](10-four-jumps.md).
+
 **Left open.** KOF 2003's own run and backstep speeds, distances and durations were not measured, so how much faster than SVC the run plays, and the exact retiming of both, are set when the reference is measured; this belongs to the implementation tickets, not to the map.
 
 **PT-BR**
@@ -40,5 +42,7 @@ Decidido com o dono em 16/11/2026, olhando tiras de quadros capturadas do SVC no
 **Corrida.** O Guile do SVC não tem corrida, então o ciclo de corrida (estado `$23` do KOF 2003, ações `$44`-`$46`) é o passo para frente dele, o dash baixo deslizante, repetido em ciclo enquanto se segura frente, **tocado um pouco mais rápido** que no SVC. O dono recusou o andar acelerado (parece andar rápido, não corrida) e a mistura de dash com andar.
 
 **Passo para trás.** O passo para trás (estado `$24`, ações `$47`-`$49`) é o saltinho de costas do Guile no SVC como está (25 quadros, 86 px, altura 16), só com o tempo ajustado para caber no estado.
+
+**Alcance (dono).** Vale para todo lutador do SVC importado, não só o Guile, como os pulos do [ticket 10](10-four-jumps.md).
 
 **Em aberto.** As velocidades, distâncias e durações da corrida e do passo para trás do próprio KOF 2003 não foram medidas, então quanto mais rápido que no SVC a corrida toca, e o reajuste exato dos dois, ficam para quando a referência for medida; isso é dos tickets de implementação, não do mapa.
