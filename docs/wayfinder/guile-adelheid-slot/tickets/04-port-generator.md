@@ -23,7 +23,7 @@ _PT-BR: Lendo o port local em `private/work/kof2003-port/`: como o gerador decid
 
 **Fallback and `--verify`.** Uncovered addresses run in Musashi and are reported in the `[exec]` summary and by `--dump-misses`, which merges into `entries.txt` and never prunes it. The exit code is always 0. `--verify` compares only the native blocks a session executes, so it checks translation, not game behaviour. After a program change: regenerate, rebuild, profile with a script that exercises the change (today's `play.txt` reaches neither Guile nor Adelheid) until no entries are added, then verify.
 
-**Graphics.** Four C pairs of equal size, up to a `crom_size` fixed at 64 MB in the port descriptor; larger files fail to load and smaller ones are accepted. There are no run-time checksums. Tile codes above `$7FFFF` wrap. Changing graphics needs no regeneration. Rerunning the preparation tool rewrites the whole prepared folder.
+**Graphics.** Four C pairs of equal size, up to a `crom_size` fixed at 64 MB in the port descriptor; larger files fail to load and smaller ones are accepted. There are no run-time checksums. Tile codes above `$7FFFF` wrap. Changing graphics needs no regeneration. _Update 2026-11-16: the 64 MB size is no longer fixed; the graphics-set growth stage raised it to 128 MiB (record: [graphics-set growth tools](../../../../tools/kof2003/growth/README.md) and [ticket 05](../../../specs/graphics-set-growth/issues/05-record-growth-results.md))._ Rerunning the preparation tool rewrites the whole prepared folder.
 
 **PT-BR**
 
@@ -33,6 +33,6 @@ _PT-BR: Lendo o port local em `private/work/kof2003-port/`: como o gerador decid
 
 **Interpretador e `--verify`.** Endereços sem entrada rodam no Musashi e aparecem no resumo `[exec]` e no `--dump-misses`, que junta as entradas no `entries.txt` e nunca apaga as antigas. O código de saída é sempre 0. O `--verify` só compara os blocos nativos que a sessão executa, então confere a tradução, não o comportamento do jogo. Depois de mudar o programa: gerar, compilar, fazer o perfil com um roteiro que passe pela mudança (o `play.txt` atual não chega ao Guile nem à Adelheid) até não surgirem entradas, e então verificar.
 
-**Gráficos.** Quatro pares de arquivos C de tamanhos iguais, até um `crom_size` fixo de 64 MB no descritor do port; arquivos maiores falham e menores são aceitos. Não há checksum em tempo de execução. Tiles acima de `$7FFFF` dão a volta. Trocar gráficos não exige gerar o C de novo. Rodar de novo a ferramenta de preparo reescreve a pasta preparada inteira.
+**Gráficos.** Quatro pares de arquivos C de tamanhos iguais, até um `crom_size` fixo de 64 MB no descritor do port; arquivos maiores falham e menores são aceitos. Não há checksum em tempo de execução. Tiles acima de `$7FFFF` dão a volta. Trocar gráficos não exige gerar o C de novo. _Atualização 16/11/2026: os 64 MB deixaram de ser fixos; a etapa de ampliação do Conjunto gráfico os subiu para 128 MiB (registro: [ferramentas da ampliação](../../../../tools/kof2003/growth/README.md) e [ticket 05](../../../specs/graphics-set-growth/issues/05-record-growth-results.md))._ Rodar de novo a ferramenta de preparo reescreve a pasta preparada inteira.
 
 Research / Pesquisa: `research/04-port-generator:docs/wayfinder/guile-adelheid-slot/research/04-port-generator.md` (commit `e276239`).

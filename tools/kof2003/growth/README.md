@@ -60,6 +60,12 @@ the pair and draws nothing from it. Undo both when the proof is done.
 
 `ninja` also runs the generator again, because it embeds the descriptor. Hash `generated/` before and after: every file must be identical, which proves the native code did not change. `compare_builds` exits with 1 on any difference, a missing build, or a `--verify` summary worse than A's. A rebuilt 64 MiB executable need not equal the saved `build-a` byte for byte (link-time stamps), so `build-a` is never rebuilt over.
 
+## For whoever starts the Rehearsal
+
+**Rule for graphics file pairs.** The loader lays the pairs of graphics files end to end, up to 8 pairs. The four original pairs fill exactly 64 MiB, so the Added Space starts at the fifth pair, and its first tile is tile number `$80000`. Four more pairs of 16 MiB complete 128 MiB. Whatever no file covers reads as zero. The decoded tile array is padded to a power of two by the loader, and 128 MiB already is one. A descriptor that does not list exactly four original pairs must not get a fifth added blindly (`added_space_patch.py` refuses it). Tile numbers at or above `$80000` no longer wrap to the low half.
+
+**Measured memory of the grown player (build B).** Machine with 32,606 MiB installed. Peak working set 420 MiB (`coin-start`) and 419 MiB (`team-match`), peak commit 416 MiB in both, steady working set 300-310 MiB. The 256 MiB decoded tile cache and the load peak are acceptable. Details: `docs/specs/graphics-set-growth/issues/02-grow-and-match-reference.md`.
+
 Tests: `py -3 -m pytest growth match` from `tools/kof2003`.
 
 ## Ferramentas da ampliação do Conjunto gráfico
@@ -92,5 +98,11 @@ descritor desfeito). Deixar a opção ligada sem aplicar o patch compila um play
 renderizador nunca chama o plantador, e aplicar o patch sem a opção compila um player de
 128 MiB que carrega o par e não desenha nada dele. Desfaça os dois quando a prova
 terminar.
+
+### Para quem começar o Ensaio
+
+**Regra dos pares de arquivos gráficos.** O carregador dispõe os pares de arquivos gráficos um depois do outro, até 8 pares. Os quatro pares originais preenchem exatamente 64 MiB, então o Espaço acrescentado começa no quinto par, e seu primeiro tile é o número `$80000`. Mais quatro pares de 16 MiB completam 128 MiB. O que nenhum arquivo cobre lê como zero. O carregador preenche o vetor de tiles decodificados até potência de 2, e 128 MiB já é uma. Um descritor que não liste exatamente quatro pares originais não deve ganhar um quinto às cegas (o `added_space_patch.py` recusa). Números de tile iguais ou maiores que `$80000` não dão mais a volta para a metade baixa.
+
+**Memória medida do player ampliado (build B).** Máquina com 32.606 MiB instalados. Pico de memória de trabalho de 420 MiB (`coin-start`) e 419 MiB (`team-match`), pico de commit de 416 MiB nos dois, memória de trabalho estável de 300-310 MiB. O cache de tiles decodificados de 256 MiB e o pico da carga são aceitáveis. Detalhes: `docs/specs/graphics-set-growth/issues/02-grow-and-match-reference.md`.
 
 Testes: `py -3 -m pytest growth match` a partir de `tools/kof2003`.
