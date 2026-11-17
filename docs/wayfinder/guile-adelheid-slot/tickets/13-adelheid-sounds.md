@@ -23,12 +23,12 @@ _PT-BR: os códigos de som ficam nos scripts de passos do lutador e em 16 tabela
 
 ## Resolution
 
-**Superseded (owner, 2026-11-16).** Nothing is reused from Adelheid: Guile uses his own SVC sounds, voice and effects, including the sound of his break-fall recovery for the evasive rolls. The question of which Adelheid sound plays for each of his actions no longer applies, and the earlier decision of 2026-11-15 ("Guile uses Adelheid's sounds") is replaced. Out of scope until now ("Guile's own SVC voice and sound conversion"), sound conversion is back in scope and needs research first: [25](25-kof2003-sound-playback.md) and [26](26-svc-guile-sounds.md), then the decision in [27](27-guile-sounds-route.md).
+**Superseded (owner, 2026-11-16).** The owner replaced the 2026-11-15 decision to use Adelheid's sounds. The current rule uses Guile's character-specific sounds from SVC and shared effects from KOF 2003. [26](26-svc-guile-sounds.md) found that SVC disables Guile's break-fall sound request. [27](27-guile-sounds-route.md) tracks the route for bringing in his own sounds and choosing the KOF 2003 equivalents.
 
 What was read for this ticket stays as reference for where sounds sit in a fighter's data: in Adelheid's step scripts, the universal actions with sounds are the run loop (one code at the first step), the jumps (take-off and landing codes), the backstep (hop and landing), the rolls, and the start of most attacks; walking, crouching, guarding and idling have none.
 
 **PT-BR**
 
-**Substituído (dono, 16/11/2026).** Nada é reaproveitado da Adelheid: o Guile usa os sons dele no SVC, voz e efeitos, inclusive o som da recuperação de queda dele nas esquivas. A pergunta de qual som da Adelheid toca em cada ação não vale mais, e a decisão anterior de 15/11/2026 ("o Guile usa os sons da Adelheid") fica substituída. Fora do escopo até aqui ("voz do Guile no SVC e conversão de som"), a conversão de som volta ao escopo e precisa de pesquisa antes: [25](25-kof2003-sound-playback.md) e [26](26-svc-guile-sounds.md), depois a decisão em [27](27-guile-sounds-route.md).
+**Substituído (dono, 16/11/2026).** O dono substituiu a decisão de 15/11/2026 de usar os sons da Adelheid. A regra atual usa sons próprios do Guile vindos do SVC e efeitos compartilhados do KOF 2003. O [26](26-svc-guile-sounds.md) constatou que o SVC desativa o pedido de som da recuperação de queda do Guile. O [27](27-guile-sounds-route.md) trata de como importar os sons próprios e escolher os equivalentes do KOF 2003.
 
 O que foi lido para este ticket fica como referência de onde os sons ficam nos dados de um lutador: nos scripts de passos da Adelheid, as ações universais com som são o ciclo de corrida (um código no primeiro passo), os pulos (códigos de saída e de pouso), o passo para trás (salto e pouso), os rolamentos e o começo da maioria dos golpes; andar, agachar, defender e ficar parado não têm.

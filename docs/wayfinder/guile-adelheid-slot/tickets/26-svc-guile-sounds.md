@@ -3,10 +3,10 @@ id: 26
 title: "How SVC Chaos stores Guile's sounds and voice"
 label: wayfinder:research
 mode: AFK
-status: open
-assignee:
+status: closed
+assignee: codex-research
 blocked_by: []
-research:
+research: research/26-svc-guile-sounds:docs/wayfinder/guile-adelheid-slot/research/26-svc-guile-sounds.md
 ---
 
 ## Question
@@ -21,3 +21,9 @@ _PT-BR: para as ações desta fatia (andar, defender, um golpe básico, corrida,
 - Hard rule of `AGENTS.md`: only addresses, sizes, counts and hashes in the notes.
 
 _PT-BR: o inventário do ticket 05 cobre animações, retrato e paletas; os sons não foram inventariados. Regra obrigatória do `AGENTS.md`: só endereços, tamanhos, contagens e hashes nas notas._
+
+## Resolution
+
+Movement, attack startup, guard and immediate contact in the measured SVC slice use 17 distinct ADPCM-A samples covering 59,392 bytes, including stage and impact variants. The attack voice tables assign two conditional cues to Guile, for his standing light punch and Guard Cancel attack, occupying 3,840 bytes. The other 15 samples cover 55,552 bytes of shared effects. The catalog links action handlers and sound-table entries to the decrypted V ranges. Guile's successful break-fall issues a request whose entry the M1 program disables. [27](27-guile-sounds-route.md) records the rule to use KOF 2003's reusable sounds for shared effects.
+
+_PT-BR: movimento, início de ataque, defesa e contato imediato da fatia medida no SVC usam 17 amostras distintas em ADPCM-A, somando 59.392 bytes com as variantes de cenário e impacto. As tabelas de voz de ataque atribuem duas vocalizações condicionais ao Guile, uma para o soco fraco em pé e outra para o ataque de Guard Cancel, somando 3.840 bytes. As outras 15 amostras somam 55.552 bytes de efeitos compartilhados. O catálogo liga as rotinas de ação e as entradas de som às faixas V decriptadas. Quando o Guile se recupera da queda, o jogo envia um pedido cuja entrada o programa M1 desativa. O [27](27-guile-sounds-route.md) registra a regra de usar sons reaproveitáveis do KOF 2003 nos efeitos compartilhados._
