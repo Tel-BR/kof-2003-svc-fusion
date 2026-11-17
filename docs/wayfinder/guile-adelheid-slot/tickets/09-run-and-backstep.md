@@ -3,8 +3,8 @@ id: 09
 title: "Choose Guile's run and backstep animations"
 label: wayfinder:prototype
 mode: HITL
-status: open
-assignee:
+status: closed
+assignee: tel
 blocked_by: [05]
 research:
 ---
@@ -22,3 +22,23 @@ _PT-BR: O KOF 2003 corre enquanto se segura frente e dá um passo para trás com
 - KOF 2003's own speeds, distances and durations were not measured. The prototype session measures the reference it retimes to.
 
 _PT-BR: o SVC não tem corrida; segurar frente depois do dash de 19 quadros e 72 px volta ao ciclo de andar. O passo para trás é um saltinho de 25 quadros, 86 px e altura 16. No KOF 2003 a corrida é o estado `$23` e o passo para trás o `$24`, código comum, com velocidades nos scripts de passos do lutador. As medidas do KOF 2003 não foram feitas; a sessão de protótipo mede a referência._
+
+## Resolution
+
+Decided with the owner on 2026-11-16, looking at frame strips captured from SVC in MAME (kept in `private/work/svc-guile/tests/` as `run-walk`, `run-dash` and `run-backstep`; nothing from them is in the repository).
+
+**Run.** SVC Guile has no run, so the run loop (KOF 2003 state `$23`, actions `$44`-`$46`) is his front step, the low sliding dash, repeated in a loop while forward is held, **played a little faster** than in SVC. The owner rejected a sped-up walk (it reads as a fast walk, not a run) and the mix of dash and walk.
+
+**Backstep.** The backstep (state `$24`, actions `$47`-`$49`) is his SVC back-step hop as it is (25 frames, 86 px, height 16), with only its timing adjusted to fit the state.
+
+**Left open.** KOF 2003's own run and backstep speeds, distances and durations were not measured, so how much faster than SVC the run plays, and the exact retiming of both, are set when the reference is measured; this belongs to the implementation tickets, not to the map.
+
+**PT-BR**
+
+Decidido com o dono em 16/11/2026, olhando tiras de quadros capturadas do SVC no MAME (ficam em `private/work/svc-guile/tests/` como `run-walk`, `run-dash` e `run-backstep`; nada delas está no repositório).
+
+**Corrida.** O Guile do SVC não tem corrida, então o ciclo de corrida (estado `$23` do KOF 2003, ações `$44`-`$46`) é o passo para frente dele, o dash baixo deslizante, repetido em ciclo enquanto se segura frente, **tocado um pouco mais rápido** que no SVC. O dono recusou o andar acelerado (parece andar rápido, não corrida) e a mistura de dash com andar.
+
+**Passo para trás.** O passo para trás (estado `$24`, ações `$47`-`$49`) é o saltinho de costas do Guile no SVC como está (25 quadros, 86 px, altura 16), só com o tempo ajustado para caber no estado.
+
+**Em aberto.** As velocidades, distâncias e durações da corrida e do passo para trás do próprio KOF 2003 não foram medidas, então quanto mais rápido que no SVC a corrida toca, e o reajuste exato dos dois, ficam para quando a referência for medida; isso é dos tickets de implementação, não do mapa.
