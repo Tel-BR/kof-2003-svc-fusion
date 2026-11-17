@@ -3,8 +3,8 @@ id: 06
 title: "Choose how fighter slots are found for the SVC Exclusive Characters"
 label: wayfinder:grilling
 mode: HITL
-status: open
-assignee:
+status: closed
+assignee: tel
 blocked_by: [01, 03, 23]
 research:
 ---
@@ -26,3 +26,43 @@ _Qual caminho cria os IDs novos, e até onde ele vai? A pesquisa 03 deixa: mover
 - The hidden fighters, Adelheid, Mukai and Maki among them, stay in the game and are made selectable by default until the owner decides their fate after importing the others.
 
 _PT-BR: **Atualização do dono, segunda rodada (16/11/2026).** Só depois de fechar os exclusivos, o dono pode trazer uma ou poucas versões do SVC de personagens compartilhados, escolhidas a dedo (por exemplo o Terry do SVC, que joga bem diferente do Terry do KOF 2003), de um jeito especial sobre a vaga existente. Não os seis. Com 26 exclusivos e 27 IDs de 6 bits livres, só uma dessas versões cabe com ID próprio; mais que isso exigiria trocar os dados sob o ID existente ou alargar o ID. Isso está em aberto. A primeira meta é 4 lutadores importados, que os 15 IDs do caminho de mover tabelas já cobrem. O ensaio antes do Guile (clonar um lutador de referência num ID novo) precisa de um ID acima de `$24`, então mover as tabelas vem primeiro de qualquer forma; renumerar objetos e alargar o ID seguem em aberto. Os lutadores ocultos, entre eles Adelheid, Mukai e Maki, ficam no jogo e selecionáveis por padrão até o dono decidir o destino deles depois de importar os outros._
+
+## Resolution
+
+Decided with the owner on 2026-11-16, one question at a time.
+
+**Route.** Two stages with a ceiling of 27 IDs (`$25`-`$3F`, covering the 26 Exclusive Characters plus one hand-picked version of a Shared Character). Widening the ID past 6 bits is out of this strategy.
+
+**Stage 1: relocate the tables (15 IDs, `$30`-`$3E`).** Relocate the nineteen 37-entry tables and raise the `$24` guards. It starts with a rehearsal before Guile: a complex regular fighter (Kyo) is cloned into `$30` with its tiles in the added 128 MiB graphics space. The rehearsal passes only if (1) a full match runs without freezing, tested alone through the boss selection rule ([ticket 22](22-boss-selection-rule.md)); (2) the 37 original fighters are unchanged; (3) the clone can be picked on the selection screen. The rehearsal's selection cell is provisional; the final way to reach imported fighters stays with [Choose how Guile is reached in the selection screen](07-guile-in-selection.md).
+
+**IDs.** After the rehearsal the clone is removed and Guile takes `$30`. The other Imported Characters get IDs in import order (`$31`, `$32`...). The first target of 4 imported fighters fits in stage 1.
+
+**Stage 2: renumber the object types (up to 27 IDs).** Only when the 15 IDs run out (the 16th imported fighter). The non-fighter object types that hold `$25`-`$2F` in the banked directories are renumbered, with a rehearsal of its own: a clone in an ID of that range must pass the same three checks, with the original objects also unchanged.
+
+**If a rehearsal fails.** There is no fixed plan B. The failure reopens this ticket with the cause found; the right way out depends on what broke.
+
+**Existing hidden slots.** Adelheid (`$22`), Mukai (`$23`) and Maki (`$24`) keep their slots and are made selectable by default (owner rule of 2026-11-16); their fate is decided after the other imports.
+
+**Left in the fog (map).** Which hand-picked versions of Shared Characters (for example SVC's Terry) come after the Exclusive Characters, and whether one takes the 27th ID or swaps its data under the existing ID.
+
+**For the review.** [Review ticket 04's five phases with every decision in place](14-review-the-five-phases.md) places the rehearsal and stage 2 in the phases.
+
+**PT-BR**
+
+Decidido com o dono em 16/11/2026, uma pergunta de cada vez.
+
+**Caminho.** Duas etapas, com teto de 27 IDs (`$25`-`$3F`, que cobrem os 26 exclusivos mais uma versão escolhida a dedo de um personagem compartilhado). Alargar o ID além de 6 bits fica fora desta estratégia.
+
+**Etapa 1: mover as tabelas (15 IDs, `$30`-`$3E`).** Mover as dezenove tabelas de 37 entradas e subir as verificações de `$24`. Começa por um ensaio antes do Guile: um lutador regular e complexo (Kyo) é clonado em `$30`, com os tiles no espaço acrescentado de 128 MiB. O ensaio só passa se (1) uma luta completa roda sem travar, testada sozinha pela regra de chefe ([ticket 22](22-boss-selection-rule.md)); (2) os 37 lutadores originais ficam iguais; (3) o clone pode ser escolhido na tela de seleção. A célula do ensaio na seleção é provisória; o jeito final de chegar aos importados fica com o [ticket 07](07-guile-in-selection.md).
+
+**IDs.** Depois do ensaio o clone sai e o Guile assume o `$30`. Os demais importados recebem IDs em ordem de importação (`$31`, `$32`...). A primeira meta de 4 lutadores cabe na etapa 1.
+
+**Etapa 2: renumerar os tipos de objeto (até 27 IDs).** Só quando os 15 IDs acabarem (16º importado). Os tipos de objeto que não são lutadores e ocupam `$25`-`$2F` nos diretórios com banco são renumerados, com ensaio próprio: um clone num ID dessa faixa precisa passar nas mesmas três verificações, com os objetos originais também intactos.
+
+**Se um ensaio falhar.** Não há plano B fixo. A falha reabre este ticket com a causa encontrada; a saída certa depende do que quebrou.
+
+**Vagas ocultas existentes.** Adelheid (`$22`), Mukai (`$23`) e Maki (`$24`) mantêm as vagas e ficam selecionáveis por padrão (regra do dono, 16/11/2026); o destino delas é decidido depois dos outros imports.
+
+**Na névoa (mapa).** Quais versões escolhidas a dedo de personagens compartilhados (por exemplo o Terry do SVC) entram depois dos exclusivos, e se uma delas usa o 27º ID ou troca os dados sob o ID existente.
+
+**Para a revisão.** O [ticket 14](14-review-the-five-phases.md) encaixa o ensaio e a etapa 2 nas fases.
