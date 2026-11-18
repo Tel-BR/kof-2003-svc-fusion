@@ -3,7 +3,7 @@ id: 14
 title: "Review ticket 04's five phases with every decision in place"
 label: wayfinder:grilling
 mode: HITL
-status: closed
+status: open
 assignee: codex
 blocked_by: [06, 07, 08, 09, 10, 11, 12, 13, 15, 16, 17, 19, 22, 23, 24, 27]
 research:
@@ -15,13 +15,23 @@ With every decision on this map in place, are ticket 04's five phases still the 
 
 _PT-BR: Com todas as decisões do mapa tomadas, as cinco fases do ticket 04 continuam sendo o recorte certo? Confirmar, redimensionar, juntar ou dividir para que cada fase caiba numa sessão sem decisão pendente; encaixar as ações novas, retrato e ícone, sons e a estratégia de vagas; e registrar como o registro de esforço separa o reaproveitável do específico do Guile. Atualizar o ticket 04 e o spec onde o escopo cresceu._
 
-## Resolution
+## Review in progress
+
+The 2026-11-17 review reopened this ticket after the first commit: the palette mapping and the visual test of colours C and D are not complete. The proposed duplication of each SVC palette into two consecutive KOF slots was not supported and is withdrawn. The owner proposed a change of up to three levels per RGB channel as a test, not a proven safe result. Research 05 measured SVC entries 0–7 filling fighter slots `$10`–`$17`; how to fill KOF's remaining slots and how the converter maps sprite palette references remain to be established and tested. Do not mark this ticket resolved on that evidence alone.
+
+_PT-BR: a revisão de 17/11/2026 reabriu este ticket depois do primeiro commit: o mapeamento de paletas e o teste visual das cores C e D não estão concluídos. A proposta de duplicar cada paleta do SVC em dois slots consecutivos do KOF não tinha evidência e foi retirada. O dono propôs testar variação de até três níveis por canal RGB, não um resultado já comprovado como seguro. A pesquisa 05 mediu as entradas 0–7 do SVC preenchendo os slots de lutador `$10`–`$17`; ainda é preciso estabelecer e testar como preencher os slots restantes do KOF e como o conversor mapeia as referências de paleta dos sprites. Não fechar este ticket apenas com essa evidência._
+
+Research 18 observed 2,145 distinct Guile body tiles with palette `$10`; none of the tiles in his block was observed exclusively with `$11`–`$17` in the 63 captured sessions. That observation does not cover all normals, specials or supers and does not prove that the other slots are unused. KOF frame headers carry a palette offset, so conversion must preserve the palette actually referenced by each frame. / _A pesquisa 18 observou 2.145 tiles distintos do corpo do Guile com a paleta `$10`; nenhum tile do bloco dele foi observado exclusivamente com `$11`–`$17` nas 63 sessões capturadas. A observação não cobre todos os normais, especiais ou supers e não prova que os demais slots não sejam usados. Os cabeçalhos de quadro do KOF carregam um deslocamento de paleta, então a conversão precisa preservar a paleta efetivamente referenciada por cada quadro._
+
+## Provisional plan
 
 Decided with the owner on 2026-11-17. The completed Graphics Set growth remains a separate prerequisite. Ticket 04 has seven focused phases: (1) relocate the fighter tables, create ID `$30`, add provisional imported cells, make the existing hidden fighters selectable by default and add a development-only lone-fighter shortcut; (2) rehearse by cloning Kyo into `$30` with its tiles in the Added Space, proving selection, a lone match and unchanged original fighters; (3) replace the rehearsal with Guile's minimum solo slice (idle, walk, guard and one basic attack); (4) add the agreed presentation and colours; (5) add run, backstep, four jumps, evasive rolls and both Guard Cancels; (6) select Guile normally and finish a team match; and (7) profile and verify the scripted runs, regression-check original fighters and record effort.
 
 The lone-fighter shortcut is an implementation check, never final proof. The second slot-strategy stage starts only with the 16th Imported Character, after the first fifteen IDs are used, and is outside this milestone. The sound follow-ups are [10](../../specs/first-svc-character-import/issues/10-guile-reuses-kof-sounds.md), [11](../../specs/first-svc-character-import/issues/11-guile-standing-punch-voice.md) and [12](../../specs/first-svc-character-import/issues/12-guile-guard-cancel-voice-and-ledger.md), after ticket 04; ticket 05 retains full-moveset, Leader Super and cancel validation, and ticket 06 retains Multi-Shift and the final estimate. The portrait is the most stable, centred private dialogue frame cropped to 56×64 without scaling; the 32×32 grid icon is centred in the team slot; colour reduction is the smallest required.
 
 Each phase records wall-clock effort, result and blocker as either **reusable** work (slot infrastructure, converter, test scripts, selection route and verification) or **Guile-specific** work (pose/box corrections, selected art, palettes, action mapping and fight tuning).
+
+Phase 1 also relocates the selection-cell table, raises the cursor limit and row wrap for the new rows, and provides an imported-cell switch enabled by default. The exact palette mapping and recolour result remain open before phase 4 can be considered decision-free. / _A fase 1 também move a tabela de células de seleção, amplia o limite do cursor e a volta das linhas para as novas linhas e oferece um interruptor das células importadas ligado por padrão. O mapeamento exato de paletas e o resultado da recoloração continuam em aberto antes de considerar a fase 4 livre de decisões._
 
 ### Português (Brasil)
 

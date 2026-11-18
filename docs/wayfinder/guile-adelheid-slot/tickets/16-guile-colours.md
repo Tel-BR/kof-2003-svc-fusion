@@ -24,3 +24,7 @@ _PT-BR: o KOF 2003 dá a cada lutador quatro tabelas de cor, escolhidas pelos bi
 **PT-BR**
 
 **As cores C e D do Guile são clones das cores A e B do SVC, com mudanças sutis e seguras de paleta para não ficarem feias; esta é a regra de importação de todo lutador do SVC.** O dono (16/11/2026) definiu como regra, não como escolha só do Guile. Os botões A e B recebem os dois conjuntos de cores do SVC como estão, e C e D partem de cópias deles. O que significa "sutil e seguro" na prática (quanto as cores podem variar e quais entradas ficam fixas, como contorno e pele) e como os 8 slots de paleta do Guile no SVC preenchem os 16 do KOF 2003 são detalhes do plano, listados em "Not yet specified" no mapa.
+
+## Comments
+
+2026-11-17: The owner proposed testing up to three levels of variation per RGB channel. This is a test limit, not evidence that the result is visually safe; the channel representation, protected entries and result must be checked. No two-consecutive-slots mapping is established. / _O dono propôs testar variação de até três níveis por canal RGB. É um limite de teste, não prova de que o resultado será visualmente seguro; a representação dos canais, as entradas protegidas e o resultado precisam ser conferidos. Não está estabelecido um mapeamento de dois slots consecutivos._
