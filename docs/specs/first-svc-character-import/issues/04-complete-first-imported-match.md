@@ -125,3 +125,202 @@ não identificados; a movimentação das tabelas precisa tratar esses pontos ant
 de se afirmar que não houve regressão no elenco original. Nenhuma luta ou
 seleção na mesma equipe foi executada nesta conferência. O gate de paletas da
 fase 4 continua inalterado._
+
+### 2026-11-18 — Rehearsal implementation in progress
+
+Prepared private intermediate images with expanded fighter tables, both axes of
+the fighter-pair matrix, Kyo's copied frame directory and provisional selection
+cells. An independent frame decoder compared all 585 Kyo frame references: the
+palette headers and geometry matched and the decoded tile numbers moved by
+`$80000`. The private descriptor loads the original graphics pairs a second
+time in the Added Space; it has not yet proved the cloned fighter on screen.
+
+At the owner's request for this Kyo clone only, all four candidate colours are
+varied: A/C derive from original A and B/D from original B, with opposite hue
+directions per pair and a small tint for neutral colours. Numeric checks found
+233, 237, 233 and 237 changed nontransparent entries respectively, with no
+channel changing by more than three 5-bit levels; transparent entries, dark
+bits and original fighter palette indices stayed unchanged. Palette placement
+and rendered appearance remain unverified. This exception does not change the
+approved Guile rule or its mandatory phase-4 gate.
+
+One original-team run of an earlier intermediate build matched seven control
+captures and had zero verification state mismatches, but used 17,507
+interpreted instructions at 24 uncovered entries; profiling collected those
+entries for the next build. It is not proof for all original fighters. The
+selection switch, remaining guards and tables, actual clone match, same-team
+test and original-roster regression remain open. [Export notes](../kof2003-export-notes.md).
+
+An exploratory interpreter-only run of the provisional selection image picked
+the original Kyo first, but the intended second pick was a different original
+fighter, not `$30`. The selection route and scripted cursor movement still need
+diagnosis. This was not a native or completed-match validation.
+
+_PT-BR: foram preparadas imagens intermediárias privadas com tabelas de lutador
+ampliadas, os dois eixos da matriz de pares, o diretório de quadros copiado do
+Kyo e células provisórias de seleção. Um decodificador independente comparou as
+585 referências de quadro do Kyo: cabeçalhos de paleta e geometria coincidiram,
+e os números de tile decodificados subiram `$80000`. O descritor privado carrega
+os pares gráficos originais novamente no Espaço acrescentado; ainda não se
+comprovou o desenho do clone na tela._
+
+_A pedido do dono, apenas para este clone do Kyo, as quatro cores candidatas são
+variadas: A/C partem do A original e B/D do B original, em sentidos opostos por
+par e com leve tonalidade para cores neutras. As conferências numéricas acharam
+233, 237, 233 e 237 entradas não transparentes alteradas, respectivamente, sem
+variação maior que três níveis de 5 bits por canal; entradas transparentes,
+bits escuros e índices de paleta do lutador original ficaram iguais. A posição
+das paletas e sua aparência renderizada ainda não foram verificadas. Essa
+exceção não muda a regra aprovada do Guile nem seu gate obrigatório da fase 4._
+
+_Uma execução de equipe original de um build intermediário anterior coincidiu
+com sete capturas do controle e teve zero divergências de estado, mas usou
+17.507 instruções interpretadas em 24 entradas não cobertas; o perfil recolheu
+essas entradas para o próximo build. Isso não comprova todos os originais.
+Continuam abertos o interruptor de seleção, as demais verificações e tabelas, a
+luta real do clone, o teste na mesma equipe e a regressão do elenco original.
+[Notas para exportação](../kof2003-export-notes.md)._
+
+_Uma execução exploratória da imagem com seleção provisória, apenas no
+interpretador, escolheu primeiro o Kyo original, mas a segunda escolha pretendida
+foi outro lutador original, não `$30`. Ainda é preciso diagnosticar a rota de
+seleção e o movimento de cursor do roteiro. Isso não validou a execução nativa
+nem uma luta completa._
+
+### 2026-11-18 — Owner's first manual selection
+
+The owner selected the `$30` clone and also reached Adelheid, Maki, Chizuru and
+Mukai. He reported that the clone behaved strangely and did not reproduce Kyo
+Kusanagi's behaviour. The private monitor confirms `$30` in a P1 team; it did
+not observe `$30` and original Kyo together in that team. The run reported 253
+interpreted instructions and 11 uncovered entry points. The manual run did not
+use `--verify` or record the missing entry addresses, so neither a zero-mismatch
+claim nor attribution of the fallback to the clone is justified. The cause of
+the reported behaviour is under investigation; selection alone does not pass
+the Rehearsal.
+
+_PT-BR: o dono escolheu o clone `$30` e também alcançou Adelheid, Maki, Chizuru
+e Mukai. Ele relatou que o clone teve comportamentos estranhos e não reproduziu
+o comportamento de Kyo Kusanagi. O monitor privado confirma `$30` numa equipe
+do P1; ele não observou `$30` e o Kyo original juntos nessa equipe. A execução
+registrou 253 instruções interpretadas e 11 entradas não cobertas. Ela não usou
+`--verify` nem registrou os endereços das entradas faltantes, portanto não se
+pode afirmar ausência de divergência nem atribuir o interpretador ao clone. A
+causa do comportamento relatado está em investigação; a seleção isolada não
+aprova o Ensaio._
+
+### 2026-11-18 — Minimum rehearsal priority
+
+The owner prioritized Guile and chose a minimum Kyo Rehearsal: retain the
+planned selection, lone-match and original-roster checks and the requested
+same-team check, without polishing the clone beyond what establishes the route.
+The first automated same-team route moved to the random cell after the first
+pick. Removing that movement made an interpreter-only replay select original
+Kyo and `$30` together on P1's team at frame 3,802. The replay has not shown
+that they load and fight correctly, and is not native verification.
+
+_PT-BR: o dono priorizou o Guile e escolheu um Ensaio mínimo com Kyo: manter as
+verificações previstas de seleção, luta solo e elenco original e a conferência
+pedida da mesma equipe, sem polir o clone além do necessário para comprovar o
+caminho. O primeiro roteiro automático foi à célula aleatória após a primeira
+escolha. Ao retirar esse movimento, uma repetição apenas no interpretador
+selecionou Kyo original e `$30` juntos no time do P1 no quadro 3.802. A
+repetição não demonstrou que eles carregam e lutam corretamente e não é uma
+verificação nativa._
+
+### 2026-11-18 — Recorded special and follow-ups
+
+In a monitored native session the owner selected original Kyo and `$30` on the
+same team. He reported that basic buttons worked, then the first forward
+quarter-circle + A caused the duplicated-fighter defect. Input transitions and
+frame observations were recorded under `private/`. The native replay matched
+the original session's observed fighter state for all 3,215 recorded frames and
+reproduced the duplicate. `--verify` reported zero state mismatches, 1,466
+cycle differences and 13 interpreted instructions at four uncovered entries.
+
+In a private one-variable candidate, copying original Kyo's move-script
+directory entry at `$7DC28` to `$30` removed the duplicate in the recorded
+replay. The image at the affected frame showed one fighter; a native `--verify`
+replay reported zero state mismatches, 1,468 cycle differences and 26 interpreted
+instructions at six uncovered entries. This establishes a cause for that
+observed defect in this replay, not completion of the moveset or native coverage.
+The preparation tool now installs that directory entry.
+
+The owner also reported missing selection name, team-position indicator,
+thumbnail and portrait, an absent frozen frame before the intro, and unavailable
+forward + B. These are recorded separately in [13](13-rehearsal-selection-presentation.md)
+and [14](14-rehearsal-intro-and-command-normals.md). An initial forward + B
+comparison did not start both fighters in equivalent states, so it proves
+nothing about that command. The palette gate remains open.
+
+_PT-BR: numa sessão nativa monitorada, o dono escolheu Kyo original e `$30` na
+mesma equipe. Relatou que os botões básicos funcionaram e que o primeiro quarto
+de círculo para a frente + A causou o defeito de lutadores duplicados. As
+mudanças de entrada e as observações por quadro foram gravadas em `private/`.
+A repetição nativa coincidiu com o estado observado do lutador nos 3.215
+quadros registrados e reproduziu a duplicação. O `--verify` registrou zero
+divergências de estado, 1.466 diferenças de ciclos e 13 instruções interpretadas
+em quatro entradas não cobertas._
+
+_Numa candidata privada com uma única alteração, copiar para `$30` a entrada do
+diretório de scripts de golpes do Kyo original em `$7DC28` eliminou a duplicação
+na repetição gravada. A imagem do quadro afetado mostrou um lutador; uma
+repetição nativa com `--verify` registrou zero divergências de estado, 1.468
+diferenças de ciclos e 26 instruções interpretadas em seis entradas não cobertas.
+Isso estabelece uma causa para o defeito observado nessa repetição, não a
+conclusão do repertório nem da cobertura nativa. A ferramenta de preparação
+agora instala essa entrada de diretório._
+
+_O dono relatou também ausência de nome, indicador de posição na equipe,
+miniatura e retrato na seleção, falta do quadro congelado antes da intro e
+indisponibilidade de frente + B. Eles estão registrados separadamente nos
+[tickets 13](13-rehearsal-selection-presentation.md) e
+[14](14-rehearsal-intro-and-command-normals.md). Uma comparação inicial de
+frente + B não colocou os lutadores em estados equivalentes, portanto não
+comprova o comportamento desse comando. O gate de paletas continua aberto._
+
+### 2026-11-18 — Lone-fighter shortcut, interpreter check
+
+The opt-in development hook empties P1's second and third slots only after the
+selected first ID matches its requested value and both team copies agree. An
+invented-RAM harness checks the option off, matching and non-matching teams and
+the two copies. In the candidate with the move-directory correction, an
+interpreter replay selected `$30` first, activated the hook and reached a solo
+fight with three blue life bars. With no further combat input, the CPU won: the
+normal winner screen was captured at frame 11,600 (SHA-256
+`0db4b66061c85b660949f06eb893efae355b7b684e57b7499ae0300720b65c9c`), and
+continue at 11,900 (SHA-256
+`b52c9e914e239aecdfebc7dff8aea9e220750b744128a40d5d6530850740fdd7`).
+This checks an interpreter loss path only; the native replay, zero-fallback
+requirement, original-roster regression and other reported defects remain open.
+
+_PT-BR: o atalho opcional de desenvolvimento esvazia a segunda e terceira vagas
+do P1 somente depois de o primeiro ID corresponder ao solicitado e as duas
+cópias da equipe coincidirem. Um pequeno teste com RAM inventada confere opção
+desligada, equipe correspondente e não correspondente e as duas cópias. Na
+candidata com a correção do diretório de golpes, uma repetição pelo interpretador
+escolheu `$30` primeiro, acionou o atalho e chegou à luta solo com três barras
+azuis. Sem novos comandos de combate, a CPU venceu: a tela normal de vencedor
+foi capturada no quadro 11.600 e a tela de continuação no 11.900, com os hashes
+acima. Isso confere apenas o caminho de derrota no interpretador; continuam
+abertos a repetição nativa, a exigência de zero fallback, a regressão do elenco
+original e os demais defeitos relatados._
+
+### 2026-11-18 — Owner checked the move-directory candidate
+
+The owner tested the candidate with the corrected move-script directory. He
+reported that the duplicate fighters disappeared and most commands responded,
+but command behaviour was still incorrect, including grabs and cancels. The
+private session reported 43,417 interpreted instructions and 32 uncovered entry
+points. The session was not run under `--verify`; the feedback does not close
+the command or native-coverage checks. The remaining behavioural investigation
+is recorded in [14](14-rehearsal-intro-and-command-normals.md).
+
+_PT-BR: o dono testou a candidata com o diretório de scripts de golpes corrigido.
+Relatou que os lutadores duplicados desapareceram e que a maioria dos comandos
+respondeu, mas que o comportamento dos comandos ainda estava incorreto,
+inclusive em agarrões e cancelamentos. A sessão privada registrou 43.417
+instruções interpretadas e 32 entradas não cobertas. A sessão não usou
+`--verify`; esse retorno não encerra as verificações de comandos ou cobertura
+nativa. A investigação comportamental restante está registrada no
+[ticket 14](14-rehearsal-intro-and-command-normals.md)._

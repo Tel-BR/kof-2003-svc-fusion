@@ -1,0 +1,50 @@
+---
+title: "Repair the Kyo rehearsal selection presentation"
+triage: ready-for-agent
+---
+
+# 13 Repair the Kyo rehearsal selection presentation
+
+[Parent specification](../spec.md) · [Rehearsal ticket](04-complete-first-imported-match.md)
+
+## What to build
+
+Make the provisional `$30` Kyo rehearsal identify itself consistently in the
+selection flow. In the owner's manual test, its name, small thumbnail, large
+portrait and team position were missing or corrupted; some displayed material
+belonged to Jhun. Reuse the Kyo original's presentation for this rehearsal where
+appropriate and preserve all original fighters' selection entries. Do not treat
+this as Guile's later portrait, icon or palette acceptance.
+
+## Acceptance criteria
+
+- [ ] Reproduce and record which selection and order-selection components fail
+  for `$30`, including team positions 1, 2 and 3.
+- [ ] Show the intended Kyo name, small and large images, and team position for
+  the clone without changing the original Kyo or Jhun entries.
+- [ ] Check original Kyo and `$30` selected together on the same team and check
+  the other player side where the same presentation path is used.
+- [ ] Keep game-derived art, captures and logs in `private/`; record only
+  addresses, counts, hashes and observations in tracked files.
+
+## Português (Brasil)
+
+# 13 Corrigir a apresentação do Kyo do ensaio na seleção
+
+Fazer o Kyo provisório `$30` identificar-se de forma consistente na seleção.
+No teste manual do dono, nome, miniatura, retrato grande e posição de equipe
+faltaram ou apareceram corrompidos; parte do material exibido era do Jhun.
+Reaproveitar a apresentação do Kyo original neste ensaio quando adequado e
+preservar as entradas de todos os lutadores originais. Isso não aprova o
+retrato, o ícone nem as paletas que serão preparados depois para o Guile.
+
+### Critérios de aceitação
+
+- [ ] Reproduzir e registrar quais componentes da seleção e da escolha de ordem
+  falham para `$30`, inclusive nas posições 1, 2 e 3 da equipe.
+- [ ] Mostrar nome, imagem pequena, imagem grande e posição de equipe esperados
+  para o clone, sem mudar as entradas originais do Kyo ou do Jhun.
+- [ ] Conferir Kyo original e `$30` juntos na mesma equipe e o outro lado do
+  jogador quando usar o mesmo caminho de apresentação.
+- [ ] Manter artes derivadas do jogo, capturas e logs em `private/`; registrar
+  nos arquivos rastreados somente endereços, contagens, hashes e observações.

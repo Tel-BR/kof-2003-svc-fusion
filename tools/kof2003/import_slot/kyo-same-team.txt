@@ -1,0 +1,23 @@
+# Exploratory native selection from power-on. Not a completed match test.
+# From the standard P1 cursor: left reaches original Kyo. After the first
+# pick the cursor returns to its initial position; seven up presses then
+# reach the first provisional row and ID $30.
+1200 coin
+1500 coin
+1800 coin
+2400 start
+3600 left
+3620 a
+3660 up
+3680 up
+3700 up
+3720 up
+3740 up
+3760 up
+3780 up
+3800 a
+3820 right
+3840 a
+4200 a
+4700 a
+5200 start
