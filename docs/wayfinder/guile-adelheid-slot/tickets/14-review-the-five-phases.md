@@ -3,8 +3,8 @@ id: 14
 title: "Review ticket 04's five phases with every decision in place"
 label: wayfinder:grilling
 mode: HITL
-status: open
-assignee:
+status: closed
+assignee: codex
 blocked_by: [06, 07, 08, 09, 10, 11, 12, 13, 15, 16, 17, 19, 22, 23, 24, 27]
 research:
 ---
@@ -14,6 +14,22 @@ research:
 With every decision on this map in place, are ticket 04's five phases still the right cut? Confirm, resize, merge or split them so each phase fits one session and carries no open decision; place the new actions, the portrait and icon, the sounds and the slot strategy; and record how the effort log separates reusable from Guile-specific work. Update ticket 04 and the spec where the scope grew.
 
 _PT-BR: Com todas as decisões do mapa tomadas, as cinco fases do ticket 04 continuam sendo o recorte certo? Confirmar, redimensionar, juntar ou dividir para que cada fase caiba numa sessão sem decisão pendente; encaixar as ações novas, retrato e ícone, sons e a estratégia de vagas; e registrar como o registro de esforço separa o reaproveitável do específico do Guile. Atualizar o ticket 04 e o spec onde o escopo cresceu._
+
+## Resolution
+
+Decided with the owner on 2026-11-17. The completed Graphics Set growth remains a separate prerequisite. Ticket 04 has seven focused phases: (1) relocate the fighter tables, create ID `$30`, add provisional imported cells, make the existing hidden fighters selectable by default and add a development-only lone-fighter shortcut; (2) rehearse by cloning Kyo into `$30` with its tiles in the Added Space, proving selection, a lone match and unchanged original fighters; (3) replace the rehearsal with Guile's minimum solo slice (idle, walk, guard and one basic attack); (4) add the agreed presentation and colours; (5) add run, backstep, four jumps, evasive rolls and both Guard Cancels; (6) select Guile normally and finish a team match; and (7) profile and verify the scripted runs, regression-check original fighters and record effort.
+
+The lone-fighter shortcut is an implementation check, never final proof. The second slot-strategy stage starts only with the 16th Imported Character, after the first fifteen IDs are used, and is outside this milestone. The sound follow-ups are [10](../../specs/first-svc-character-import/issues/10-guile-reuses-kof-sounds.md), [11](../../specs/first-svc-character-import/issues/11-guile-standing-punch-voice.md) and [12](../../specs/first-svc-character-import/issues/12-guile-guard-cancel-voice-and-ledger.md), after ticket 04; ticket 05 retains full-moveset, Leader Super and cancel validation, and ticket 06 retains Multi-Shift and the final estimate. The portrait is the most stable, centred private dialogue frame cropped to 56×64 without scaling; the 32×32 grid icon is centred in the team slot; colour reduction is the smallest required.
+
+Each phase records wall-clock effort, result and blocker as either **reusable** work (slot infrastructure, converter, test scripts, selection route and verification) or **Guile-specific** work (pose/box corrections, selected art, palettes, action mapping and fight tuning).
+
+### Português (Brasil)
+
+Decidido com o dono em 17/11/2026. A ampliação concluída do Conjunto gráfico continua como pré-requisito separado. O ticket 04 tem sete fases focadas: (1) mover as tabelas de lutador, criar o ID `$30`, acrescentar células provisórias dos importados, tornar os lutadores ocultos existentes selecionáveis por padrão e criar um atalho de desenvolvimento para luta solo; (2) ensaiar clonando Kyo no `$30`, com seus tiles no Espaço acrescentado, comprovando seleção, luta solo e lutadores originais inalterados; (3) trocar o ensaio pela fatia solo mínima do Guile (parado, caminhada, guarda e um golpe básico); (4) acrescentar a apresentação e as cores combinadas; (5) acrescentar corrida, passo para trás, quatro pulos, esquivas e os dois Guard Cancels; (6) selecionar Guile normalmente e terminar uma luta de equipes; e (7) gerar perfil e verificar as execuções por script, conferir regressão dos lutadores originais e registrar o esforço.
+
+O atalho de luta solo é conferência de implementação, nunca prova final. A segunda etapa da estratégia de vagas só começa no 16º Personagem Importado, depois de usados os primeiros quinze IDs, e fica fora deste marco. Os acompanhamentos de som são os [tickets 10](../../specs/first-svc-character-import/issues/10-guile-reuses-kof-sounds.md), [11](../../specs/first-svc-character-import/issues/11-guile-standing-punch-voice.md) e [12](../../specs/first-svc-character-import/issues/12-guile-guard-cancel-voice-and-ledger.md), depois do ticket 04; o ticket 05 retém a validação do repertório completo, Leader Super e cancelamentos, e o ticket 06 retém Multi-Shift e a estimativa final. O retrato é o quadro privado de diálogo mais estável e centralizado, recortado em 56×64 sem escala; o ícone de grade de 32×32 fica centralizado na vaga de time; a redução de cores é a menor necessária.
+
+Cada fase registra tempo de relógio, resultado e bloqueio como trabalho **reaproveitável** (infraestrutura de vagas, conversor, scripts de teste, rota de seleção e verificação) ou **específico do Guile** (correções de poses/caixas, arte escolhida, paletas, mapeamento de ações e ajuste de luta).
 
 ## Notes
 

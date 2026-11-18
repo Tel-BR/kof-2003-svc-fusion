@@ -9,7 +9,7 @@ triage: ready-for-agent
 
 ## What to build
 
-Select the SVC import in native KOF 2003 and finish a scripted MVS team match against original fighters with a small, working set of combat actions.
+Bring Guile in as a new Imported Character at ID `$30` in native KOF 2003. Validate the route first through a development-only lone-fighter shortcut, then select Guile through the normal flow and finish a scripted MVS team match against original fighters with a small, working set of combat actions.
 
 ## Blocked by
 
@@ -17,13 +17,15 @@ Select the SVC import in native KOF 2003 and finish a scripted MVS team match ag
 
 ## Acceptance criteria
 
-- [ ] The Imported Character is selectable through the game's selection flow and original roster entries remain available.
-- [ ] Movement, guarding and a basic attack work with recognizable visuals and timing. The scripted checks distinguish hit, block and whiff and verify the KOF 2003 outcomes.
-- [ ] A replay from known initial state reaches the normal match result and shows native execution of the exercised behavior. Start recording reusable work, manual adaptation and blockers.
+- [ ] The new ID `$30` is proven first with a Kyo rehearsal in the Added Space: it is selectable, completes a lone match and leaves every original fighter unchanged.
+- [ ] Guile is selectable through the normal selection flow and original roster entries remain available. The development-only lone-fighter shortcut is a test aid, not final evidence.
+- [ ] Guile's idle, walk, guard and basic attack work with recognizable visuals and timing. The scripted checks distinguish hit, block and whiff and verify the KOF 2003 outcomes.
+- [ ] Guile has the agreed presentation and universal actions: name, portrait, team-slot icon, colours, run, backstep, four jumps, evasive rolls and both Guard Cancels.
+- [ ] A replay from known initial state reaches the normal team-match result and shows native execution of the exercised behavior. It regression-checks original fighters and records reusable work, Guile-specific adaptation and blockers separately.
 
 ## Português (Brasil)
 
-Selecionar o importado do SVC no KOF 2003 nativo e terminar uma luta de equipes MVS por script contra lutadores originais, com um conjunto inicial de ações de combate.
+Trazer Guile como Personagem Importado novo no ID `$30` do KOF 2003 nativo. Primeiro validar o caminho por um atalho de desenvolvimento para luta com um único lutador; depois selecionar Guile pelo fluxo normal e terminar uma luta MVS de equipes por script contra lutadores originais, com um conjunto pequeno e funcional de ações de combate.
 
 ### Bloqueios
 
@@ -31,9 +33,23 @@ Selecionar o importado do SVC no KOF 2003 nativo e terminar uma luta de equipes 
 
 ### Critérios de aceitação
 
-- [ ] O personagem importado pode ser escolhido pela seleção do jogo e o elenco original continua disponível.
-- [ ] Movimentação, defesa e um golpe básico funcionam com visuais e duração reconhecíveis. Os testes por script distinguem acerto, defesa e golpe no vazio e conferem os resultados sob as regras do KOF 2003.
-- [ ] Uma repetição a partir de um estado inicial conhecido chega ao resultado normal e mostra execução nativa do comportamento exercitado. Começar a registrar trabalho reaproveitável, adaptação manual e bloqueios.
+- [ ] O novo ID `$30` é comprovado primeiro num ensaio com Kyo no Espaço acrescentado: ele é selecionável, completa uma luta solo e deixa todos os lutadores originais iguais.
+- [ ] Guile pode ser escolhido pelo fluxo normal de seleção e o elenco original continua disponível. O atalho de desenvolvimento para luta solo é auxílio de teste, não evidência final.
+- [ ] Parado, caminhada, defesa e um golpe básico do Guile funcionam com visuais e duração reconhecíveis. Os testes por script distinguem acerto, defesa e golpe no vazio e conferem os resultados sob as regras do KOF 2003.
+- [ ] Guile recebe a apresentação e ações universais combinadas: nome, retrato, ícone da vaga de time, cores, corrida, passo para trás, quatro pulos, esquivas e os dois Guard Cancels.
+- [ ] Uma repetição a partir de estado inicial conhecido chega ao resultado normal da luta em equipe e mostra a execução nativa do comportamento exercitado. Ela confere regressão dos lutadores originais e registra separadamente trabalho reaproveitável, adaptação específica do Guile e bloqueios.
+
+## Delivery plan / Plano de entrega
+
+1. **Slot infrastructure / Infraestrutura de vagas:** relocate the fighter tables, create ID `$30`, add provisional imported cells, make existing hidden fighters selectable by default and add the development-only lone-fighter shortcut. / Mover as tabelas de lutador, criar o ID `$30`, acrescentar células provisórias dos importados, tornar os lutadores ocultos existentes selecionáveis por padrão e criar o atalho de desenvolvimento para luta solo.
+2. **Rehearsal / Ensaio:** clone Kyo into `$30` with tiles in the Added Space, then prove selection, a lone match and unchanged originals. / Clonar Kyo no `$30` com tiles no Espaço acrescentado, depois comprovar seleção, luta solo e originais inalterados.
+3. **Guile solo slice / Fatia solo do Guile:** replace the rehearsal with Guile's data and graphics; exercise idle, walk, guard and one basic attack. / Trocar o ensaio pelos dados e gráficos do Guile; exercitar parado, caminhada, guarda e um golpe básico.
+4. **Presentation and colours / Apresentação e cores:** add the agreed name, portrait, team-slot icon and colours. / Acrescentar o nome, retrato, ícone da vaga de time e cores combinados.
+5. **Universal actions / Ações universais:** add run, backstep, four jumps, evasive rolls and both Guard Cancels. / Acrescentar corrida, passo para trás, quatro pulos, esquivas e os dois Guard Cancels.
+6. **Normal team flow / Fluxo normal de equipe:** select Guile normally and finish the scripted team match. / Selecionar Guile normalmente e terminar a luta de equipe por script.
+7. **Verification and evidence / Verificação e evidência:** profile and verify the scripted runs, check the original fighters and record effort. / Gerar perfil e verificar as execuções por script, conferir os lutadores originais e registrar o esforço.
+
+The completed Graphics Set growth is a prerequisite, not a Guile phase. The second slot stage begins only with the 16th Imported Character and is outside this milestone. Audio stays in [10](10-guile-reuses-kof-sounds.md), [11](11-guile-standing-punch-voice.md) and [12](12-guile-guard-cancel-voice-and-ledger.md) after this ticket; ticket 05 owns the full moveset, Leader Super and cancels; ticket 06 owns Multi-Shift and the final estimate. / A ampliação concluída do Conjunto gráfico é pré-requisito, não fase do Guile. A segunda etapa das vagas só começa no 16º Personagem Importado e fica fora deste marco. Áudio fica nos [tickets 10](10-guile-reuses-kof-sounds.md), [11](11-guile-standing-punch-voice.md) e [12](12-guile-guard-cancel-voice-and-ledger.md) depois deste ticket; o ticket 05 cuida do repertório completo, Leader Super e cancelamentos; o ticket 06 cuida de Multi-Shift e da estimativa final.
 
 ## Comments
 
