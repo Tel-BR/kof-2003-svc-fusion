@@ -68,15 +68,13 @@ _PT-BR:_
 
 ## Not yet specified
 
-- How the effort log will separate reusable tooling from Guile-specific work, as the spec asks. Sharpens during the final review of the phases.
-- The exact recolour rule for colours C and D (how far a colour may move, which entries stay fixed) and how Guile's 8 SVC palette slots fill KOF 2003's 16. Sharpens when the plan reaches the palette work.
+- How Guile's SVC palette references, including the upper slots, map to KOF 2003's 16 slots. The owner approved the C/D preview and automatic hue-shift pattern ([16](tickets/16-guile-colours.md)); that approval does not establish the slot mapping.
 - Which hand-picked SVC versions of Shared Characters (for example SVC's Terry) come after the Exclusive Characters, and whether one takes the 27th ID or swaps its data under the existing ID. Sharpens once the Exclusive Characters are imported.
 - How many extra selection rows fit on screen before a new layout is needed, and the thumbnails for imported cells. Sharpens with the selection-screen redesign.
 
 _PT-BR:_
 
-- _Como o registro de esforço vai separar ferramentas reaproveitáveis do trabalho próprio do Guile, como o spec pede. Fica claro na revisão final das fases._
-- _A regra exata de recolorir as cores C e D (quanto uma cor pode variar, quais entradas ficam fixas) e como os 8 slots de paleta do Guile no SVC preenchem os 16 do KOF 2003. Fica claro quando o plano chegar ao trabalho de paletas._
+- _Como as referências de paleta do Guile no SVC, inclusive os slots superiores, são mapeadas nos 16 slots do KOF 2003. O dono aprovou a prévia C/D e o padrão automático de mudança de matiz ([16](tickets/16-guile-colours.md)); essa aprovação não estabelece o mapeamento dos slots._
 - _Quais versões do SVC de personagens compartilhados (por exemplo o Terry) entram depois dos exclusivos, e se uma usa o 27º ID ou troca os dados sob o ID existente. Fica claro quando os exclusivos estiverem importados._
 - _Quantas linhas extras cabem na tela de seleção antes de pedir layout novo, e as miniaturas das células importadas. Fica claro com o redesenho da tela de seleção._
 
