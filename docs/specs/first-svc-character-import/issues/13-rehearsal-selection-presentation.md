@@ -48,3 +48,22 @@ retrato, o ícone nem as paletas que serão preparados depois para o Guile.
   jogador quando usar o mesmo caminho de apresentação.
 - [ ] Manter artes derivadas do jogo, capturas e logs em `private/`; registrar
   nos arquivos rastreados somente endereços, contagens, hashes e observações.
+
+## Comments
+
+### 2026-11-18 — Owner decision: extend the tables, do not polish the art
+
+Under the owner's "no unexplained difference" bar for the Rehearsal (see
+[14](14-rehearsal-intro-and-command-normals.md)), the goal here is that `$30`
+reads its own entries in every selection and order-selection table instead of
+falling into a neighbour such as Jhun. Pointing those entries at Kyo's existing
+presentation is enough; art quality for the clone is not a goal. The tables
+found here are the map phase 4 will fill with Guile's presentation.
+
+_PT-BR: pelo critério do dono de "nenhuma diferença inexplicada" para o Ensaio
+(ver [14](14-rehearsal-intro-and-command-normals.md)), o objetivo aqui é o `$30`
+ler as próprias entradas em todas as tabelas da seleção e da escolha de ordem,
+em vez de cair num vizinho como o Jhun. Apontar essas entradas para a
+apresentação existente do Kyo basta; a qualidade da arte do clone não é
+objetivo. As tabelas encontradas aqui são o mapa que a fase 4 preencherá com a
+apresentação do Guile._
