@@ -245,3 +245,31 @@ onde ficam os quadros._
 _**Decisões do dono necessárias:** onde ficam os dados de quadros importados (o
 banco de quadros não tem espaço) e como os originais leem dados por adversário
 para IDs importados._
+
+### 2026-11-18 — Owner decisions: frame bank and opponent proxy
+
+**Frames.** Imported fighters' frame data will live in another ROM bank selected
+per ID: research first how to make every frame reader use a different bank for
+IDs `$30` and above, since about 4 MB of banked space is free. Growing the
+program in the native player and skipping the clone's frame copy were not
+chosen.
+
+**Per-opponent data.** Original fighters will read an imported fighter's
+per-opponent rows through a proxy table: one byte per imported ID naming the
+original fighter whose rows are used. For the Kyo rehearsal the proxy is Kyo
+(`$1E`); Guile's proxy is chosen later. Extending every original's tables was
+not chosen.
+
+_PT-BR — Decisões do dono: banco de quadros e proxy de adversário._
+
+_**Quadros.** Os dados de quadros dos importados ficarão em outro banco da ROM
+selecionado por ID: primeiro pesquisar como fazer todo leitor de quadros usar um
+banco diferente para IDs `$30` em diante, já que há cerca de 4 MB livres em
+bancos. Ampliar o programa no player nativo e dispensar a cópia de quadros do
+clone não foram escolhidos._
+
+_**Dados por adversário.** Os originais lerão as linhas por adversário de um
+importado por uma tabela de proxy: um byte por ID importado indicando o
+lutador original cujas linhas são usadas. No ensaio do Kyo o proxy é o próprio
+Kyo (`$1E`); o do Guile será escolhido depois. Estender as tabelas de todos os
+originais não foi escolhido._
