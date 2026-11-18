@@ -82,6 +82,21 @@ Não pule o `/to-spec`. Ao percorrer um mapa, resolva um ticket por sessão (exc
 pesquisa), faça o claim antes de começar, registre a resolução no ticket e um ponteiro
 em "Decisions so far" no mapa.
 
+## Ticket references
+
+When a user refers to a ticket only by its number, first search every ticket and issue
+location. Report every match with its path, title and state (status or triage), then
+ask which one they mean unless the surrounding request names exactly one path or title.
+Never silently choose a match from its number alone.
+
+### Referências a tickets
+
+Quando o usuário mencionar um ticket só pelo número, primeiro pesquise todos os locais
+de tickets e issues. Informe cada correspondência com caminho, título e estado (status
+ou triage), depois pergunte qual delas ele quer, a menos que o pedido ao redor nomeie
+exatamente um caminho ou título. Nunca escolha uma correspondência em silêncio apenas
+pelo número.
+
 ## Agent skills
 
 ### Issue tracker
