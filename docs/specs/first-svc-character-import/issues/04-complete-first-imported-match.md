@@ -99,3 +99,29 @@ _Adelheid e Mukai, fora da seleção oficial do MVS, carregam e lutam normalment
 The owner corrected the plan. The import targets the native KOF 2003 port, which is why KOF 2003 is the Base Game. Guile goes into the decrypted program and graphics files that the native player loads, and the port's generator recompiles them, so translating him into ROM data still reuses the fighter code the game already has. Running the modified game in MAME is no longer a goal, because MAME expects the encrypted cartridge. MAME stays a reading instrument for studying how KOF 2003 and SVC lay out their data. Validation moves to the native player, so the memory probe of phase 2 now comes before the first visible slice of Guile. Guile's SVC data comes from the decrypted SVC program already produced for the base-direction research.
 
 _PT-BR: o dono corrigiu o plano. A importação tem como alvo o port nativo do KOF 2003, motivo pelo qual o KOF 2003 é o jogo base. Guile entra nos arquivos de programa e gráficos decifrados que o executável nativo carrega, e o gerador do port os recompila, de modo que traduzi-lo para dados da ROM continua aproveitando o código de lutador que o jogo já tem. Rodar o jogo modificado no MAME deixa de ser objetivo, porque o MAME espera o cartucho criptografado. O MAME continua como instrumento de leitura para estudar como o KOF 2003 e o SVC organizam seus dados. A validação passa para o executável nativo, então a sonda de memória da fase 2 vem antes da primeira fatia visível do Guile. Os dados do Guile no SVC vêm do programa do SVC já decifrado na pesquisa de direção._
+
+### 2026-11-18 — Rehearsal readiness check
+
+At `4b9a821`, the independent rehearsal directory still contains the same 17
+files as the control, with matching SHA-256 hashes. It is not a playable `$30`
+build. The Graphics Set growth proof drew a synthetic tile from the Added Space
+by planting it in video memory; it did not establish that Kyo's own frame data
+can address relocated tiles there. The fighter tables, selection cells, guards
+and lone-fighter shortcut still need implementation and validation. In
+particular, the research reports an overlap in the final `$0750A2` row and
+unresolved ID-indexed readers, so table relocation must account for these
+before the original-roster regression can be claimed. No match or same-team
+selection was run in this check. The phase-4 palette gate remains unchanged.
+
+_PT-BR: em `4b9a821`, a pasta independente do ensaio ainda contém os mesmos
+17 arquivos do controle, com hashes SHA-256 iguais. Ela não é um build jogável
+com `$30`. A prova de ampliação do Conjunto gráfico desenhou um tile sintético
+do Espaço acrescentado plantando-o na memória de vídeo; ela não comprovou que os
+quadros do próprio Kyo conseguem endereçar tiles movidos para lá. As tabelas de
+lutador, células de seleção, verificações de limite e o atalho de lutador solo
+ainda precisam ser implementados e validados. Em particular, a pesquisa relata
+uma sobreposição na última linha de `$0750A2` e leitores indexados por ID ainda
+não identificados; a movimentação das tabelas precisa tratar esses pontos antes
+de se afirmar que não houve regressão no elenco original. Nenhuma luta ou
+seleção na mesma equipe foi executada nesta conferência. O gate de paletas da
+fase 4 continua inalterado._
