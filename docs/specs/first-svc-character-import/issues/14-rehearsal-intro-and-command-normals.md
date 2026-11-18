@@ -118,3 +118,130 @@ do diretório de golpes; isso não indica defeito novo. A sessão anterior
 `manual-fixed`, cujo retorno sobre agarrões e cancelamentos este ticket
 registra, não tem leitura `$FFFF` do `$30` no trace. Execuções manuais precisam
 indicar explicitamente a pasta de ROMs corrigida com `--rom-path`._
+
+### 2026-11-18 — Differential diagnosis: causes found
+
+**Loop.** A private headless pair runs the same input twice with the
+`candidate-manual-build` sources: original Kyo, and Kyo with the fighter turned
+into `$30` by the rehearsal monitor (test aids `KOF_REHEARSAL_FORCE`,
+`KOF_REHEARSAL_POKE`, `KOF_REHEARSAL_DUMP`, `KOF_REHEARSAL_P2_TEAM`, all off
+unless set). Two variants: swap after team order (frame 4,874, before the
+fighter is created), which tests creation and the intro; and swap of the object,
+team bytes and second copy while idle in the fight (frame 6,030), which tests
+in-fight lookups from an identical state. An interpreter-only PC trace (private,
+removed afterwards) located the first divergent branch each time. The CPU team
+order changed when the swap happened during selection, so that variant was not
+used for comparisons.
+
+**Causes confirmed by prediction, all shared slot infrastructure:**
+
+1. Four ID guards still stopped at `$24`/`$25` in front of tables already
+   relocated to 64 rows (`$166A8`, `$240F0`, `$24124`, `$27E06`); `$30` fell back
+   to fighter `$00`'s rows. First divergence at frame 4,924 (`$24128`).
+2. Two 37-entry special-intro tables were not relocated (`$A5DB6`, read at
+   `$407EA`/`$40866`; `$A5E4A`, read at `$409E8`/`$40C70`). These are two of the
+   19 tables counted by the slot research; the tool had handled 17.
+3. 64-entry tables whose entries above `$24` hold a shared default:
+   command-list offsets `$79872`/`$798F2` (empty list for `$30`; needed for
+   forward + B), command-to-action offsets `$B3204` (37 filled entries with
+   header room; needed for the grab), and `$79672`, `$79772`, `$B8250` and the
+   banked proximity directory at file `$62B9AC`.
+4. Per-opponent proximity records: readers at `$216AC` and `$21836` index
+   42-byte rows by the other fighter's ID in tables of 37 rows. When an original
+   fighter faces `$30`, it reads past them. A diagnostic proxy mapping `$30` to
+   `$1E` at those two readers was required for an identical grab.
+5. The frame directory copy at `$2FB000` overlaps KOF 2003's NEO-PVC RAM window
+   (`$2FE000`–`$2FFFFF`), which shadows ROM in the frame bank: 154 of the 585
+   Kyo frame records read chip RAM. This is the missing frozen pre-intro frame.
+   A diagnostic placement elsewhere in the frame bank restored it. Only about
+   12 KiB of the frame bank is free below the window, less than Kyo's 18 KiB
+   directory.
+
+**Result.** With 1–5 applied, the clone's traced state matched original Kyo
+for all 1,070 frames after the in-fight swap (walk, grab, forward + B, standing
+C, run and back + D), and for the whole intro after the creation swap. The
+remaining difference is a voice: sound guards `$18D08`/`$18E90` protect
+37-entry sound tables (tickets 10–12). Original Kyo's trace and object RAM were
+identical between the unmodified candidate (native) and the corrected image
+(interpreter) for the frames compared. A cancel was not exercised: the scripted
+standing C whiffed for both fighters. Not established: other originals,
+P2-side, cancels on hit.
+
+**Ablation.** Removing the opponent proxy diverged at frame 6,239; removing the
+command-list entries diverged at 6,341 (forward + B). The proximity-directory
+entry and the three pointer-table entries made no difference in this in-fight
+test; `$B8250` lies on the creation path.
+
+**Tooling.** `wire_slot_lookups.py` applies 1–3 with checks; on the real
+candidate its output equals the tested image outside the diagnostic-only parts
+(4 and 5). `relocate_frames.py` now refuses a copy reaching the PVC window, so
+the current rehearsal pipeline stops there until frame placement is decided.
+
+**Owner decisions needed:** where imported frame data lives (the frame bank has
+no room), and how original fighters read per-opponent data for imported IDs.
+
+_PT-BR — Diagnóstico diferencial: causas encontradas._
+
+_**Ciclo.** Um par privado sem janela roda as mesmas entradas duas vezes com as
+fontes do `candidate-manual-build`: Kyo original e Kyo transformado em `$30`
+pelo monitor do ensaio (auxílios de teste `KOF_REHEARSAL_FORCE`,
+`KOF_REHEARSAL_POKE`, `KOF_REHEARSAL_DUMP`, `KOF_REHEARSAL_P2_TEAM`, desligados
+se não definidos). Duas variantes: troca depois da ordem da equipe (quadro
+4.874, antes de o lutador ser criado), que testa a criação e a intro; e troca do
+objeto, dos bytes da equipe e da segunda cópia com o lutador parado na luta
+(quadro 6.030), que testa as consultas em luta a partir de um estado idêntico.
+Um trace de PC só no interpretador (privado, removido depois) localizou a
+primeira ramificação divergente a cada vez. A ordem da equipe da CPU mudava
+quando a troca acontecia na seleção, então essa variante não foi usada nas
+comparações._
+
+_**Causas confirmadas por previsão, todas da infraestrutura de vagas:**_
+
+_1. Quatro travas de ID ainda paravam em `$24`/`$25` antes de tabelas já
+movidas para 64 linhas (`$166A8`, `$240F0`, `$24124`, `$27E06`); o `$30` caía
+nas linhas do lutador `$00`. Primeira divergência no quadro 4.924 (`$24128`)._
+_2. Duas tabelas de intro especial de 37 entradas não tinham sido movidas
+(`$A5DB6`, lida em `$407EA`/`$40866`; `$A5E4A`, lida em `$409E8`/`$40C70`).
+São duas das 19 tabelas contadas na pesquisa de vagas; a ferramenta tratava 17._
+_3. Tabelas de 64 entradas cujas entradas acima de `$24` têm um padrão comum:
+deslocamentos das listas de comandos `$79872`/`$798F2` (lista vazia para o
+`$30`; necessária para frente + B), deslocamentos comando → ação `$B3204`
+(37 entradas preenchidas e espaço no cabeçalho; necessária para o agarrão), e
+`$79672`, `$79772`, `$B8250` e o diretório de proximidade em banco no arquivo
+`$62B9AC`._
+_4. Registros de proximidade por adversário: os leitores em `$216AC` e `$21836`
+indexam linhas de 42 bytes pelo ID do outro lutador em tabelas de 37 linhas.
+Quando um original enfrenta o `$30`, lê além delas. Um proxy de diagnóstico que
+mapeia `$30` para `$1E` nesses dois leitores foi necessário para um agarrão
+idêntico._
+_5. A cópia do diretório de quadros em `$2FB000` sobrepõe a janela de RAM do
+NEO-PVC do KOF 2003 (`$2FE000`–`$2FFFFF`), que encobre a ROM no banco de
+quadros: 154 dos 585 registros de quadro do Kyo liam a RAM do chip. É o quadro
+congelado que faltava antes da intro. Uma posição de diagnóstico em outro ponto
+do banco de quadros o restaurou. Só cerca de 12 KiB do banco de quadros estão
+livres abaixo da janela, menos que os 18 KiB do diretório do Kyo._
+
+_**Resultado.** Com 1–5 aplicados, o estado traçado do clone coincidiu com o do
+Kyo original em todos os 1.070 quadros após a troca em luta (andar, agarrão,
+frente + B, C em pé, corrida e trás + D), e na intro inteira após a troca na
+criação. A diferença restante é uma voz: as travas de som `$18D08`/`$18E90`
+protegem tabelas de som de 37 entradas (tickets 10–12). O trace e a RAM de
+objetos do Kyo original foram idênticos entre a candidata sem alterações
+(nativa) e a imagem corrigida (interpretador) nos quadros comparados. Não se
+exercitou cancelamento: o C em pé do roteiro errou para os dois lutadores. Não
+comprovado: outros originais, lado do P2, cancelamentos com acerto._
+
+_**Ablação.** Sem o proxy de adversário a divergência surgiu no quadro 6.239;
+sem as entradas das listas de comandos, em 6.341 (frente + B). A entrada do
+diretório de proximidade e as três entradas de tabelas de ponteiros não fizeram
+diferença neste teste em luta; `$B8250` fica no caminho da criação._
+
+_**Ferramentas.** `wire_slot_lookups.py` aplica 1–3 com verificações; na
+candidata real sua saída é igual à imagem testada fora das partes só de
+diagnóstico (4 e 5). `relocate_frames.py` agora recusa uma cópia que alcance a
+janela do PVC, então o pipeline atual do ensaio para ali até a decisão sobre
+onde ficam os quadros._
+
+_**Decisões do dono necessárias:** onde ficam os dados de quadros importados (o
+banco de quadros não tem espaço) e como os originais leem dados por adversário
+para IDs importados._

@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[3]
 PRIVATE = ROOT / 'private'
 BANK = 0x200000
 NEW_DIRECTORY = 0x2FB000
+# KOF 2003's NEO-PVC chip maps 8 KB of RAM over $2FE000-$2FFFFF of the bank
+# window, so file data placed there in the frame bank reads back as chip RAM.
+PVC_WINDOW = 0x2FE000
 PROGRAM_SIZE = 0x900000
 IMPORTED_ID = 0x30
 
@@ -96,6 +99,8 @@ def prepare(source, destination, expected_hash, fighter_id):
     if not BANK + 256 <= start < end <= NEW_DIRECTORY or end - start > 0x20000:
         raise ValueError('unexpected frame directory bounds')
     length = end - start
+    if NEW_DIRECTORY + length > PVC_WINDOW:
+        raise ValueError('frame directory copy would overlap the NEO-PVC window at $2FE000')
     if data[NEW_DIRECTORY:NEW_DIRECTORY + length] != b'\xff' * length:
         raise ValueError('destination directory space is not empty')
     count = read_word(data, start)
