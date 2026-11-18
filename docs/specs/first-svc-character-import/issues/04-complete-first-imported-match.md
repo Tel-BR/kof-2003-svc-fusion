@@ -55,6 +55,25 @@ The completed Graphics Set growth is a prerequisite, not a Guile phase. The seco
 
 ## Comments
 
+### 2026-11-18 — Rehearsal preparation and same-team check
+
+The owner asked to select the original Kyo and the `$30` Kyo rehearsal together
+on one team, to check whether selection or the match prevents it. Add this to the
+rehearsal checks; it does not replace the required lone match or original-roster
+regression. An independent copy of the 17 prepared control files was made under
+`private/work/first-import/roms`, with matching SHA-256 hashes. The preparation
+command is in `tools/kof2003/import_slot/`; it does not yet alter the game or
+create a playable rehearsal. Slot infrastructure and the palette gate remain open.
+
+_PT-BR: o dono pediu para selecionar o Kyo original e o Kyo do ensaio no `$30`
+na mesma equipe, para verificar se a seleção ou a luta impedem essa combinação.
+Acrescentar essa conferência ao ensaio; ela não substitui a luta solo nem a
+regressão do elenco original. Uma cópia independente dos 17 arquivos preparados
+do controle foi criada em `private/work/first-import/roms`, com hashes SHA-256
+iguais. O comando de preparo fica em `tools/kof2003/import_slot/`; ele ainda não
+altera o jogo nem cria um ensaio jogável. A infraestrutura de vagas e o gate de
+paletas continuam abertos._
+
 ### 2026-11-15 — Plan and decisions
 
 Plan in five phases: (1) map KOF 2003's selection table, per-fighter code and animation lookup, free graphics space and palettes in MAME; (2) add a per-frame memory probe to the local native runtime copy and rebuild; (3) make Guile visible in selection, idle and walking; (4) add guarding and one basic attack with KOF 2003 collision, validated with the scripted versus test used in ticket 03; (5) run a scripted team match to the normal result with `--verify`, recording reusable and manual work.
