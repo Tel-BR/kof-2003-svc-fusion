@@ -110,3 +110,15 @@ The five default triage labels (`needs-triage`, `needs-info`, `ready-for-agent`,
 ### Domain docs
 
 Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+## Task completion
+
+When a task changes tracked files, commit its intended changes on the current branch before reporting completion. Inspect the working tree, stage only files changed for that task, and review the staged diff. Keep pre-existing unrelated work out of the commit and never include anything under `private/`. Do not create an empty commit when there are no task-owned tracked changes; do not push unless the owner asks.
+
+After each completed task, report the natural next steps. If there are none, say so. Include one ready-to-copy prompt for the next conversation that continues the most natural next step.
+
+### Conclusão de tarefas
+
+Quando uma tarefa alterar arquivos rastreados, faça commit das mudanças pretendidas da tarefa na branch atual antes de informar a conclusão. Confira a árvore de trabalho, adicione ao stage somente os arquivos alterados por essa tarefa e revise o diff staged. Deixe mudanças preexistentes e sem relação fora do commit e nunca inclua nada de `private/`. Não crie commit vazio se não houver alteração rastreada da tarefa; não faça push sem pedido do dono.
+
+Ao concluir cada tarefa, informe os próximos passos naturais. Se não houver, diga isso. Inclua um prompt pronto para copiar na próxima conversa, dando continuidade ao próximo passo mais natural.
