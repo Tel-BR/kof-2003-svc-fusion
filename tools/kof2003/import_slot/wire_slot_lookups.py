@@ -8,7 +8,10 @@ is never changed. Each change is checked against the expected bytes first:
 * move the two 37-entry special-intro tables to 64 rows in unused fixed space,
   repoint their readers and copy the source fighter's entry to $30;
 * copy the source fighter's entry to $30 in 64-entry lookup tables whose
-  entries above $24 hold a shared default.
+  entries above $24 hold a shared default;
+* route the selection-screen and in-fight name-plate lookups through a shared
+  64-entry presentation map, so $30 shows the source fighter's name, portraits
+  and team-position art (those lookups only handle IDs up to $24).
 
 It does not place frame data, extend per-opponent tables or add sound data.
 """
@@ -40,6 +43,27 @@ DEFAULT_TABLES = ((0x79672, 4), (0x79772, 4), (0xB8250, 4),
 # Word-offset table with header room for more entries than its 37 fighters.
 HEADER_TABLE = 0xB3204
 
+# Presentation map in unused fixed space ($52E00-$52E11 holds other proxy code, so start
+# at $53100): a 64-byte identity table with $30 pointing at the source fighter, a
+# 16-byte lookup routine and one small trampoline per displaced instruction group.
+PRESENTATION_TABLE = 0x53100
+PRESENTATION_ROUTINE = 0x53140
+PRESENTATION_CODE = 0x53150
+PRESENTATION_END = 0x53200
+HIDDEN_FROM = 0x22  # IDs $22-$24 are hidden entries of the original roster
+JSR_ABS, NOP, RTS = b'\x4e\xb9', b'\x4e\x71', b'\x4e\x75'
+ANDI_3F = b'\x02\x40\x00\x3f'  # andi.w #$3f,d0
+# (bytes before the lookup, bytes after it, call sites). The displaced code is
+# `before + after`; the lookup maps d0 in between. Sites are four selection-screen
+# readers (name, portrait, thumbnail, palette group), the order-screen portrait and
+# group readers and the in-fight name-plate writer.
+PRESENTATION_SITES = (
+    (ANDI_3F, bytes.fromhex('0c400022'), (0x9042, 0x9124, 0x91FE, 0x9338)),
+    (ANDI_3F, bytes.fromhex('06400100'), (0x9E00,)),
+    (ANDI_3F, bytes.fromhex('80fc0003'), (0x9F26,)),
+    (bytes.fromhex('703fc010'), bytes.fromhex('d040'), (0x1F886,)),
+)
+
 
 def word(data, offset):
     return int.from_bytes(data[offset:offset + 2], 'big')
@@ -49,8 +73,41 @@ def long(data, offset):
     return int.from_bytes(data[offset:offset + 4], 'big')
 
 
+def map_presentation(result, fighter_id):
+    """Insert the presentation map and reroute its call sites (in place)."""
+    if fighter_id >= HIDDEN_FROM:
+        raise ValueError('source fighter has no presentation: IDs $22-$24 are hidden entries')
+    size = PRESENTATION_END - PRESENTATION_TABLE
+    if result[PRESENTATION_TABLE:PRESENTATION_END] != b'\xff' * size:
+        raise ValueError(f'presentation map area 0x{PRESENTATION_TABLE:X} is not empty')
+    for before, after, sites in PRESENTATION_SITES:
+        for site in sites:
+            if result[site:site + len(before) + len(after)] != before + after:
+                raise ValueError(f'unexpected presentation code at 0x{site:X}')
+    table = bytearray(range(NEW_ROWS))
+    table[IMPORTED_ID] = fighter_id
+    result[PRESENTATION_TABLE:PRESENTATION_TABLE + NEW_ROWS] = table
+    # move.l a0,-(a7); lea TABLE,a0; move.b (a0,d0.w),d0; movea.l (a7)+,a0; rts
+    routine = (b'\x2f\x08\x41\xf9' + PRESENTATION_TABLE.to_bytes(4, 'big') +
+               b'\x10\x30\x00\x00\x20\x5f' + RTS)
+    result[PRESENTATION_ROUTINE:PRESENTATION_ROUTINE + len(routine)] = routine
+    call = JSR_ABS + PRESENTATION_ROUTINE.to_bytes(4, 'big')
+    cursor = PRESENTATION_CODE
+    for before, after, sites in PRESENTATION_SITES:
+        trampoline = before + call + after + RTS
+        if cursor + len(trampoline) > PRESENTATION_END:
+            raise ValueError('presentation trampolines do not fit')
+        result[cursor:cursor + len(trampoline)] = trampoline
+        length = len(before) + len(after)
+        for site in sites:
+            patch = JSR_ABS + cursor.to_bytes(4, 'big') + NOP * ((length - 6) // 2)
+            result[site:site + length] = patch
+        cursor += len(trampoline)
+
+
 def wire(data, fighter_id):
     result = bytearray(data)
+    map_presentation(result, fighter_id)
     for immediate, old, new in GUARDS:
         if result[immediate - 2:immediate] != CMPI_W_D0 or word(result, immediate) != old:
             raise ValueError(f'unexpected ID guard at 0x{immediate - 2:X}')

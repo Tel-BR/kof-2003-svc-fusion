@@ -13,6 +13,13 @@ INTRO = ((0xA5DB6, 0x52C00, (0x407EA, 0x40866)), (0xA5E4A, 0x52D00, (0x409E8, 0x
 LONGS = (0x79672, 0x79772, 0xB8250, 0x62B9AC)
 WORDS = (0x79872, 0x798F2)
 HEADER = 0xB3204
+# Presentation lookups: (expected old bytes, call sites). The first four sites share one shape.
+ANDI = b'\x02\x40\x00\x3f'
+PRESENTATION = ((ANDI + b'\x0c\x40\x00\x22', (0x9042, 0x9124, 0x91FE, 0x9338)),
+                (ANDI + b'\x06\x40\x01\x00', (0x9E00,)),
+                (ANDI + b'\x80\xfc\x00\x03', (0x9F26,)),
+                (b'\x70\x3f\xc0\x10\xd0\x40', (0x1F886,)))
+MAP_TABLE, MAP_ROUTINE = 0x53100, 0x53140
 
 
 def invented_program():
@@ -35,6 +42,9 @@ def invented_program():
             data[table + 2 * entry:table + 2 * entry + 2] = value.to_bytes(2, 'big')
     for entry in range(37):
         data[HEADER + 2 * entry:HEADER + 2 * entry + 2] = (0x14A + 0x200 * entry).to_bytes(2, 'big')
+    for old, sites in PRESENTATION:
+        for site in sites:
+            data[site:site + len(old)] = old
     return data
 
 
@@ -71,7 +81,53 @@ def test_command_wires_lookups_and_keeps_original_entries():
             assert out[table + 0x60:table + 0x62] == (0x21E).to_bytes(2, 'big')
         assert out[HEADER + 0x60:HEADER + 0x62] == out[HEADER + 0x3C:HEADER + 0x3E]
         changed = sum(a != b for a, b in zip(data, out))
-        assert changed < 600
+        assert changed < 900
+
+
+def test_command_maps_presentation_ids_of_imported_slot_to_source_fighter():
+    with tempfile.TemporaryDirectory(dir=ROOT / 'private/work') as temp:
+        data = invented_program()
+        result, _, dest = run(data, temp)
+        assert result.returncode == 0, result.stderr
+        out = dest.read_bytes()
+        # Identity for every original ID and the unused rows; only $30 points at the source.
+        table = out[MAP_TABLE:MAP_TABLE + 64]
+        assert table == bytes(range(0x30)) + b'\x1e' + bytes(range(0x31, 64))
+        # The map routine saves a0, reads the table by d0 and returns.
+        routine = out[MAP_ROUTINE:MAP_ROUTINE + 16]
+        assert routine == (b'\x2f\x08\x41\xf9' + MAP_TABLE.to_bytes(4, 'big') +
+                           b'\x10\x30\x00\x00\x20\x5f\x4e\x75')
+        # Every call site now jumps to a trampoline that maps, then repeats the displaced code.
+        for old, sites in PRESENTATION:
+            for site in sites:
+                assert out[site:site + 2] == b'\x4e\xb9'
+                trampoline = int.from_bytes(out[site + 2:site + 6], 'big')
+                assert MAP_ROUTINE < trampoline < 0x53200
+                assert out[site + 6:site + len(old)] == b'\x4e\x71' * ((len(old) - 6) // 2)
+                body = out[trampoline:trampoline + 40]
+                assert b'\x4e\xb9' + MAP_ROUTINE.to_bytes(4, 'big') in body
+                assert body[:len(old)].startswith(old[:2])
+        # Entries for the original fighters in the table and the first rows of the free area stay intact.
+        assert out[MAP_TABLE:MAP_TABLE + 0x30] == bytes(range(0x30))
+
+
+def test_command_rejects_unexpected_presentation_site_and_hidden_source():
+    with tempfile.TemporaryDirectory(dir=ROOT / 'private/work') as temp:
+        data = invented_program()
+        data[0x9124 + 4:0x9124 + 8] = b'\x0c\x40\x00\x23'
+        result, _, dest = run(data, temp)
+        assert result.returncode == 1 and 'unexpected presentation code' in result.stderr
+        assert not dest.exists()
+    with tempfile.TemporaryDirectory(dir=ROOT / 'private/work') as temp:
+        data = invented_program()
+        data[MAP_ROUTINE] = 0
+        result, _, dest = run(data, temp)
+        assert result.returncode == 1 and 'not empty' in result.stderr
+        assert not dest.exists()
+    with tempfile.TemporaryDirectory(dir=ROOT / 'private/work') as temp:
+        result, _, dest = run(invented_program(), temp, fighter='0x23')
+        assert result.returncode == 1 and 'presentation' in result.stderr
+        assert not dest.exists()
 
 
 def test_command_rejects_unexpected_guard_without_creating_output():

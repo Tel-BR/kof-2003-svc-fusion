@@ -316,3 +316,21 @@ diagnóstico sobrescreveu os quadros do lutador `$00` e não serve para essa
 conferência. O terceiro e o quinto critérios passam para esses tickets. O que um novo ID
 afeta, os limites de memória e o método de conferência estão consolidados em
 [anatomia da vaga](../slot-anatomy.md)._
+
+### 2026-11-19 — Fight divergence found while closing ticket 13
+
+With `$30` as the other player's fighter, the first seconds of the fight differ
+from the reference ROM (4,789 px at frame 6,100 on the ticket 13 script; the
+opponent and the background animate differently). The same script without the
+presentation map gives 4,922 px, so it is not caused by it. The player 1 side
+differs only by the Rehearsal clone's intended palette change (1,408 px, largest
+channel difference 24). Treat the other-side divergence as part of this ticket's
+cause search. See [13](13-rehearsal-selection-presentation.md).
+
+_PT-BR: com o `$30` como lutador do outro jogador, os primeiros segundos da luta
+diferem da ROM de referência (4.789 px no quadro 6.100 do roteiro do ticket 13;
+adversário e cenário animam diferente). O mesmo roteiro sem o mapa de
+apresentação dá 4.922 px, então não é causado por ele. O lado do jogador 1 só
+difere pela mudança de paleta pretendida do clone (1.408 px, maior diferença de
+canal 24). Tratar a divergência do outro lado como parte da busca de causa deste
+ticket. Ver [13](13-rehearsal-selection-presentation.md)._

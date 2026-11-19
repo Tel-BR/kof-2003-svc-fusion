@@ -53,3 +53,17 @@ outros leitores que indexem dados por adversário pelo ID._
   novo fallback após o perfil.
 - [ ] Originais contra originais ficam inalterados numa conferência de regressão
   além do Kyo.
+
+### 2026-11-19 — Evidence from ticket 13
+
+The fight divergence with `$30` as the other player's fighter (4,789 px at frame
+6,100 on the ticket 13 script) exists with the diagnostic proxy at `$52E00`
+already installed, so another reader of per-opponent data may still index by the
+raw ID; use that script as one of the loops for the reader search in the first
+criterion. See [13](13-rehearsal-selection-presentation.md).
+
+_PT-BR: a divergência de luta com o `$30` como lutador do outro jogador (4.789 px
+no quadro 6.100 do roteiro do ticket 13) existe com o proxy de diagnóstico em
+`$52E00` já instalado, então outra leitura de dados por adversário pode ainda
+indexar pelo ID bruto; usar esse roteiro como um dos laços da busca de leitores
+do primeiro critério. Ver [13](13-rehearsal-selection-presentation.md)._

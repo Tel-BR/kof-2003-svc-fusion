@@ -32,7 +32,7 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | Fighter-pair byte table, 64 × 64 | `$6F312` (word row offsets, then rows) | row and column; zero for Kyo | not yet in tools |
 | Identity lists | `$A5F1F` (FF-separated ID groups used by intro codes `$D0`+); 64-bit set `$25028` (tested via `$277E6`) | membership only if the import should belong | per character |
 | Sound | 16 tables of 37 words at `$6CF1E` (via `$18EAA`), flags `$18D38`; guards `$18D08`, `$18E90` | relocation or own data | tickets 10–12 |
-| Presentation (name, portraits, icon) | not mapped yet | own entries | [ticket 13](issues/13-rehearsal-selection-presentation.md), Guile phase 4 |
+| Presentation: name, portraits, thumbnail, group/palette, in-fight name plate | selection per-ID readers add a constant to the ID and only handle IDs up to `$24`: name `$9042`, portrait `$9124`, thumbnail `$91FE`, group `$9338`; order screen portrait `$9E00` and group `$9F26`; the in-fight name plate is written by `$1F864`–`$1F8CE` from byte table `$6E9D0` (read at `$1F886`), then drawn by the fix-layer text engine (`$1ED44`, offsets `$6EA9E`) | a shared presentation map: 64-byte table at `$53100` (identity, `$30` = source fighter), routine `$53140`, trampolines from `$53150`, jumped to from the seven sites | `wire_slot_lookups.py` for the clone; Guile phase 4 adds its own art ([ticket 13](issues/13-rehearsal-selection-presentation.md)) |
 
 **Found by scan, not yet exercised:** 64-entry tables with a shared default above
 `$24` at `$0641E8`, `$06BDC0`, `$06D32A`, `$06D374` and `$06E9D0`. Each new slot
@@ -46,7 +46,9 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 
 - **Fixed area.** Relocated tables use `$44020`–`$52A20`; the palette and
   selection steps write up to `$52B51`; the intro tables use `$52C00`–`$52DFF`.
-  `$52E00`–`$5FFFF` is free (filler, unread in the observed runs).
+  `$52E00`–`$52E11` holds proxy code in the diagnostic candidate; `$52E12`–`$5FFFF`
+  is free (filler, unread in the observed runs). The presentation map uses
+  `$53100`–`$531FF`.
 - **Frame bank.** The frame lookup (`$010AB8`–`$010B42`) always selects one bank;
   every original frame directory lives there. KOF 2003's NEO-PVC protection chip
   maps 8 KiB of RAM over `$2FE000`–`$2FFFFF` of that window: file data placed
@@ -73,13 +75,20 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
    value; the first remaining divergence names the branch. That instrumentation
    is private and temporary.
 5. Test a code change with `--interp` first, then rebuild natively.
+6. For presentation (ticket 13): run the same scripted selection (positions 1, 2,
+   3 and the other player side) with the clone and with the reference ROM, which
+   differs only in the selection cell, and compare the screenshots region by
+   region (name, portrait, thumbnail, order screen, name plate under the life
+   bars). To find a lookup that is not in this list, trace in the interpreter the
+   ROM data reads of both runs and diff them: the reads made only by the clone's
+   run at an out-of-range offset name the table.
 
 ## 5. Checklist for the next ID
 
 - [ ] Run `relocate_action_tables.py`, then `wire_slot_lookups.py`, for the ID.
 - [ ] Check the scan-only tables of §2.
 - [ ] Place frames in the per-ID bank (ticket 15) and set the opponent proxy (ticket 16).
-- [ ] Sound, presentation and identity lists as the character needs.
+- [ ] Sound and identity lists as the character needs. Presentation: `wire_slot_lookups.py` maps the lookups; the character's own art and icon go in their tables (ticket 13 sites).
 - [ ] Differential check against its source, then a regression check of originals.
 
 ---
@@ -113,7 +122,7 @@ e situação). Resumo: tabelas de 37 linhas e a matriz de pares são movidas por
 entradas de tabelas de 64 com padrão comum são tratadas por
 `wire_slot_lookups.py`; as linhas por adversário usam proxy (ticket 16); os
 quadros vão para um banco por ID (ticket 15); som (tickets 10–12) e apresentação
-(ticket 13 e fase 4 do Guile) ainda são separados; listas de identidade são
+(ticket 13: mapa compartilhado em `$53100`, pelo `wire_slot_lookups.py`; arte própria na fase 4 do Guile); listas de identidade são
 decididas por personagem.
 
 **Achadas por varredura, ainda não exercitadas:** tabelas de 64 entradas com
@@ -127,7 +136,8 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 
 - **Área fixa.** Tabelas movidas em `$44020`–`$52A20`; os passos de paletas e
   seleção escrevem até `$52B51`; as tabelas de intro usam `$52C00`–`$52DFF`.
-  `$52E00`–`$5FFFF` está livre.
+  `$52E00`–`$52E11` guarda código de proxy no candidato de diagnóstico;
+  `$52E12`–`$5FFFF` está livre. O mapa de apresentação usa `$53100`–`$531FF`.
 - **Banco de quadros.** A busca de quadros (`$010AB8`–`$010B42`) sempre escolhe
   um único banco, onde estão todos os diretórios originais. O chip de proteção
   NEO-PVC mapeia 8 KiB de RAM sobre `$2FE000`–`$2FFFFF` dessa janela: dado do
@@ -155,11 +165,18 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
    depende do valor do ID; a primeira divergência restante aponta o desvio. Essa
    instrumentação é privada e temporária.
 5. Testar mudança de código primeiro com `--interp`, depois recompilar.
+6. Para apresentação (ticket 13): rodar o mesmo roteiro de seleção (posições 1, 2,
+   3 e o outro lado do jogador) com o clone e com a ROM de referência, que difere
+   só na célula da seleção, e comparar as capturas por região (nome, retrato,
+   miniatura, escolha de ordem, nome sob as barras de vida). Para achar uma
+   busca fora desta lista, rastrear no interpretador as leituras de dados da ROM
+   das duas execuções e comparar: as leituras só do clone, fora da faixa, apontam
+   a tabela.
 
 ### 5. Checklist para o próximo ID
 
 - [ ] Rodar `relocate_action_tables.py` e depois `wire_slot_lookups.py` para o ID.
 - [ ] Conferir as tabelas só achadas por varredura (seção 2).
 - [ ] Quadros no banco por ID (ticket 15) e proxy de adversário (ticket 16).
-- [ ] Som, apresentação e listas de identidade conforme o personagem.
+- [ ] Som e listas de identidade conforme o personagem. Apresentação: `wire_slot_lookups.py` mapeia as buscas; a arte e o ícone do personagem entram nas tabelas dos pontos do ticket 13.
 - [ ] Conferência diferencial contra a origem e regressão dos originais.
