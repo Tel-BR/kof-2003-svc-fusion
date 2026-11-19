@@ -111,6 +111,14 @@ The five default triage labels (`needs-triage`, `needs-info`, `ready-for-agent`,
 
 Single-context: `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
 
+## Rehearsal shortcut
+
+The owner tests the Rehearsal with the git-ignored shortcut `Jogar-Ensaio.cmd` at the repository root. Whenever the Rehearsal candidate changes (its ROM image, any patched code, or the native player built for it), rebuild what is needed and repoint the shortcut's launcher at the new candidate before reporting completion, check that it starts, and say in the report which candidate it opens and how the owner should test it. Keep the launcher and builds under `private/`; never commit them.
+
+### Atalho do Ensaio
+
+O dono testa o Ensaio pelo atalho `Jogar-Ensaio.cmd` na raiz do repositório, ignorado pelo git. Sempre que o candidato do Ensaio mudar (a imagem de ROM, qualquer código remendado ou o player nativo compilado para ele), recompile o que for preciso e aponte o lançador do atalho para o novo candidato antes de relatar a conclusão, confira que ele abre e diga no relatório qual candidato ele abre e como o dono deve testar. Mantenha o lançador e os builds em `private/`; nunca os versione.
+
 ## Task completion
 
 When a task changes tracked files, commit its intended changes on the current branch before reporting completion. Inspect the working tree, stage only files changed for that task, and review the staged diff. Keep pre-existing unrelated work out of the commit and never include anything under `private/`. Do not create an empty commit when there are no task-owned tracked changes; do not push unless the owner asks.

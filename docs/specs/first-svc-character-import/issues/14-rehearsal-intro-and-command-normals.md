@@ -19,6 +19,10 @@ rules cause each difference and repair the reusable infrastructure when it is
 needed for the first import. The recorded projectile-special defect is tracked
 in ticket 04; it must not be used as proof that command normals are fixed.
 
+## Blocked by
+
+[17 Diagnose the native victory screen and the clone's missing victory assets](17-victory-screen-native-and-clone.md)
+
 ## Acceptance criteria
 
 - [x] Reproduce the reported starting-frame and forward + B differences with
@@ -46,6 +50,10 @@ cancelamentos. Descobrir quais dados ou regras
 causam cada diferença e corrigir a infraestrutura reaproveitável necessária à
 primeira importação. O defeito registrado no especial de projétil está no
 ticket 04; sua correção não comprova que os normais de comando funcionam.
+
+### Bloqueios
+
+[17 Diagnosticar a tela de vitória nativa e os recursos de vitória que faltam no clone](17-victory-screen-native-and-clone.md)
 
 ### Critérios de aceitação
 
