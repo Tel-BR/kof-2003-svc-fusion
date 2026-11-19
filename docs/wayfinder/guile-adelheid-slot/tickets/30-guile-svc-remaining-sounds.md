@@ -1,0 +1,43 @@
+---
+id: 30
+title: "How much more sound SVC Chaos gives Guile, and whether it fits the free tail"
+label: wayfinder:research
+mode: AFK
+status: closed
+assignee: claude-research
+blocked_by: [26, 27]
+research: research/30-svc-guile-remaining-sounds:docs/wayfinder/guile-adelheid-slot/research/30-svc-guile-remaining-sounds.md
+---
+
+## Question
+
+[26](26-svc-guile-sounds.md) inventoried only the sounds of this slice's actions: movement, attack startup, guard and immediate contact. It left out Guile's special moves, his supers, and his hurt, knockout, victory and taunt voices. [27](27-guile-sounds-route.md) fixed the route (samples go into the free 16,384-byte tail of V, whole samples only, first come first served) and the two attack voices (3,840 bytes) already count against it, which leaves 12,544 bytes.
+
+Which sound samples does SVC Chaos play for Guile in those remaining situations? For each one: what triggers it (the 68000 routine and table entry), where the sample is (decrypted V range, codec, length in bytes and milliseconds), whether it is Guile's own (voice, or an effect only he uses) or shared with other SVC fighters or the system, and whether another fighter's table points to the same range. Then total the Guile-specific samples (deduplicated, in 256-byte pages as the chip addresses them) and compare the total with the 12,544 free bytes: which groups fit alone, which fit together, what does not fit, and how much space each group costs. Read the programs and the sound ROM with MAME as the reading instrument, reusing the probes left by 26; do not copy bytes into the repository.
+
+_PT-BR: o [26](26-svc-guile-sounds.md) inventariou só os sons das ações desta fatia: movimento, início de ataque, defesa e contato imediato. Ficaram de fora os especiais, os supers e as vozes de dor, nocaute, vitória e provocação do Guile. O [27](27-guile-sounds-route.md) fixou a rota (as amostras vão para a faixa livre de 16.384 bytes de V, só amostras inteiras, por ordem de chegada) e as duas vozes de ataque (3.840 bytes) já contam contra ela, sobrando 12.544 bytes._
+
+_Que amostras o SVC Chaos toca para o Guile nessas situações restantes? Para cada uma: o que a dispara (rotina do 68000 e entrada da tabela), onde fica a amostra (faixa V decifrada, codec, tamanho em bytes e milissegundos), se é própria do Guile (voz, ou efeito que só ele usa) ou compartilhada com outros lutadores do SVC ou com o sistema, e se a tabela de outro lutador aponta para a mesma faixa. Depois, somar as amostras específicas do Guile (sem repetição, em páginas de 256 bytes como o chip endereça) e comparar com os 12.544 bytes livres: que grupos cabem sozinhos, quais cabem juntos, o que não cabe e quanto espaço cada grupo custa. Ler os programas e a ROM de som com o MAME como instrumento de leitura, reaproveitando as sondas que o 26 deixou; não copiar bytes para o repositório._
+
+## Notes
+
+- Scope: this is sizing research for the sound slice, not a decision to import specials or supers. Special moves, supers and cancels stay out of scope for this map (spec ticket 05); only their sounds are counted here so that the later voice ticket named in [27](27-guile-sounds-route.md), part 1, starts from facts.
+- Rule 2 of [27](27-guile-sounds-route.md): shared effects reuse KOF 2003 sounds and do not enter the tail. Classify every sample as voice, Guile-only effect, or shared effect; only the first two are candidates for the tail.
+- Opponent victim cues heard in [26](26-svc-guile-sounds.md) belong to the opponent and are not Guile's.
+- Hard rule of `AGENTS.md`: only addresses, sizes, counts and hashes in the notes.
+
+_PT-BR: escopo: é pesquisa de dimensionamento do som, não decisão de importar especiais ou supers. Especiais, supers e cancelamentos seguem fora do escopo deste mapa (ticket 05 do spec); só os sons deles são contados aqui para que o ticket de vozes citado na parte 1 do [27](27-guile-sounds-route.md) comece de fatos. Regra 2 do 27: efeitos compartilhados reaproveitam sons do KOF 2003 e não entram na faixa; classificar cada amostra como voz, efeito só do Guile ou efeito compartilhado, e só as duas primeiras são candidatas à faixa. As falas de vítima do adversário ouvidas no 26 são do adversário. Regra obrigatória do `AGENTS.md`: só endereços, tamanhos, contagens e hashes nas notas._
+
+## Resolution
+
+Static reading of the decrypted SVC dumps (MAME was not run). Guile's block in the main CPU sound table is 80 rows (`0x0A3BBC`–`0x0A3C5A`): 38 are enabled, all ADPCM-A and 256-byte aligned, and 42 are disabled in the Z80 eligibility mask (zero cost). Beyond the two attack voices already counted in [27](27-guile-sounds-route.md), 31 samples are candidates for the tail: 29 voices (162,560 bytes) and 2 Guile-only effects (31,232 bytes), 193,792 bytes in all, 15.4 times the 12,544 free bytes. Five more enabled effect rows are shared with other fighters and stay out under rule 2 of 27.
+
+Alone, these groups fit: light/medium/heavy hurt (11,008), launch hurt (10,240), taunt (7,168), a third attack-voice tier (4,352), throw (2,560). These do not: specials voices (15,104), the specials effect (14,336), supers voices (45,056), the voices and effect of one unresolved move record (13,312 and 16,896, the effect being larger than the whole 16,384-byte tail), the knockout voice (14,080), and eight voices with no static trigger (39,680). Only three pairs fit together: taunt + third attack tier (11,520), taunt + throw (9,728), throw + third attack tier (6,912). The fullest possible fill is exactly 12,544 bytes (third attack tier, light hurt and heavy hurt). No victory, intro or selection voice is reachable by Guile's fighter id. No other fighter shares Guile's unique rows or V ranges, including the two attack voices of 26. The break-fall entry is the null marker.
+
+Open (needs a MAME run on the owner's machine, or the owner's decision): the roles marked inferred (knockout, taunt, launch hurt, throw, hurt tiers), which move records are specials and which are supers, whether the eight untriggered voices ever play, and the real ledger (the 12,544 bytes are one contiguous run only if the two attack voices sit at one end). Move names came from a third-party list, not from SNK. Findings: `research/30-svc-guile-remaining-sounds:docs/wayfinder/guile-adelheid-slot/research/30-svc-guile-remaining-sounds.md`. The table rows, descriptors, V ranges, sizes, the 38/42 split and the subset sums were re-derived from the dumps in the session that closed this ticket; the roles were not.
+
+_PT-BR: leitura estática dos dumps decifrados do SVC (o MAME não foi executado). O bloco do Guile na tabela de sons tem 80 linhas (`0x0A3BBC`–`0x0A3C5A`): 38 ativas, todas ADPCM-A e alinhadas em 256 bytes, e 42 desativadas na máscara do Z80 (custo zero). Além das duas vozes de ataque já contadas no [27](27-guile-sounds-route.md), 31 amostras são candidatas à faixa: 29 vozes (162.560 bytes) e 2 efeitos só do Guile (31.232 bytes), 193.792 bytes no total, 15,4 vezes os 12.544 bytes livres. Outras cinco linhas de efeito ativas são compartilhadas com outros lutadores e ficam fora pela regra 2 do 27._
+
+_Sozinhos, cabem: dor leve/média/forte (11.008), dor de lançamento (10.240), provocação (7.168), um terceiro nível de voz de ataque (4.352) e arremesso (2.560). Não cabem: vozes de especiais (15.104), o efeito de especial (14.336), vozes de supers (45.056), as vozes e o efeito de um registro de golpe sem classe definida (13.312 e 16.896, este maior que a faixa inteira de 16.384 bytes), a voz de nocaute (14.080) e oito vozes sem gatilho estático (39.680). Só três pares cabem juntos: provocação + terceiro nível de ataque (11.520), provocação + arremesso (9.728) e arremesso + terceiro nível de ataque (6.912). O preenchimento máximo possível é exatamente 12.544 bytes (terceiro nível de ataque, dor leve e dor forte). Nenhuma voz de vitória, introdução ou seleção é alcançável pelo id do Guile. Nenhum outro lutador compartilha as linhas ou faixas V exclusivas do Guile, inclusive as duas vozes de ataque do 26. A entrada da recuperação de queda é o marcador nulo._
+
+_Em aberto (precisa de uma execução do MAME na máquina do dono, ou de decisão dele): os papéis marcados como inferidos (nocaute, provocação, dor de lançamento, arremesso, níveis de dor), quais registros de golpe são especiais e quais são supers, se as oito vozes sem gatilho chegam a tocar, e o livro-caixa real (os 12.544 bytes só formam um trecho contínuo se as duas vozes de ataque estiverem numa ponta). Os nomes dos golpes vêm de uma lista de terceiros, não da SNK. As linhas da tabela, descritores, faixas V, tamanhos, a divisão 38/42 e as somas de subconjuntos foram refeitos a partir dos dumps na sessão que fechou este ticket; os papéis não._
