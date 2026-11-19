@@ -101,6 +101,23 @@ fight stage and its victory background still follow the leader's ID.
 python tools/kof2003/import_slot/map_victory_screen.py $in $out --sha256 $hash
 ```
 
+`map_intro_opponent.py` takes the image after `map_victory_screen.py` and writes a
+new private image. The special-intro selection (routine `$40BCA`) reads the other
+fighter's ID at `$40BE2` and looks for it, as a literal ID or through a group code, in
+the row of the fighter whose intro is chosen; rival pairs are written that way (the
+row of Iori Yagami names Kyo Kusanagi), so with the imported `$30` as the other
+fighter the original got the default intro and the fight drifted from the same fight
+against original Kyo. The tool replaces the eight bytes of that read and the next
+instruction with a call to a short routine at `$53240` that repeats them with the ID
+mapped through the presentation map at `$53100`; originals map to themselves and
+`$30` is recognised as its source fighter. It checks the expected bytes of the site,
+that the map is the one `wire_slot_lookups.py` writes and that `$53240`–`$5327F` is
+empty. The map entry of `$30` is both the presentation source and the rival identity.
+
+```powershell
+python tools/kof2003/import_slot/map_intro_opponent.py $in $out --sha256 $hash
+```
+
 `pvc_byte_writes.py` is a runtime patch, not a program-image step. The NEO-PVC
 chip's colour pack and unpack run only on 16-bit writes in the pinned runtime,
 but the game fills those inputs with byte writes, so every palette fade it
@@ -233,6 +250,24 @@ vence. Confere os bytes esperados do ponto, que a rotina do mapa de apresentaç�
 existe e que `$53200`–`$5323F` está vazio. Não acrescenta arte, paleta nem frase
 própria, e o cenário da luta e o fundo da vitória continuam seguindo o ID do
 líder.
+
+O `map_intro_opponent.py` recebe a imagem depois do `map_victory_screen.py` e grava
+uma nova imagem privada. A escolha da intro especial (rotina `$40BCA`) lê o ID do
+outro lutador em `$40BE2` e o procura, como ID literal ou por código de grupo, na
+linha do lutador cuja intro é escolhida; os pares de rivais são escritos assim (a
+linha do Iori Yagami cita o Kyo Kusanagi), então, com o `$30` importado como outro
+lutador, o original recebia a intro padrão e a luta se afastava da mesma luta
+contra o Kyo original. A ferramenta troca os oito bytes dessa leitura e a instrução
+seguinte por uma chamada a uma rotina curta em `$53240` que os repete com o ID
+mapeado pelo mapa de apresentação em `$53100`; os originais mapeiam para si mesmos e
+o `$30` é reconhecido como o lutador de origem. Confere os bytes esperados do ponto,
+que o mapa é o que o `wire_slot_lookups.py` grava e que `$53240`–`$5327F` está vazio.
+A entrada do `$30` no mapa é ao mesmo tempo a origem da apresentação e a identidade
+de rival.
+
+```powershell
+python tools/kof2003/import_slot/map_intro_opponent.py $in $out --sha256 $hash
+```
 
 O `pvc_byte_writes.py` é um ajuste do runtime, não um passo da imagem do
 programa. No runtime fixado, o pack e o unpack de cor do chip NEO-PVC só rodam

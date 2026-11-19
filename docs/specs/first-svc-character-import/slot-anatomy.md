@@ -24,6 +24,7 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | 37-row tables (nine of 64-byte rows, six of 4 bytes, one of 80 bytes) | readers repointed by the tool | relocate to 64 rows, copy the source row | `relocate_action_tables.py` |
 | Fighter-pair matrix | `$77B4A`, readers `$240E6`/`$24D06` | relocate, widen both axes | `relocate_action_tables.py` |
 | Special-intro tables, 37 × 4 bytes | `$A5DB6` (read `$407EA`, `$40866`), `$A5E4A` (read `$409E8`, `$40C70`) | relocate to 64 rows | `wire_slot_lookups.py` |
+| Special-intro rival rows: the other fighter's ID read at `$40BE2` and compared as a literal ID, or through a group code (`$F0`+, lists behind `$A5EDE`), against the row of the fighter whose intro is chosen (routine `$40BCA`, rows in the relocated tables at `$52D00` and `$52C00`) | rivals are written as literal opponent IDs (Iori's row names Kyo, `$1E`), so the imported `$30` found no rival and the opponent got the default intro | map the other fighter's ID through the presentation map at `$53100` (routine at `$53240`; originals map to themselves; `$30` is recognised as its source fighter) | `map_intro_opponent.py` ([ticket 14](issues/14-rehearsal-intro-and-command-normals.md)) |
 | ID guards `≤$24`/`<$25` before relocated tables | `$166A8`, `$240F0`, `$24124`, `$27E06` | raise to `$3F`/`$40` | `wire_slot_lookups.py` |
 | 64-entry tables whose entries above `$24` share a default | `$79672`, `$79772`, `$B8250` (pointers); `$79872`, `$798F2` (command lists); file `$62B9AC` (banked proximity directory) | own entry | `wire_slot_lookups.py` |
 | Word-offset header with free room | `$B3204` (command → action) | own entry | `wire_slot_lookups.py` |
@@ -51,7 +52,7 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
   selection steps write up to `$52B51`; the intro tables use `$52C00`–`$52DFF`.
   `$52E00`–`$52E11` holds proxy code in the diagnostic candidate; `$52E12`–`$5FFFF`
   is free (filler, unread in the observed runs). The presentation map uses
-  `$53100`–`$531FF`.
+  `$53100`–`$531FF`, the victory-screen routine `$53200`–`$5323F` and the intro-opponent routine `$53240`–`$5327F`.
 - **Frame bank.** The frame lookup (`$010AB8`–`$010B42`) always selects one bank;
   every original frame directory lives there. KOF 2003's NEO-PVC protection chip
   maps 8 KiB of RAM over `$2FE000`–`$2FFFFF` of that window: file data placed
@@ -94,6 +95,15 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
    banner so nothing skips the screen) reaches it in every position and on both
    sides; compare the clone with the reference ROM at the same screen, and an
    original team before and after the change (identical frames).
+8. For effects that depend on the pair (ticket 14): when the clone is the other
+   player's fighter, an original on the first side can behave differently without any
+   visible difference in the clone. Run the same input twice (clone and reference ROM),
+   ignore per-channel colour differences up to the intended palette change (24), find the
+   first frame where a fighter's pixels differ, then dump the fighters' work-RAM block
+   (`KOF_REHEARSAL_DUMP`) to find the first differing byte and diff the ROM reads of that
+   frame window by program counter. Change the first side's leader to a fighter that does
+   not have the source fighter as a rival: the difference must vanish, or the cause is
+   not a pair rule.
 
 ## 5. Checklist for the next ID
 
@@ -102,6 +112,7 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 - [ ] Place frames in the per-ID bank (ticket 15) and set the opponent proxy (ticket 16).
 - [ ] Sound and identity lists as the character needs. Presentation: `wire_slot_lookups.py` maps the lookups; the character's own art and icon go in their tables (ticket 13 sites).
 - [ ] Run `map_victory_screen.py` after `wire_slot_lookups.py`; check the winner screen in all three positions and both sides.
+- [ ] Run `map_intro_opponent.py` after `map_victory_screen.py`; the map entry of `$30` decides which fighters treat it as a rival (the same entry is its presentation source).
 - [ ] Differential check against its source, then a regression check of originals.
 
 ---
@@ -143,6 +154,8 @@ padrão comum acima de `$24` em `$0641E8`, `$06BDC0` (exercitada pela tela de vi
 `$06E9D0`. Cada nova vaga deve conferi-las.
 
 **Conhecido e aceito ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), decisão do dono; a busca não foi localizada):** o cenário da luta e o fundo da tela de vitória seguem o ID do líder; uma equipe liderada pelo `$30` recebe o cenário e o fundo padrão em vez dos do lutador de origem. Uma segunda rota até a mesma tela com o clone fora da liderança (posição 2 ou 3) mostra o fundo certo.
+
+**Intros de rivais (ticket 14):** a leitura do ID do outro lutador em `$40BE2` (rotina `$40BCA`, linhas nas tabelas de intro em `$52D00` e `$52C00`) passa pelo mapa de apresentação (rotina em `$53240`), pelo `map_intro_opponent.py`; rivais são escritos como IDs literais (a linha do Iori cita o Kyo), então sem o mapa o `$30` não era reconhecido como rival.
 
 **Tela de vitória (ticket 17):** a cópia dos três bytes da equipe vencedora em `$E202` passa pelo mapa de apresentação (rotina em `$53200`, bits de cor preservados), pelo `map_victory_screen.py`. Isso corrige sprite, animação, frase e placa de nome do clone.
 
@@ -199,6 +212,15 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
    banner WIN para nada pular a tela) chega a ela em qualquer posição e nos dois
    lados; compare o clone com a ROM de referência na mesma tela, e uma equipe
    original antes e depois da mudança (quadros idênticos).
+8. Para efeitos que dependem do par (ticket 14): quando o clone é o lutador do outro
+   jogador, um original do primeiro lado pode se comportar diferente sem nenhuma
+   diferença visível no clone. Rodar a mesma entrada duas vezes (ROM do clone e de
+   referência), ignorar diferenças de cor por canal até a mudança de paleta pretendida
+   (24), achar o primeiro quadro em que os pixels de um lutador diferem, despejar o bloco
+   de RAM dos lutadores (`KOF_REHEARSAL_DUMP`) para achar o primeiro byte diferente e
+   comparar as leituras da ROM da janela por contador de programa. Trocar o líder do
+   primeiro lado por um lutador que não tenha o lutador de origem como rival: a diferença
+   precisa sumir, senão a causa não é uma regra de par.
 
 ### 5. Checklist para o próximo ID
 
@@ -207,4 +229,5 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 - [ ] Quadros no banco por ID (ticket 15) e proxy de adversário (ticket 16).
 - [ ] Som e listas de identidade conforme o personagem. Apresentação: `wire_slot_lookups.py` mapeia as buscas; a arte e o ícone do personagem entram nas tabelas dos pontos do ticket 13.
 - [ ] Rodar `map_victory_screen.py` depois do `wire_slot_lookups.py`; conferir a tela de vencedor nas três posições e nos dois lados.
+- [ ] Rodar `map_intro_opponent.py` depois do `map_victory_screen.py`; a entrada do `$30` no mapa decide quais lutadores o tratam como rival (a mesma entrada é a origem da apresentação).
 - [ ] Conferência diferencial contra a origem e regressão dos originais.

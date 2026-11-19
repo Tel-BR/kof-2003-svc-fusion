@@ -342,3 +342,137 @@ apresentação dá 4.922 px, então não é causado por ele. O lado do jogador 1
 difere pela mudança de paleta pretendida do clone (1.408 px, maior diferença de
 canal 24). Tratar a divergência do outro lado como parte da busca de causa deste
 ticket. Ver [13](13-rehearsal-selection-presentation.md)._
+
+### 2026-11-19 — Other-side fight divergence: cause found and fixed (rival intro rows)
+
+**Symptom (loop).** `python -W ignore p2loop.py --tag r1` in
+`private/work/first-import/diag-t17/` (about 9 s, native `build-final`, `roms-v`
+against `roms-ref`, ticket 13's script `p2a.txt` where the clone team is player 2's):
+RED, 4,789 px at frame 6,100, identical in two runs; the same command with the
+reference ROM on both sides is GREEN (0 px). `--tol 24` ignores the intended
+palette change (largest channel difference 24); the residual then is 3,189 px.
+Ticket 13's description of the background animating differently was not right: the
+stage is identical in both images and only the fighters differ (the stage region of
+the diff is the fighters' upper bodies).
+
+**Ranked hypotheses before any probe.** (1) A pair-literal rule: an original on the
+first side has `$1E` (Kyo) written as its rival and does not recognise `$30`; falsified
+if the divergence survives a first-side leader without Kyo as rival. (2) Another
+per-opponent reader indexed by the raw ID (ticket 16's open search). (3) A timing
+shift from a longer clone intro. (4) A clone-side frame or palette difference. (5) The
+fight stage following the leader's ID (ticket 18's finding, the owner's initial guess);
+falsified by the identical stage.
+
+**Evidence.**
+- With `--tol 24` the first structural difference is frame 4,988, on the first-side
+  *original* fighter (Iori Yagami, team `1f,10,11`), not on the clone. The work-RAM
+  block `$1080`–`$147F` first differs at frame 4,926 (Iori's object creation: four
+  bytes holding an opponent-dependent value).
+- Three other first-side leaders (`03`, `0C`, `0F`; no Kyo rival) give identical frames
+  from 5,060 to 6,100: the divergence needs Iori facing the clone, as predicted by (1).
+- The ROM-read diff of frames 4,924–4,927 shows the intro-selection code at `$40A3E`,
+  `$40B38`, `$40B40`, `$40BEA` reading different rows for the clone run, and a
+  reference-only handler at `$1BB6A` that the clone run never reaches.
+- The special-intro selection (routine `$40BCA`) scans the row of the fighter whose
+  intro is chosen for the other fighter's ID, read at `$40BE2`, as a literal ID or
+  through a group code. The rows of Iori in the two relocated intro tables (`$52D00`,
+  `$52C00`) name `$1E`; in the first table the rows of two further original fighters
+  (`$16`, `$1B`) and of one hidden entry (`$22`) name Kyo as well. `$30` is in none of them.
+
+**Ablation.** (A) Adding `$30` after `$1E` in Iori's two rows changed the behaviour but
+did not fix it (the first difference moved earlier, to frame 4,940): the position of the
+match in the row selects the intro, and `$30` would sit in a different position than
+Kyo. (B) Mapping the ID read at `$40BE2` through the presentation map (identity for
+originals, `$30` → `$1E`) makes the loop GREEN with `--tol 24` at all 44 frames from
+4,800 to 6,100 (interpreter and native agree).
+
+**Fix.** [`map_intro_opponent.py`](../../../../tools/kof2003/import_slot/map_intro_opponent.py)
+(after `wire_slot_lookups.py` and `map_victory_screen.py`): the eight bytes at `$40BE2`
+become a call to a 28-byte routine at `$53240` that repeats them with the ID mapped
+through `$53100`; it keeps d0 and a1 and covers the group codes, which test the same
+register. Four new byte-level tests (red before, green now); the three neighbouring
+test files still pass (13 tests).
+
+**Regression.** An original-only team with and without the change: 0 differing pixels
+at six frames from 5,400 to 9,000 (interpreter). The clone leading player 1 against the
+reference on ticket 13's route: unchanged (0 px at `--tol 24`, with and without the
+change).
+
+**Residual, recorded not fixed.** With the clone as player 2, a flame effect in the
+clone's intro differs by 124 px at frame 5,000 and 17 px at frame 5,040 (above the
+palette tolerance) and is identical from 5,400. It appears with the three first-side leaders
+without Kyo as rival (`03`, `0C`, `0F`), not in the Iori frames sampled, and is not
+changed by the fix; it is clone-only presentation of the intro effect
+and its cause is not established. The intended palette change remains (1,574 px at
+frame 6,100, largest channel difference 24).
+
+**Owner decision for later.** The map entry of `$30` now decides both the presentation
+source and which fighters treat it as a rival. For Guile the two may need to differ;
+nothing is needed before Guile's phase 4.
+
+_PT-BR — Divergência de luta do outro lado: causa encontrada e corrigida (linhas de
+intro de rivais)._
+
+_**Sintoma (laço).** `python -W ignore p2loop.py --tag r1` em
+`private/work/first-import/diag-t17/` (uns 9 s, `build-final` nativo, `roms-v` contra
+`roms-ref`, roteiro `p2a.txt` do ticket 13, em que a equipe do clone é a do jogador 2):
+VERMELHO, 4.789 px no quadro 6.100, igual em duas execuções; o mesmo comando com a ROM
+de referência dos dois lados dá VERDE (0 px). `--tol 24` ignora a mudança de paleta
+pretendida (maior diferença de canal 24); o resíduo passa a 3.189 px. A descrição do
+ticket 13 de que o cenário animava diferente não estava certa: o cenário é idêntico nas
+duas imagens e só os lutadores diferem (a região de cenário da diferença é a parte de
+cima dos lutadores)._
+
+_**Hipóteses ranqueadas antes de qualquer sonda.** (1) Regra de par literal: um original
+do primeiro lado tem o `$1E` (Kyo) escrito como rival e não reconhece o `$30`;
+falsificada se a divergência sobreviver a um líder do primeiro lado sem o Kyo como rival.
+(2) Outro leitor por adversário indexado pelo ID bruto (busca aberta do ticket 16).
+(3) Atraso de tempo por uma intro mais longa do clone. (4) Diferença de quadros ou
+paleta do lado do clone. (5) O cenário da luta seguindo o ID do líder (achado do ticket
+18, palpite inicial do dono); falsificada pelo cenário idêntico._
+
+_**Evidências.** Com `--tol 24` a primeira diferença estrutural é o quadro 4.988, no
+lutador *original* do primeiro lado (Iori Yagami, equipe `1f,10,11`), não no clone. O
+bloco de RAM `$1080`–`$147F` difere pela primeira vez no quadro 4.926 (criação do objeto
+do Iori: quatro bytes com um valor que depende do adversário). Três outros líderes do
+primeiro lado (`03`, `0C`, `0F`; sem rival Kyo) dão quadros idênticos de 5.060 a 6.100: a
+divergência exige o Iori diante do clone, como previa (1). A diferença das leituras da
+ROM nos quadros 4.924–4.927 mostra o código de escolha de intro em `$40A3E`, `$40B38`,
+`$40B40` e `$40BEA` lendo linhas diferentes na execução do clone, e um tratador só da
+referência em `$1BB6A` que a execução do clone nunca alcança. A escolha da intro especial
+(rotina `$40BCA`) procura, na linha do lutador cuja intro é escolhida, o ID do outro
+lutador, lido em `$40BE2`, como ID literal ou por código de grupo. As linhas do Iori nas
+duas tabelas de intro movidas (`$52D00`, `$52C00`) citam o `$1E`; na primeira tabela as
+linhas de mais dois lutadores originais (`$16`, `$1B`) e de uma entrada oculta (`$22`)
+citam o Kyo também. O `$30` não está em nenhuma._
+
+_**Ablação.** (A) Acrescentar o `$30` depois do `$1E` nas duas linhas do Iori mudou o
+comportamento mas não corrigiu (a primeira diferença foi para antes, quadro 4.940): a
+posição do acerto na linha escolhe a intro, e o `$30` ficaria numa posição diferente da
+do Kyo. (B) Passar o ID lido em `$40BE2` pelo mapa de apresentação (identidade para os
+originais, `$30` → `$1E`) deixa o laço VERDE com `--tol 24` nos 44 quadros de 4.800 a
+6.100 (interpretador e nativo concordam)._
+
+_**Correção.** O [`map_intro_opponent.py`](../../../../tools/kof2003/import_slot/map_intro_opponent.py)
+(depois do `wire_slot_lookups.py` e do `map_victory_screen.py`): os oito bytes em
+`$40BE2` viram uma chamada a uma rotina de 28 bytes em `$53240` que os repete com o ID
+mapeado por `$53100`; preserva d0 e a1 e cobre os códigos de grupo, que testam o mesmo
+registrador. Quatro testes novos de bytes (vermelhos antes, verdes agora); os três
+arquivos de teste vizinhos continuam passando (13 testes)._
+
+_**Regressão.** Equipe só de originais com e sem a mudança: 0 pixels diferentes em seis
+quadros de 5.400 a 9.000 (interpretador). O clone liderando o jogador 1 contra a
+referência no roteiro do ticket 13: inalterado (0 px com `--tol 24`, com e sem a
+mudança)._
+
+_**Resíduo, registrado e não corrigido.** Com o clone como jogador 2, um efeito de
+chama na intro do clone difere em 124 px no quadro 5.000 e 17 px no quadro 5.040 (acima
+da tolerância de paleta) e é idêntico a partir de 5.400. Aparece com os três líderes do
+primeiro lado sem o Kyo como rival (`03`, `0C`, `0F`), não nos quadros do Iori
+amostrados, e a correção não o muda; é apresentação do efeito de intro só do
+clone e a causa não foi estabelecida. A mudança de paleta pretendida permanece (1.574 px
+no quadro 6.100, maior diferença de canal 24)._
+
+_**Decisão do dono para depois.** A entrada do `$30` no mapa agora decide tanto a origem
+da apresentação quanto quais lutadores o tratam como rival. Para o Guile as duas podem
+precisar diferir; nada é necessário antes da fase 4 do Guile._
