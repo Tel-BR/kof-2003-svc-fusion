@@ -119,6 +119,9 @@ entry points and 40 interpreted instructions, against 10 and 40 for the referenc
 frame 5,000 and 17 px at frame 5,040 with three different leaders; 830 and 367 px with
 original Kyo leading) is the same before and after this fix, so it has another cause. `$2B30E` was not exercised.
 
+**Owner's manual check.** The owner played the native `build-t14d` candidate and confirmed
+that the Orochinagi flames no longer stay on the clone.
+
 **Owner decision for later.** The map entry of `$30` now also decides whose routines the
 clone runs. For Guile that would run Kyo's routines. Before Guile's phase 4 her own
 entries must be written in these two tables (ticket 05, moveset), and this mapping must
@@ -180,6 +183,9 @@ referência._
 _**Não estabelecido.** A chama curta da *intro* do clone (ticket 14, resíduo: 124 px no quadro
 5.000 e 17 px no quadro 5.040 com três líderes diferentes; 830 e 367 px com o Kyo original
 de líder) é igual antes e depois desta correção, então tem outra causa. O `$2B30E` não foi exercitado._
+
+_**Conferência manual do dono.** O dono jogou o candidato nativo `build-t14d` e confirmou que
+as chamas do Orochinagi não ficam mais presas ao clone._
 
 _**Decisão do dono para depois.** A entrada do `$30` no mapa agora também decide de quem são as
 rotinas que o clone executa. Para o Guile isso executaria as rotinas do Kyo. Antes da fase 4
