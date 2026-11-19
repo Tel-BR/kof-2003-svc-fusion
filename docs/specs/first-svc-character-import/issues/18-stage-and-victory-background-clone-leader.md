@@ -1,6 +1,6 @@
 ---
 title: "Diagnose the fight stage and victory background when the clone leads the team"
-triage: ready-for-agent
+triage: wontfix
 ---
 
 # 18 Diagnose the fight stage and victory background when the clone leads the team
@@ -102,6 +102,35 @@ None.
   stage, or stays on the default. This ticket maps `$30` only; record the mechanism
   so the choice for other IDs is a table entry.
 
+## Resolution (2026-11-19)
+
+**Closed as `wontfix`, by the owner's decision.** The clone (`$30`) is a stand-in
+for Kyo that will be removed when Guile takes its slot, and the owner does not care
+which stage a team led by it gets, so the default stage and background stay. No code
+changed; the Rehearsal candidate is unchanged (`roms-v` with `build-final`).
+
+What the one session established, so nobody repeats it:
+
+- **First red run (the feedback loop).** `python bgloop.py --pos 1 --win 7860` in
+  `private/work/first-import/diag-t17/` (about 13 s, native `build-final`, exit 1):
+  the clone-led run against the original-Kyo reference run, same input script. At
+  frames 5800 and 6000 the mean colour of the stage region differs by about 66 (max
+  channel); the captures show a different stage. This confirms the fight stage follows
+  the leader's ID. The lookup itself was not located.
+- **Side effect.** With the other stage the fight timing diverges: at frame 7000 the
+  clone-led run is already on the opponent's second fighter while the reference is
+  still on the first. Comparisons at the same frame number are only valid for early
+  fight frames.
+- **Not trusted.** The victory half of `bgloop.py` is unreliable: its winner-screen
+  detector (same idea as `victory_check.py`) also fires on a fight frame, so its
+  "first winner frame 7560 in both runs" and the victory verdict mean nothing. The
+  victory background was not re-confirmed in this session beyond ticket 17's
+  observation.
+- **Not run.** Control runs (clone not leading, reference against reference) and the
+  ROM-read trace.
+
+Reopen only if an imported fighter needs a chosen stage (see the decision above).
+
 ## Português (Brasil)
 
 # 18 Diagnosticar o cenário da luta e o fundo da vitória quando o clone lidera a equipe
@@ -201,3 +230,31 @@ Nenhum.
   é uma escolha, não um fato: reaproveitar um cenário original, usar o do jogo de
   origem ou ficar no padrão. Este ticket mapeia só o `$30`; registrar o mecanismo para
   que a escolha dos outros IDs seja uma entrada de tabela.
+
+### Resolução (19/11/2026)
+
+**Fechado como `wontfix`, por decisão do dono.** O clone (`$30`) é um substituto do
+Kyo que será removido quando o Guile ocupar a vaga, e ao dono tanto faz o cenário que
+uma equipe liderada por ele recebe; ficam o cenário e o fundo padrão. Nenhum código
+mudou; o candidato do Ensaio é o mesmo (`roms-v` com `build-final`).
+
+O que a única sessão apurou, para ninguém repetir:
+
+- **Primeira execução vermelha (o laço de feedback).** `python bgloop.py --pos 1 --win
+  7860` em `private/work/first-import/diag-t17/` (uns 13 s, `build-final` nativo, saída
+  1): a execução com o clone na liderança contra a de referência com o Kyo original,
+  mesmo roteiro. Nos quadros 5800 e 6000 a cor média da região do cenário difere em
+  cerca de 66 (maior canal); as capturas mostram outro cenário. Isso confirma que o
+  cenário da luta segue o ID do líder. A busca em si não foi localizada.
+- **Efeito colateral.** Com o outro cenário o tempo da luta diverge: no quadro 7000 a
+  execução do clone já está no segundo lutador do adversário e a de referência ainda
+  no primeiro. Comparar no mesmo número de quadro só vale para quadros do começo da luta.
+- **Sem confiança.** A metade de vitória do `bgloop.py` não é confiável: o detector de
+  tela de vencedor (mesma ideia do `victory_check.py`) também dispara num quadro de
+  luta, então o "primeiro quadro de vencedor 7560 nas duas execuções" e o veredito de
+  vitória não valem. O fundo da vitória não foi reconfirmado nesta sessão além da
+  observação do ticket 17.
+- **Não feito.** Execuções de controle (clone fora da liderança, referência contra
+  referência) e o rastreio de leituras da ROM.
+
+Reabrir só se um lutador importado precisar de um cenário escolhido (ver a decisão acima).

@@ -74,9 +74,10 @@ None. [14](14-rehearsal-intro-and-command-normals.md) is blocked by this ticket.
   reads Kyo's entries through the presentation map or a new table; the original
   entries are unchanged. A tool step with byte checks and tests on invented data
   carries any code change.
-- [ ] Clone wins at each team position and on the other player side, and the
+- [x] Clone wins at each team position and on the other player side, and the
   clone appears on the plates as a teammate when another fighter wins; each
-  component equals the same screen with original Kyo.
+  component equals the same screen with original Kyo (the stage and background
+  excepted: the owner accepted the default on 2026-11-19, ticket 18).
 - [x] Original fighters winning are unchanged by the fix (regression check).
 - [x] Slot anatomy gets the victory-screen tables; the Rehearsal shortcut points
   at the new candidate (see `AGENTS.md`).
@@ -190,9 +191,10 @@ ticket.
   entradas do Kyo pelo mapa de apresentação ou por uma tabela nova; as entradas
   originais não mudam. Uma etapa de ferramenta com conferência de bytes e testes
   em dados inventados carrega qualquer mudança de código.
-- [ ] O clone vence em cada posição da equipe e do outro lado do jogador, e
+- [x] O clone vence em cada posição da equipe e do outro lado do jogador, e
   aparece nas placas como companheiro quando outro lutador vence; cada componente
-  é igual ao da mesma tela com o Kyo original.
+  é igual ao da mesma tela com o Kyo original (exceto cenário e fundo: o dono
+  aceitou o padrão em 19/11/2026, ticket 18).
 - [x] Lutadores originais vencendo ficam inalterados pela correção (regressão).
 - [x] A anatomia da vaga recebe as tabelas da tela de vitória; o atalho do Ensaio
   aponta para o novo candidato (ver `AGENTS.md`).
