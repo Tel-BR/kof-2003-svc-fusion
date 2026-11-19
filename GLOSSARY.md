@@ -63,3 +63,12 @@ The trial that precedes Guile: a complex regular fighter is cloned into a new ID
 _Avoid_: dry run, clone test
 
 _PT-BR — **Ensaio**: a prova que antecede o Guile: um lutador regular e complexo é clonado num ID novo com os tiles no espaço acrescentado, para provar a ampliação do conjunto gráfico, as tabelas de ID movidas e um ID novo antes de qualquer personagem importado depender deles. Evitar: teste a seco, teste de clone._
+
+### Sound / Som
+
+**Pending Voice**:
+A character-specific voice of an Imported Character that SVC plays but that did not fit the free sound space, so the fighter stays without it until the space grows; it is recorded in a per-fighter register so the voice can be added later.
+_Avoid_: missing voice, skipped sample
+
+_PT-BR — **Voz pendente**: voz própria de um personagem importado que o SVC toca mas que não coube no espaço de som livre, então o lutador fica sem ela até o espaço crescer; fica anotada num registro por lutador para poder ser acrescentada depois. Evitar: voz faltando, amostra pulada._
+

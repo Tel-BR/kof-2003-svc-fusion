@@ -4,7 +4,7 @@ title: "Inventory everything SVC reads by Guile's fighter ID"
 label: wayfinder:research
 mode: AFK
 status: open
-assignee:
+assignee: claude-research
 blocked_by: []
 research:
 ---
