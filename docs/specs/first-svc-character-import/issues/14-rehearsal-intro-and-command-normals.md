@@ -29,9 +29,10 @@ in ticket 04; it must not be used as proof that command normals are fixed.
   known inputs, recording setup and observations separately.
 - [x] Compare clone and original at the same meaningful action and game state;
   account for facing, spacing, intro timing and opponent behaviour.
-- [ ] Identify whether each cause is shared slot infrastructure or rehearsal
+- [x] Identify whether each cause is shared slot infrastructure or rehearsal
   presentation; fix the shared cause required by the first import and record
-  any clone-only work separately.
+  any clone-only work separately. (The intro flame residual is
+  accepted by the owner, cause not identified; see the last comment.)
 - [x] Record the observed grab and cancel discrepancies and determine whether
   they reveal shared infrastructure defects or clone-specific moveset work.
 - [x] Check the affected original Kyo path and other relevant original fighters
@@ -61,9 +62,10 @@ ticket 04; sua correção não comprova que os normais de comando funcionam.
   conhecidas, registrando preparação e observações separadamente.
 - [x] Comparar clone e original na mesma ação e no mesmo estado significativo,
   considerando lado, distância, tempo da intro e comportamento do adversário.
-- [ ] Identificar se cada causa pertence à infraestrutura compartilhada ou à
+- [x] Identificar se cada causa pertence à infraestrutura compartilhada ou à
   apresentação do ensaio; corrigir a causa compartilhada necessária à primeira
-  importação e registrar trabalho exclusivo do clone separadamente.
+  importação e registrar trabalho exclusivo do clone separadamente. (O resíduo da chama da intro
+  foi aceito pelo dono, causa não identificada; ver o último comentário.)
 - [x] Registrar as diferenças observadas em agarrões e cancelamentos e decidir
   se revelam defeitos da infraestrutura compartilhada ou trabalho específico do
   repertório do clone.
@@ -511,3 +513,23 @@ duas correções (`private/work/first-import/diag-t17/build-t14d`, `roms-t14d`).
 
 _O que continua em aberto aqui: identificar a causa da chama da intro (terceiro critério).
 As observações de agarrões e cancelamentos e as linhas de intro de rivais estão feitas._
+
+### 2026-11-19 — Owner decision: the intro flame residual is accepted
+
+**Closed by the owner's decision.** The short flame in the clone's intro (124 px at frame
+5,000 and 17 px at frame 5,040, identical from 5,400) is almost unnoticeable and hard to
+investigate, and the owner chose to accept the risk instead of diagnosing it. Its cause
+is not identified: it is not the rival intro rows and not the routine dispatchers of
+[ticket 19](19-imported-fighter-routine-tables.md). All other criteria are met. It is
+recorded in slot anatomy as known and accepted, so a later slot is not mistaken for a
+tool regression if it shows the same difference.
+
+_PT-BR — Decisão do dono: o resíduo da chama da intro é aceito._
+
+_**Encerrado por decisão do dono.** A chama curta na intro do clone (124 px no quadro
+5.000 e 17 px no quadro 5.040, idêntica a partir de 5.400) quase não se nota e é difícil de
+investigar, e o dono preferiu aceitar o risco em vez de diagnosticá-la. A causa não foi
+identificada: não são as linhas de intro de rivais nem os despachantes de rotinas do
+[ticket 19](19-imported-fighter-routine-tables.md). Os demais critérios estão atendidos.
+Ela está registrada na anatomia de slot como conhecida e aceita, para que um slot futuro
+não seja confundido com regressão das ferramentas se mostrar a mesma diferença._

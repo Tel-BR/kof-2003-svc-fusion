@@ -43,6 +43,8 @@ should check them before relying on the Rehearsal result.
 
 **Known and accepted ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), owner decision; the lookup was not located):** the fight stage and the victory-screen background follow the leader's ID, so a team led by `$30` gets the default stage and background instead of the source fighter's. A second route to the same screen with the clone not leading (position 2 or 3) shows the right background.
 
+**Known and accepted ([ticket 14](issues/14-rehearsal-intro-and-command-normals.md), owner decision; cause not identified):** with the clone as the other player's fighter, a short flame effect in the clone's intro differs from original Kyo (124 px at frame 5,000 and 17 px at frame 5,040 on the recorded route; identical from frame 5,400). It is almost unnoticeable and no fix was attempted. A new slot may show the same difference; do not treat it as a regression of the tools.
+
 **Guards left on purpose:** `$7A9C` (object `$2C` uses ID + `$176` as an
 animation), `$19396` (team group as ID ÷ 3), the selection guards around
 `$118FE` and the boss/Maki checks (`$9056`, `$D62C`).
@@ -166,6 +168,8 @@ padrão comum acima de `$24` em `$0641E8`, `$06BDC0` (exercitada pela tela de vi
 `$06E9D0`. Cada nova vaga deve conferi-las.
 
 **Conhecido e aceito ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), decisão do dono; a busca não foi localizada):** o cenário da luta e o fundo da tela de vitória seguem o ID do líder; uma equipe liderada pelo `$30` recebe o cenário e o fundo padrão em vez dos do lutador de origem. Uma segunda rota até a mesma tela com o clone fora da liderança (posição 2 ou 3) mostra o fundo certo.
+
+**Conhecido e aceito ([ticket 14](issues/14-rehearsal-intro-and-command-normals.md), decisão do dono; causa não identificada):** com o clone como lutador do outro jogador, um efeito curto de chama na intro do clone difere do Kyo original (124 px no quadro 5.000 e 17 px no quadro 5.040 na rota gravada; idêntico a partir do quadro 5.400). Quase não se nota e nenhuma correção foi tentada. Um slot novo pode mostrar a mesma diferença; não tratar como regressão das ferramentas.
 
 **Intros de rivais (ticket 14):** a leitura do ID do outro lutador em `$40BE2` (rotina `$40BCA`, linhas nas tabelas de intro em `$52D00` e `$52C00`) passa pelo mapa de apresentação (rotina em `$53240`), pelo `map_intro_opponent.py`; rivais são escritos como IDs literais (a linha do Iori cita o Kyo), então sem o mapa o `$30` não era reconhecido como rival.
 
