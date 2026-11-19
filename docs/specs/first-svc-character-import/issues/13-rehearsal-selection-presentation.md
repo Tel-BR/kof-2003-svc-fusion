@@ -67,3 +67,21 @@ em vez de cair num vizinho como o Jhun. Apontar essas entradas para a
 apresentação existente do Kyo basta; a qualidade da arte do clone não é
 objetivo. As tabelas encontradas aqui são o mapa que a fase 4 preencherá com a
 apresentação do Guile._
+
+### 2026-11-18 — Owner decision: map presentation on the clone first
+
+After the owner confirmed that the clone plays like Kyo, the remaining
+differences are the name under the life bars, portraits and icon. These are
+looked up by ID and Guile's phase 4 needs the same tables. The owner chose to
+keep this ticket and map them on the clone first, pointing `$30` at Kyo's
+existing presentation, so that table mapping is proven with known-good art
+before Guile's converted art is added. Record the tables found in
+[slot anatomy](../slot-anatomy.md).
+
+_PT-BR: depois de o dono confirmar que o clone joga como o Kyo, as diferenças
+restantes são o nome abaixo das barras de vida, os retratos e o ícone. Eles são
+buscados por ID, e a fase 4 do Guile precisa das mesmas tabelas. O dono decidiu
+manter este ticket e mapeá-las primeiro no clone, apontando o `$30` para a
+apresentação existente do Kyo, para comprovar o mapeamento das tabelas com arte
+que já funciona antes de acrescentar a arte convertida do Guile. Registrar as
+tabelas encontradas em [anatomia da vaga](../slot-anatomy.md)._
