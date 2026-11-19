@@ -81,6 +81,7 @@ _PT-BR:_
 
 ## Out of scope
 
+- [Clone a fighter into a new SVC Chaos slot](tickets/29-svc-clone-slot.md): out of scope; it tests SVC receiving a fighter (Versus direction) and needs a modifiable SVC; export completeness comes from [Inventory everything SVC reads by Guile's fighter ID](tickets/28-guile-svc-reader-inventory.md) instead. / _Clonar no SVC: fora de escopo; testa o SVC recebendo um lutador (direção do Versus) e exige um SVC modificável; a completude da exportação vem do inventário do ticket 28._
 - CD blowback outside Guard Cancel, throws and throw escape, and quick recovery: later, with [05 Validate the Imported Character moveset](../../specs/first-svc-character-import/issues/05-validate-imported-moveset.md). / _Golpe CD fora do Guard Cancel, arremesso e escape, recuperação rápida: depois, com o ticket 05._
 - Special moves, supers and cancels (spec ticket 05); Multi-Shift entry and exit (spec ticket 06). / _Especiais, supers e cancelamentos (ticket 05); entrada e saída do Multi-Shift (ticket 06)._
 - Arcade, boss and ending flows where Adelheid appears. / _Fluxos de Arcade, chefes e finais em que a Adelheid aparece._
