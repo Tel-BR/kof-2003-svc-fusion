@@ -115,7 +115,8 @@ without the change.
 **Left open.** The fight stage and the victory background follow the leader's
 ID: a team led by `$30` fights on, and wins in front of, the default background
 (red pagoda) instead of Kyo's; with the clone not leading the background is
-right. Mapping the leader's stage lookup is a new ticket. The acceptance line
+right. Mapping the leader's stage lookup is a new ticket:
+[18](18-stage-and-victory-background-clone-leader.md). The acceptance line
 "each component equals the same screen with original Kyo" holds for sprite,
 animation, quote and plates, not for this background.
 
@@ -231,6 +232,6 @@ mudança.
 **Em aberto.** O cenário da luta e o fundo da vitória seguem o ID do líder: uma
 equipe liderada pelo `$30` luta e vence diante do fundo padrão (pagode vermelho) em
 vez do fundo do Kyo; com o clone fora da liderança o fundo está certo. Mapear a
-busca de cenário do líder é um ticket novo. A linha "cada componente é igual ao da
+busca de cenário do líder é um ticket novo: [18](18-stage-and-victory-background-clone-leader.md). A linha "cada componente é igual ao da
 mesma tela com o Kyo original" vale para sprite, animação, frase e placas, não
 para esse fundo.
