@@ -21,14 +21,14 @@ in ticket 04; it must not be used as proof that command normals are fixed.
 
 ## Acceptance criteria
 
-- [ ] Reproduce the reported starting-frame and forward + B differences with
+- [x] Reproduce the reported starting-frame and forward + B differences with
   known inputs, recording setup and observations separately.
-- [ ] Compare clone and original at the same meaningful action and game state;
+- [x] Compare clone and original at the same meaningful action and game state;
   account for facing, spacing, intro timing and opponent behaviour.
 - [ ] Identify whether each cause is shared slot infrastructure or rehearsal
   presentation; fix the shared cause required by the first import and record
   any clone-only work separately.
-- [ ] Record the observed grab and cancel discrepancies and determine whether
+- [x] Record the observed grab and cancel discrepancies and determine whether
   they reveal shared infrastructure defects or clone-specific moveset work.
 - [ ] Check the affected original Kyo path and other relevant original fighters
   for regression. Keep all game data, captures and traces in `private/`.
@@ -49,14 +49,14 @@ ticket 04; sua correção não comprova que os normais de comando funcionam.
 
 ### Critérios de aceitação
 
-- [ ] Reproduzir as diferenças do quadro inicial e de frente + B com entradas
+- [x] Reproduzir as diferenças do quadro inicial e de frente + B com entradas
   conhecidas, registrando preparação e observações separadamente.
-- [ ] Comparar clone e original na mesma ação e no mesmo estado significativo,
+- [x] Comparar clone e original na mesma ação e no mesmo estado significativo,
   considerando lado, distância, tempo da intro e comportamento do adversário.
 - [ ] Identificar se cada causa pertence à infraestrutura compartilhada ou à
   apresentação do ensaio; corrigir a causa compartilhada necessária à primeira
   importação e registrar trabalho exclusivo do clone separadamente.
-- [ ] Registrar as diferenças observadas em agarrões e cancelamentos e decidir
+- [x] Registrar as diferenças observadas em agarrões e cancelamentos e decidir
   se revelam defeitos da infraestrutura compartilhada ou trabalho específico do
   repertório do clone.
 - [ ] Conferir regressão do caminho afetado do Kyo original e dos demais
@@ -273,3 +273,46 @@ importado por uma tabela de proxy: um byte por ID importado indicando o
 lutador original cujas linhas são usadas. No ensaio do Kyo o proxy é o próprio
 Kyo (`$1E`); o do Guile será escolhido depois. Estender as tabelas de todos os
 originais não foi escolhido._
+
+### 2026-11-18 — Owner's manual check and resolution
+
+The owner played a native build of the corrected diagnostic candidate (all
+causes 1–5 applied, including the diagnostic proxy and frame placement) through
+`private/work/first-import/manual/Jogar-Candidato.cmd`. He reported that the
+`$30` clone now behaves exactly like Kyo in all normal and special moves. A
+headless check of the same executable matched the interpreter results: the
+traced clone state equalled original Kyo for 1,070 in-fight frames and the whole
+intro, with 15 interpreted instructions per run. The remaining observed
+difference is presentation: no name under the life bars, portraits and icon
+(ticket 13).
+
+Resolution: the causes are identified and recorded. Fixes 1–3 are in
+`wire_slot_lookups.py`. Fix 4 (opponent proxy) and fix 5 (frame placement)
+exist only as diagnostic patches, so they continue in
+[15](15-imported-frame-bank.md) and [16](16-imported-opponent-proxy.md), which
+also carry the original-roster regression check: the diagnostic candidate
+overwrote fighter `$00`'s frames and cannot serve as that check. The third and
+fifth criteria move to those tickets. What a new ID touches, the memory limits
+and the checking method are consolidated in [slot anatomy](../slot-anatomy.md).
+
+_PT-BR — Teste manual do dono e resolução._
+
+_O dono jogou um build nativo da candidata de diagnóstico corrigida (causas 1–5
+aplicadas, incluindo o proxy e a posição de quadros de diagnóstico) pelo
+`private/work/first-import/manual/Jogar-Candidato.cmd`. Relatou que o clone
+`$30` agora se comporta exatamente como o Kyo em todos os golpes normais e
+especiais. Uma conferência sem janela do mesmo executável coincidiu com os
+resultados do interpretador: o estado traçado do clone igualou o do Kyo original
+em 1.070 quadros de luta e na intro inteira, com 15 instruções interpretadas por
+execução. A diferença restante observada é de apresentação: sem nome abaixo das
+barras de vida, retratos e ícone (ticket 13)._
+
+_Resolução: as causas estão identificadas e registradas. As correções 1–3 estão
+no `wire_slot_lookups.py`. A correção 4 (proxy de adversário) e a 5 (posição dos
+quadros) existem só como remendos de diagnóstico e continuam nos
+[tickets 15](15-imported-frame-bank.md) e [16](16-imported-opponent-proxy.md),
+que também levam a conferência de regressão do elenco original: a candidata de
+diagnóstico sobrescreveu os quadros do lutador `$00` e não serve para essa
+conferência. O terceiro e o quinto critérios passam para esses tickets. O que um novo ID
+afeta, os limites de memória e o método de conferência estão consolidados em
+[anatomia da vaga](../slot-anatomy.md)._
