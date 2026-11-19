@@ -55,6 +55,19 @@ None. [14](14-rehearsal-intro-and-command-normals.md) is blocked by this ticket.
   original fighters, including the owner's three, renders complete in the native
   player and agrees with the reference emulator. If the fix lives outside this
   repository's tracked files, say so and ask the owner.
+- [ ] Upstream check for defect A: run the same original-team victory in the
+  unmodified control build (the published `v0.1.0` player and ROM preparation,
+  no imported fighter, no patched program). If the silhouette appears there too,
+  it is a defect of the upstream project the port comes from
+  ([KOF 2003 recomp](https://github.com/omegakatana92/The-King-of-Fighters-2003),
+  whose toolkit is the one adapted in the
+  [Samurai Shodown recomp](https://github.com/omegakatana92/Samurai-Shodown-Recomp));
+  record that, find whether the cause is in the player, the toolkit or the
+  generator input, and prepare a minimal report (version, input script, frame,
+  description) for the owner. On 2026-11-19 the KOF 2003 repository showed no open
+  issues; its closed issues were not checked. Whether to report it or contribute a
+  fix is the owner's decision; any patch is prepared in a clone under `private/`,
+  not copied into this repository (see `AGENTS.md`, third-party code).
 - [ ] Defect B: every ID-indexed lookup of the victory screen (winner sprite and
   its position, silhouette or background group and palette, win quote text and its
   language block, full-name plate) is found and listed with its address; `$30`
@@ -119,6 +132,19 @@ ticket.
   lutadores originais, incluindo os três do dono, aparece completo no player
   nativo e concorda com o emulador de referência. Se a correção ficar fora dos
   arquivos rastreados, dizer e perguntar ao dono.
+- [ ] Conferência no projeto de origem para o defeito A: repetir a mesma vitória de
+  equipe original no build de controle sem modificação (o player publicado
+  `v0.1.0` e a preparação das ROMs, sem lutador importado nem programa remendado).
+  Se a silhueta aparecer ali também, é defeito do projeto de origem do port
+  ([recomp do KOF 2003](https://github.com/omegakatana92/The-King-of-Fighters-2003),
+  cujo toolkit é o adaptado no
+  [recomp do Samurai Shodown](https://github.com/omegakatana92/Samurai-Shodown-Recomp));
+  registrar isso, descobrir se a causa está no player, no toolkit ou na entrada do
+  gerador e preparar um relatório mínimo (versão, roteiro de entrada, quadro,
+  descrição) para o dono. Em 19/11/2026 o repositório do KOF 2003 não tinha issues
+  abertas; as fechadas não foram conferidas. Reportar ou contribuir com uma correção
+  é decisão do dono; qualquer patch é preparado num clone em `private/`, sem copiar
+  para este repositório (ver `AGENTS.md`, código de terceiros).
 - [ ] Defeito B: toda busca por ID da tela de vitória (sprite do vencedor e sua
   posição, grupo e paleta da silhueta ou do fundo, texto da frase e seu bloco de
   idioma, placa de nome completo) é achada e listada com o endereço; o `$30` lê as
