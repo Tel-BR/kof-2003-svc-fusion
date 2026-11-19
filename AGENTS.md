@@ -117,8 +117,12 @@ When a task changes tracked files, commit its intended changes on the current br
 
 After each completed task, report the natural next steps. If there are none, say so. Include one ready-to-copy prompt for the next conversation that continues the most natural next step.
 
+Keep that prompt a pointer: the skill to run, the ticket or doc path, and only the decisions or facts not yet written in the repository. The ticket, spec and docs carry the rest, so record anything the next session needs there first. Add one line on the session boundary: `/clear` when the repository carries the context, continue when the next step needs this conversation as its primary source.
+
 ### Conclusão de tarefas
 
 Quando uma tarefa alterar arquivos rastreados, faça commit das mudanças pretendidas da tarefa na branch atual antes de informar a conclusão. Confira a árvore de trabalho, adicione ao stage somente os arquivos alterados por essa tarefa e revise o diff staged. Deixe mudanças preexistentes e sem relação fora do commit e nunca inclua nada de `private/`. Não crie commit vazio se não houver alteração rastreada da tarefa; não faça push sem pedido do dono.
 
 Ao concluir cada tarefa, informe os próximos passos naturais. Se não houver, diga isso. Inclua um prompt pronto para copiar na próxima conversa, dando continuidade ao próximo passo mais natural.
+
+Esse prompt é um ponteiro: a skill a rodar, o caminho do ticket ou documento e só as decisões ou fatos ainda não escritos no repositório. O ticket, a spec e os documentos levam o resto, então registre neles antes o que a próxima sessão precisar. Acrescente uma linha sobre a passagem de sessão: `/clear` quando o repositório já carrega o contexto, continuar quando o próximo passo precisa desta conversa como fonte primária.
