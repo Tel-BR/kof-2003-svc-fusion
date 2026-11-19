@@ -48,3 +48,6 @@ desktop.ini
 # Python bytecode / Bytecode Python
 __pycache__/
 *.pyc
+
+# Atalho pessoal para jogar o candidato de teste / Personal shortcut to play the test candidate
+/Jogar-Ensaio.cmd
