@@ -34,7 +34,7 @@ in ticket 04; it must not be used as proof that command normals are fixed.
   any clone-only work separately.
 - [x] Record the observed grab and cancel discrepancies and determine whether
   they reveal shared infrastructure defects or clone-specific moveset work.
-- [ ] Check the affected original Kyo path and other relevant original fighters
+- [x] Check the affected original Kyo path and other relevant original fighters
   for regression. Keep all game data, captures and traces in `private/`.
 
 ## Português (Brasil)
@@ -67,7 +67,7 @@ ticket 04; sua correção não comprova que os normais de comando funcionam.
 - [x] Registrar as diferenças observadas em agarrões e cancelamentos e decidir
   se revelam defeitos da infraestrutura compartilhada ou trabalho específico do
   repertório do clone.
-- [ ] Conferir regressão do caminho afetado do Kyo original e dos demais
+- [x] Conferir regressão do caminho afetado do Kyo original e dos demais
   originais relevantes. Dados dos jogos, capturas e traces ficam em `private/`.
 
 ## Comments
@@ -476,3 +476,38 @@ no quadro 6.100, maior diferença de canal 24)._
 _**Decisão do dono para depois.** A entrada do `$30` no mapa agora decide tanto a origem
 da apresentação quanto quais lutadores o tratam como rival. Para o Guile as duas podem
 precisar diferir; nada é necessário antes da fase 4 do Guile._
+
+### 2026-11-19 — Stuck Orochinagi flames split into ticket 19
+
+The owner found that after Orochinagi the flames of the move stay attached to the clone
+(and where it fell) while original Kyo does not show it. It was diagnosed and fixed as
+[ticket 19](19-imported-fighter-routine-tables.md): two per-fighter routine dispatchers
+indexed a 37-entry table with the imported ID; they now map the ID through the
+presentation map. The short flame in the clone's **intro** recorded above is not that
+defect: with the fix it is the same 124 px at frame 5,000 and 17 px at frame 5,040 with
+three different first-side leaders (and unchanged, 830 and 367 px, with original Kyo as
+the leader), so its cause is still open. The regression criterion
+is checked: an original-only team differs by 0 px at five frames from 5,400 to 9,000 and
+ticket 13's route by 0 px at `--tol 24`, on the native build that includes both fixes
+(`private/work/first-import/diag-t17/build-t14d`, `roms-t14d`).
+
+What remains open here: the identification of the cause of the intro flame (third
+criterion). The grab and cancel observations (second block of criteria) and the rival
+intro rows are done.
+
+_PT-BR — Chamas presas do Orochinagi separadas no ticket 19._
+
+_O dono achou que, depois do Orochinagi, as chamas do golpe ficam presas ao clone (e onde
+ele caiu) e o Kyo original não mostra isso. Foi diagnosticado e corrigido como o
+[ticket 19](19-imported-fighter-routine-tables.md): dois despachantes de rotinas por
+lutador indexavam uma tabela de 37 entradas com o ID importado; agora mapeiam o ID pelo
+mapa de apresentação. A chama curta da **intro** do clone registrada acima não é esse
+defeito: com a correção continua igual, 124 px no quadro 5.000 e 17 px no quadro 5.040
+com três líderes diferentes do primeiro lado (e inalterado, 830 e 367 px, com o Kyo
+original de líder), então a causa segue em aberto. O critério
+de regressão está marcado: uma equipe só de originais difere 0 px em cinco quadros de
+5.400 a 9.000 e a rota do ticket 13 difere 0 px com `--tol 24`, no build nativo que tem as
+duas correções (`private/work/first-import/diag-t17/build-t14d`, `roms-t14d`)._
+
+_O que continua em aberto aqui: identificar a causa da chama da intro (terceiro critério).
+As observações de agarrões e cancelamentos e as linhas de intro de rivais estão feitas._

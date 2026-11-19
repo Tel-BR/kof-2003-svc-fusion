@@ -25,6 +25,7 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | Fighter-pair matrix | `$77B4A`, readers `$240E6`/`$24D06` | relocate, widen both axes | `relocate_action_tables.py` |
 | Special-intro tables, 37 × 4 bytes | `$A5DB6` (read `$407EA`, `$40866`), `$A5E4A` (read `$409E8`, `$40C70`) | relocate to 64 rows | `wire_slot_lookups.py` |
 | Special-intro rival rows: the other fighter's ID read at `$40BE2` and compared as a literal ID, or through a group code (`$F0`+, lists behind `$A5EDE`), against the row of the fighter whose intro is chosen (routine `$40BCA`, rows in the relocated tables at `$52D00` and `$52C00`) | rivals are written as literal opponent IDs (Iori's row names Kyo, `$1E`), so the imported `$30` found no rival and the opponent got the default intro | map the other fighter's ID through the presentation map at `$53100` (routine at `$53240`; originals map to themselves; `$30` is recognised as its source fighter) | `map_intro_opponent.py` ([ticket 14](issues/14-rehearsal-intro-and-command-normals.md)) |
+| Per-fighter routine tables: two dispatchers (`$2B30E`, `$2B432`) index a 37-entry table of pointers (`$2B336`, `$2B45A`) with `4 × (ID & $3F)` and `jsr` the routine chosen from the fighter's own table | for the imported `$30` the index ran past the end of the table and other data was called; in the Orochinagi replay the flames of the move never ended and stayed on screen | map the ID through the presentation map at `$53100` (routine at `$53280`; originals map to themselves; `$30` uses its source fighter's routines) | `map_fighter_handlers.py` ([ticket 19](issues/19-imported-fighter-routine-tables.md)) |
 | ID guards `≤$24`/`<$25` before relocated tables | `$166A8`, `$240F0`, `$24124`, `$27E06` | raise to `$3F`/`$40` | `wire_slot_lookups.py` |
 | 64-entry tables whose entries above `$24` share a default | `$79672`, `$79772`, `$B8250` (pointers); `$79872`, `$798F2` (command lists); file `$62B9AC` (banked proximity directory) | own entry | `wire_slot_lookups.py` |
 | Word-offset header with free room | `$B3204` (command → action) | own entry | `wire_slot_lookups.py` |
@@ -104,6 +105,16 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
    frame window by program counter. Change the first side's leader to a fighter that does
    not have the source fighter as a rival: the difference must vanish, or the cause is
    not a pair rule.
+9. For effects that never end (ticket 14, found with the Orochinagi): record a session
+   with the monitor trace on, convert the recorded P1 input transitions into a player
+   input script, and replay it on the clone and the reference ROM. Equal fighter state
+   words with different effect objects point at a table read by an object's owner ID.
+   Diff the work RAM in 0x400-byte windows (offsets from `$100000`), diff the ROM reads of
+   the frame window by program counter, and for every pair of reads at addresses
+   `ID × entry size` apart compare the bytes in the clone's program image: equal bytes are
+   an entry a tool already copied, different bytes are a table that still ends at `$24`.
+   Quote a screenshot threshold above the palette change of the clone (40 here), because
+   the colour change of the clone is larger than 24 in a few hundred pixels of the body.
 
 ## 5. Checklist for the next ID
 
@@ -113,6 +124,7 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 - [ ] Sound and identity lists as the character needs. Presentation: `wire_slot_lookups.py` maps the lookups; the character's own art and icon go in their tables (ticket 13 sites).
 - [ ] Run `map_victory_screen.py` after `wire_slot_lookups.py`; check the winner screen in all three positions and both sides.
 - [ ] Run `map_intro_opponent.py` after `map_victory_screen.py`; the map entry of `$30` decides which fighters treat it as a rival (the same entry is its presentation source).
+- [ ] Run `map_fighter_handlers.py` after `map_intro_opponent.py`; replay a recorded Orochinagi-style super on the clone and the reference ROM and check that no effect outlives the move.
 - [ ] Differential check against its source, then a regression check of originals.
 
 ---
@@ -156,6 +168,8 @@ padrão comum acima de `$24` em `$0641E8`, `$06BDC0` (exercitada pela tela de vi
 **Conhecido e aceito ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), decisão do dono; a busca não foi localizada):** o cenário da luta e o fundo da tela de vitória seguem o ID do líder; uma equipe liderada pelo `$30` recebe o cenário e o fundo padrão em vez dos do lutador de origem. Uma segunda rota até a mesma tela com o clone fora da liderança (posição 2 ou 3) mostra o fundo certo.
 
 **Intros de rivais (ticket 14):** a leitura do ID do outro lutador em `$40BE2` (rotina `$40BCA`, linhas nas tabelas de intro em `$52D00` e `$52C00`) passa pelo mapa de apresentação (rotina em `$53240`), pelo `map_intro_opponent.py`; rivais são escritos como IDs literais (a linha do Iori cita o Kyo), então sem o mapa o `$30` não era reconhecido como rival.
+
+**Rotinas por lutador (ticket 19):** dois despachantes (`$2B30E` e `$2B432`) indexam uma tabela de 37 ponteiros (`$2B336` e `$2B45A`) por `4 × (ID & $3F)` e chamam com `jsr` a rotina da tabela do próprio lutador; o `$30` lia além do fim e chamava outros dados (no replay do Orochinagi as chamas do golpe não acabavam). O `map_fighter_handlers.py` passa o ID pelo mapa de apresentação (rotina em `$53280`), então o `$30` usa as rotinas do lutador de origem.
 
 **Tela de vitória (ticket 17):** a cópia dos três bytes da equipe vencedora em `$E202` passa pelo mapa de apresentação (rotina em `$53200`, bits de cor preservados), pelo `map_victory_screen.py`. Isso corrige sprite, animação, frase e placa de nome do clone.
 
@@ -221,6 +235,16 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
    comparar as leituras da ROM da janela por contador de programa. Trocar o líder do
    primeiro lado por um lutador que não tenha o lutador de origem como rival: a diferença
    precisa sumir, senão a causa não é uma regra de par.
+9. Para efeitos que não acabam (ticket 14, achado com o Orochinagi): gravar uma sessão com
+   o rastreio do monitor ligado, converter as transições de entrada do P1 gravadas num
+   roteiro de entrada do player e repetir no clone e na ROM de referência. Palavras de
+   estado do lutador iguais com objetos de efeito diferentes apontam uma tabela lida pelo ID
+   do dono do objeto. Comparar a RAM em janelas de 0x400 bytes (deslocamentos a partir de
+   `$100000`), comparar as leituras da ROM da janela por contador de programa e, para cada
+   par de leituras em endereços separados por `ID × tamanho da entrada`, comparar os bytes na
+   imagem do clone: bytes iguais são entrada que uma ferramenta já copiou, bytes diferentes
+   são tabela que ainda termina em `$24`. Usar um limite de captura acima da mudança de paleta
+   do clone (40 aqui), porque a cor do clone muda mais que 24 em algumas centenas de pixels do corpo.
 
 ### 5. Checklist para o próximo ID
 
@@ -230,4 +254,5 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 - [ ] Som e listas de identidade conforme o personagem. Apresentação: `wire_slot_lookups.py` mapeia as buscas; a arte e o ícone do personagem entram nas tabelas dos pontos do ticket 13.
 - [ ] Rodar `map_victory_screen.py` depois do `wire_slot_lookups.py`; conferir a tela de vencedor nas três posições e nos dois lados.
 - [ ] Rodar `map_intro_opponent.py` depois do `map_victory_screen.py`; a entrada do `$30` no mapa decide quais lutadores o tratam como rival (a mesma entrada é a origem da apresentação).
+- [ ] Rodar `map_fighter_handlers.py` depois do `map_intro_opponent.py`; repetir um super gravado, como o Orochinagi, no clone e na ROM de referência e conferir que nenhum efeito sobrevive ao golpe.
 - [ ] Conferência diferencial contra a origem e regressão dos originais.

@@ -118,6 +118,22 @@ empty. The map entry of `$30` is both the presentation source and the rival iden
 python tools/kof2003/import_slot/map_intro_opponent.py $in $out --sha256 $hash
 ```
 
+`map_fighter_handlers.py` takes the image after `map_intro_opponent.py` and writes a
+new private image. Two dispatchers (`$2B30E` and `$2B432`) pick a fighter's own table
+of routines by its ID, indexing a 37-entry table of pointers (`$2B336` and `$2B45A`)
+with `4 * (ID & $3F)`. For the imported `$30` the index ran past the end of the
+table and other data was called; in a recorded Orochinagi replay the flames of the
+move stayed on screen for the rest of the match. The tool reroutes the three
+instructions that compute the index at both places to a short routine at `$53280`
+that maps the ID through the presentation map at `$53100` first, so the imported
+fighter uses its source fighter's routines; originals map to themselves. It checks
+the expected bytes of both sites, that the map is the one `wire_slot_lookups.py`
+writes and that `$53280`–`$532BF` is empty.
+
+```powershell
+python tools/kof2003/import_slot/map_fighter_handlers.py $in $out --sha256 $hash
+```
+
 `pvc_byte_writes.py` is a runtime patch, not a program-image step. The NEO-PVC
 chip's colour pack and unpack run only on 16-bit writes in the pinned runtime,
 but the game fills those inputs with byte writes, so every palette fade it
@@ -267,6 +283,22 @@ de rival.
 
 ```powershell
 python tools/kof2003/import_slot/map_intro_opponent.py $in $out --sha256 $hash
+```
+
+O `map_fighter_handlers.py` recebe a imagem depois do `map_intro_opponent.py` e grava
+uma nova imagem privada. Dois despachantes (`$2B30E` e `$2B432`) escolhem a tabela de
+rotinas do próprio lutador pelo ID, indexando uma tabela de 37 ponteiros (`$2B336` e
+`$2B45A`) por `4 * (ID & $3F)`. Com o `$30` importado o índice passava do fim da
+tabela e outros dados eram chamados; num replay gravado do Orochinagi as chamas do
+golpe ficavam na tela até o fim da luta. A ferramenta desvia as três instruções que
+calculam o índice, nos dois lugares, para uma rotina curta em `$53280` que primeiro
+mapeia o ID pelo mapa de apresentação em `$53100`; assim o lutador importado usa as
+rotinas do lutador de origem e os originais mapeiam para si mesmos. Confere os bytes
+esperados dos dois pontos, que o mapa é o que o `wire_slot_lookups.py` grava e que
+`$53280`–`$532BF` está vazio.
+
+```powershell
+python tools/kof2003/import_slot/map_fighter_handlers.py $in $out --sha256 $hash
 ```
 
 O `pvc_byte_writes.py` é um ajuste do runtime, não um passo da imagem do
