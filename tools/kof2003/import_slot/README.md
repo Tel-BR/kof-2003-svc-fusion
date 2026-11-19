@@ -84,6 +84,37 @@ from a folder where temporary files can be deleted.
 python tools/kof2003/import_slot/wire_slot_lookups.py $in $out --sha256 $hash --fighter-id 0x1e
 ```
 
+`map_victory_screen.py` takes the image after `wire_slot_lookups.py` and writes a
+new private image. The victory screen copies the winning team's three bytes
+(colour bits in bits 7-6, fighter ID in bits 5-0) from the match team list into
+its own object at `$E202` and then looks up the winner sprite, the win quote and
+the name plate by that ID; those tables only cover the original roster, so `$30`
+read past their ends. The tool replaces that six-byte copy with a call to a short
+routine at `$53200` that keeps the colour bits and maps the ID through the
+presentation map at `$53100`, so the imported fighter wins as its source fighter
+and shows as that fighter on the plate when a teammate wins. It checks the
+expected bytes of the site, that the presentation map routine exists and that
+`$53200`–`$5323F` is empty. It adds no art, palette or quote of its own, and the
+fight stage and its victory background still follow the leader's ID.
+
+```powershell
+python tools/kof2003/import_slot/map_victory_screen.py $in $out --sha256 $hash
+```
+
+`pvc_byte_writes.py` is a runtime patch, not a program-image step. The NEO-PVC
+chip's colour pack and unpack run only on 16-bit writes in the pinned runtime,
+but the game fills those inputs with byte writes, so every palette fade it
+computes came out as zero and sprites turned into flat silhouettes. The tool
+copies the runtime's `bus.c` to a new private file with the byte handler
+triggering the same pack, unpack and bank actions as the word handler. It
+checks the file's SHA-256, refuses paths outside `private/` and a file that is
+already patched, and keeps the file's line endings. The published v0.1.0 player
+and the upstream `main` have the same defect.
+
+```powershell
+python tools/kof2003/import_slot/pvc_byte_writes.py $bus $busFixed --sha256 $busHash
+```
+
 For a future manual build, `manual_keys.py` prepares a private SDL source with
 the owner's P1 layout. `monitor_hook.py`, the CMake option
 `KOF2003_REHEARSAL_MONITOR`, and `rehearsal_monitor.c` enable an optional log
@@ -188,4 +219,28 @@ antes de repetir as instruções deslocadas; a rotina fica em `$53140` e os
 trampolins a partir de `$53150`. Confere os bytes esperados de cada ponto e que
 `$53100`–`$531FF` está vazio, e recusa ID de origem `$22`–`$24` (entradas
 ocultas). Rode os testes numa pasta onde arquivos temporários possam ser apagados.
+
+O `map_victory_screen.py` recebe a imagem depois do `wire_slot_lookups.py` e grava
+uma nova imagem privada. A tela de vitória copia os três bytes da equipe vencedora
+(bits de cor nos bits 7-6, ID do lutador nos bits 5-0) da lista de equipes da
+luta para um objeto próprio em `$E202` e depois busca sprite do vencedor, frase
+de vitória e placa de nome por esse ID; essas tabelas só cobrem o elenco
+original, então o `$30` lia além do fim. A ferramenta troca essa cópia de seis
+bytes por uma chamada a uma rotina curta em `$53200` que preserva os bits de cor
+e mapeia o ID pelo mapa de apresentação em `$53100`; assim o lutador importado
+vence como o lutador de origem e aparece como ele na placa quando um colega
+vence. Confere os bytes esperados do ponto, que a rotina do mapa de apresentação
+existe e que `$53200`–`$5323F` está vazio. Não acrescenta arte, paleta nem frase
+própria, e o cenário da luta e o fundo da vitória continuam seguindo o ID do
+líder.
+
+O `pvc_byte_writes.py` é um ajuste do runtime, não um passo da imagem do
+programa. No runtime fixado, o pack e o unpack de cor do chip NEO-PVC só rodam
+em escritas de 16 bits, mas o jogo preenche essas entradas com escritas de byte;
+por isso todo fade de paleta saía zerado e os sprites viravam silhuetas chapadas.
+A ferramenta copia o `bus.c` do runtime para um arquivo privado novo, com o
+tratador de byte disparando as mesmas ações de pack, unpack e troca de banco do
+tratador de palavra. Confere o SHA-256 do arquivo, recusa caminhos fora de
+`private/` e arquivo já corrigido, e mantém as quebras de linha. O player v0.1.0
+publicado e o `main` do upstream têm o mesmo defeito.
 

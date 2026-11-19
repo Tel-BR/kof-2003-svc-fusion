@@ -33,10 +33,13 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | Identity lists | `$A5F1F` (FF-separated ID groups used by intro codes `$D0`+); 64-bit set `$25028` (tested via `$277E6`) | membership only if the import should belong | per character |
 | Sound | 16 tables of 37 words at `$6CF1E` (via `$18EAA`), flags `$18D38`; guards `$18D08`, `$18E90` | relocation or own data | tickets 10–12 |
 | Presentation: name, portraits, thumbnail, group/palette, in-fight name plate | selection per-ID readers add a constant to the ID and only handle IDs up to `$24`: name `$9042`, portrait `$9124`, thumbnail `$91FE`, group `$9338`; order screen portrait `$9E00` and group `$9F26`; the in-fight name plate is written by `$1F864`–`$1F8CE` from byte table `$6E9D0` (read at `$1F886`), then drawn by the fix-layer text engine (`$1ED44`, offsets `$6EA9E`) | a shared presentation map: 64-byte table at `$53100` (identity, `$30` = source fighter), routine `$53140`, trampolines from `$53150`, jumped to from the seven sites | `wire_slot_lookups.py` for the clone; Guile phase 4 adds its own art ([ticket 13](issues/13-rehearsal-selection-presentation.md)) |
+| Victory screen: winner sprite and animation, win quote, name plate | the winning team's three bytes (colour bits 7-6, ID 5-0) are copied at `$E202` into the screen object (`$144`–`$146`), which then reads a word table of 37 entries at `$E756` (animation, zero for `$30`), a 16-byte-per-ID quote table in the `$200000` bank (read at `$E44A`), the rival-pair lists behind `$06BDC0` (via `$E8F2`; 64 entries, shared default) and the name table at `$0B8D90` | route the copy through the presentation map: routine at `$53200` keeps the colour bits and maps the ID (`$30` = source fighter) | `map_victory_screen.py` ([ticket 17](issues/17-victory-screen-native-and-clone.md)) |
 
 **Found by scan, not yet exercised:** 64-entry tables with a shared default above
-`$24` at `$0641E8`, `$06BDC0`, `$06D32A`, `$06D374` and `$06E9D0`. Each new slot
+`$24` at `$0641E8`, `$06BDC0` (exercised by the victory screen, ticket 17), `$06D32A`, `$06D374` and `$06E9D0`. Each new slot
 should check them before relying on the Rehearsal result.
+
+**Left open (ticket 17):** the fight stage and the victory-screen background follow the leader's ID, so a team led by `$30` gets the default stage and background instead of the source fighter's. A second route to the same screen with the clone not leading (position 2 or 3) shows the right background.
 
 **Guards left on purpose:** `$7A9C` (object `$2C` uses ID + `$176` as an
 animation), `$19396` (team group as ID ÷ 3), the selection guards around
@@ -82,6 +85,15 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
    bars). To find a lookup that is not in this list, trace in the interpreter the
    ROM data reads of both runs and diff them: the reads made only by the clone's
    run at an out-of-range offset name the table.
+   Log the data registers with each read: a read whose register holds the ID
+   times the entry size (`$30`×2, ×4, ×8, ×16) in the clone run, and `$1E` times
+   the same in the reference run, names an ID-indexed table; compare windows that
+   cover the same screen, because the two runs do not reach it on the same frame.
+7. For the victory screen (ticket 17): a deterministic two-player route (P1 joins,
+   P2 joins and stays idle, P1 attacks, buttons stop 30 frames before the WIN
+   banner so nothing skips the screen) reaches it in every position and on both
+   sides; compare the clone with the reference ROM at the same screen, and an
+   original team before and after the change (identical frames).
 
 ## 5. Checklist for the next ID
 
@@ -89,6 +101,7 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 - [ ] Check the scan-only tables of §2.
 - [ ] Place frames in the per-ID bank (ticket 15) and set the opponent proxy (ticket 16).
 - [ ] Sound and identity lists as the character needs. Presentation: `wire_slot_lookups.py` maps the lookups; the character's own art and icon go in their tables (ticket 13 sites).
+- [ ] Run `map_victory_screen.py` after `wire_slot_lookups.py`; check the winner screen in all three positions and both sides.
 - [ ] Differential check against its source, then a regression check of originals.
 
 ---
@@ -126,8 +139,12 @@ quadros vão para um banco por ID (ticket 15); som (tickets 10–12) e apresenta
 decididas por personagem.
 
 **Achadas por varredura, ainda não exercitadas:** tabelas de 64 entradas com
-padrão comum acima de `$24` em `$0641E8`, `$06BDC0`, `$06D32A`, `$06D374` e
+padrão comum acima de `$24` em `$0641E8`, `$06BDC0` (exercitada pela tela de vitória, ticket 17), `$06D32A`, `$06D374` e
 `$06E9D0`. Cada nova vaga deve conferi-las.
+
+**Em aberto (ticket 17):** o cenário da luta e o fundo da tela de vitória seguem o ID do líder; uma equipe liderada pelo `$30` recebe o cenário e o fundo padrão em vez dos do lutador de origem. Uma segunda rota até a mesma tela com o clone fora da liderança (posição 2 ou 3) mostra o fundo certo.
+
+**Tela de vitória (ticket 17):** a cópia dos três bytes da equipe vencedora em `$E202` passa pelo mapa de apresentação (rotina em `$53200`, bits de cor preservados), pelo `map_victory_screen.py`. Isso corrige sprite, animação, frase e placa de nome do clone.
 
 **Travas mantidas de propósito:** `$7A9C`, `$19396`, as travas da seleção perto
 de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
@@ -172,6 +189,16 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
    busca fora desta lista, rastrear no interpretador as leituras de dados da ROM
    das duas execuções e comparar: as leituras só do clone, fora da faixa, apontam
    a tabela.
+   Registre também os registradores de dados em cada leitura: uma leitura cujo
+   registrador vale o ID vezes o tamanho da entrada (`$30`×2, ×4, ×8, ×16) na
+   execução do clone, e `$1E` vezes o mesmo na de referência, nomeia uma tabela
+   indexada por ID; compare janelas que cubram a mesma tela, pois as duas
+   execuções não chegam a ela no mesmo quadro.
+7. Para a tela de vitória (ticket 17): uma rota determinística de dois jogadores
+   (P1 entra, P2 entra e fica parado, P1 ataca, botões param 30 quadros antes do
+   banner WIN para nada pular a tela) chega a ela em qualquer posição e nos dois
+   lados; compare o clone com a ROM de referência na mesma tela, e uma equipe
+   original antes e depois da mudança (quadros idênticos).
 
 ### 5. Checklist para o próximo ID
 
@@ -179,4 +206,5 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 - [ ] Conferir as tabelas só achadas por varredura (seção 2).
 - [ ] Quadros no banco por ID (ticket 15) e proxy de adversário (ticket 16).
 - [ ] Som e listas de identidade conforme o personagem. Apresentação: `wire_slot_lookups.py` mapeia as buscas; a arte e o ícone do personagem entram nas tabelas dos pontos do ticket 13.
+- [ ] Rodar `map_victory_screen.py` depois do `wire_slot_lookups.py`; conferir a tela de vencedor nas três posições e nos dois lados.
 - [ ] Conferência diferencial contra a origem e regressão dos originais.
