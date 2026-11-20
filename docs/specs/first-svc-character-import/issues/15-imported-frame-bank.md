@@ -1,6 +1,7 @@
 ---
 title: "Place imported frame data in a per-ID frame bank"
 triage: ready-for-agent
+assignee: claude
 ---
 
 # 15 Place imported frame data in a per-ID frame bank
@@ -53,3 +54,78 @@ colocar ali a cópia de quadros do clone, com os tiles no Espaço acrescentado._
   fallback.
 - [ ] Os originais ficam inalterados: nenhum diretório original é sobrescrito, e
   uma conferência de regressão cobre originais além do Kyo, inclusive o `$00`.
+
+## Comments
+
+### 2026-11-20 — Progress (session stopped early): readers found, tool written, native check pending
+
+**Readers (first criterion, done).** Static scan of every write to `$2FF000` and every
+reference to `+$60`/`+$6E`/`+$7C`, plus a private interpreter census of every read whose
+file address falls in the frame bank (five routes: Kyo, clone, ticket 13 P2 route, original
+regression, victory route; tracer `diag-t15/runtime-t15`, never committed):
+
+| Routine | What it reads | How it selects the bank |
+|---|---|---|
+| Lookup `$0109F4` (layers at `$010B0A`, `$010C38`, `$010D66`; reads `$010B10`–`$010B3E`, `$010C3E`–`$010C6C`, `$010D6C`–`$010D9A`) | directory table, directory, frame header; stores `+$60`, `+$6E`, `+$7C` | explicit `$100000` at `$010AB8`, `$010BF8`, `$010D26`; restores the step-script bank afterwards |
+| Drawer, three layers (`$0F85D4`, `$0F8704`, `$0F8834`; copies the pointer to `$7A6(a5)`, calls `$0F9452`; body reads `$0F971E`–`$0FA7D4`) | frame bodies | explicit `$100000` before each layer; leaves it selected |
+| Copiers `$028B14`/`$028B3E`/`$028B68`, `$04143E`/`$041468`/`$041492` | none (copy the pointers into another object) | — |
+| `$01411E`, `$014526` (fixed index, bank `$1D99A8`) | a non-fighter block after the directories | explicit; not ID-indexed |
+
+No reader of frame data relies on a bank selected by someone else. Layer 3 of the lookup
+was not reached in the routes (static only). The bank register has 2-byte granularity;
+bank values below `$100000` mean "fixed area" to the game's pointer conversions.
+
+**Design.** `relocate_frames.py` was rewritten (tests: 4, green): it copies the source
+directory to `--file-offset` (must be even, after the frame bank, ≤ one window below the
+PVC RAM, inside the program and all `$FF`), redirects tiles to the Added Space as before,
+and leaves the frame bank untouched (entry `$30` keeps pointing at the source fighter).
+It writes a 64-long bank table at `$53340` (frame bank for every ID except `$30`) and three
+routines at `$53440`–`$534B3`: the lookup's three bank selects and three directory sites
+call them, so an own-bank ID reads its directory at the start of its window and its frame
+pointers carry the ID in their top byte (ignored by the 24-bit bus; the runtime masks
+addresses too); the drawer's three bank selects take the bank from that top byte, so a
+pointer copied into another object still reads its own bank. Originals keep untagged
+pointers.
+
+**Checks so far.** Private chain `diag-t15/chain15.py` (tool-chain-1/tables.bin → new
+frames step at `0x700000` → the existing steps): the result differs from `roms-t20` only
+in the nine reader sites, `$53340`–`$534B3`, the restored fighter `$00` directory and entry
+`$30`, the removed old copy at `$2FB000` and the new copy at `$700000`. A private Musashi
+check with a NEO-PVC bank model (`diag-t15/cpu15.c`): 22,200 original lookups (37 IDs ×
+600 frames × three layers) identical to the control program; all 585 clone frames give
+Kyo's results with the pointer tagged `$30` at the same directory offset; unassigned IDs
+untagged; drawer bank correct for all 64 tags with registers kept.
+
+**Still to do.** (1) Native build `diag-t15/build-t15` of `roms-t15` was started; check it
+links and that coverage shows no new fallback against `build-t16`. (2) Differential loop:
+creation swap and in-fight swap (slot anatomy §4) with screenshots of the frozen pre-intro
+frame, intro and fight, clone against original Kyo (palette tolerance). (3) Regression of
+original teams (including `$00`) against the unmodified control. (4) Rerun the census on
+`roms-t15` and confirm no other PC reads under the clone's bank. (5) Update the import_slot
+README (new `--file-offset` argument; the chain line for `relocate_frames.py`) and slot
+anatomy §3; `/code-review`; repoint `Jogar-Ensaio.cmd` to `roms-t15` + `build-t15`.
+
+_PT-BR — Progresso (sessão interrompida): leitores achados, ferramenta escrita, conferência
+nativa pendente._
+
+_**Leitores (primeiro critério, feito).** Varredura estática e censo no interpretador das
+leituras no banco de quadros: a busca (`$0109F4`, três camadas) e o desenhista (três
+camadas, `$0F85D4`/`$0F8704`/`$0F8834`, leituras em `$0F971E`–`$0FA7D4`) escolhem o banco
+`$100000` explicitamente; os copiadores só copiam os ponteiros; `$01411E`/`$014526` leem um
+bloco que não é de lutador. Nenhum leitor depende do banco deixado por outro. A camada 3 da
+busca não foi alcançada nas rotas (só estática)._
+
+_**Projeto.** O `relocate_frames.py` foi reescrito (4 testes verdes): copia o diretório para
+`--file-offset` (par, depois do banco de quadros, cabendo numa janela abaixo da RAM do PVC,
+dentro do programa e todo `$FF`), não mexe no banco de quadros e instala uma tabela de bancos
+por ID em `$53340` e três rotinas em `$53440`–`$534B3`. O ponteiro de quadro do ID com banco
+próprio leva o ID no byte de cima (ignorado pelo barramento de 24 bits); o desenhista escolhe
+o banco por esse byte, então um ponteiro copiado para outro objeto continua no banco certo._
+
+_**Conferido.** A cadeia privada difere do `roms-t20` só onde devia; a conferência de CPU
+(Musashi) deu os originais idênticos ao controle em 22.200 buscas e os 585 quadros do clone
+iguais aos do Kyo._
+
+_**Falta.** Build nativo `build-t15` (iniciado) e cobertura; ciclo diferencial (quadro
+congelado, intro, luta); regressão dos originais com o `$00`; censo no `roms-t15`; README,
+anatomia da vaga, `/code-review` e o atalho do Ensaio._
