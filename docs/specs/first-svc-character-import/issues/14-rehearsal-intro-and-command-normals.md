@@ -497,9 +497,23 @@ is checked: an original-only team differs by 0 px at five frames from 5,400 to 9
 ticket 13's route by 0 px at `--tol 24`, on the native build that includes both fixes
 (`private/work/first-import/diag-t17/build-t14d`, `roms-t14d`).
 
-What remains open here: the identification of the cause of the intro flame (third
-criterion). The grab and cancel observations (second block of criteria) and the rival
-intro rows are done.
+**Closed by owner decision, 2026-11-20: the cause of the intro flame is not pursued.**
+The residual itself was already accepted as cosmetic, it is 124 px at frame 5,000 and 17 px
+at frame 5,040 on the clone's own intro effect, it disappears from frame 5,400, and the
+regression criterion passes without it. Chasing the cause buys the Rehearsal nothing it
+needs and the Rehearsal exists to find what would bite Guile, not to explain every pixel.
+If the same effect ever shows on Guile's intro, this is where to start reading. The grab
+and cancel observations (second block of criteria) and the rival intro rows are done, so
+nothing in this ticket is open.
+
+_**Encerrado por decisão do dono, 20/11/2026: a causa da chama da intro não será
+perseguida.** O resíduo já tinha sido aceito como cosmético, são 124 px no quadro 5.000 e
+17 px no 5.040 no efeito de intro do próprio clone, ele some a partir do 5.400 e o critério
+de regressão passa sem ele. Caçar a causa não dá ao Ensaio nada de que ele precise, e o
+Ensaio existe para achar o que atrapalharia o Guile, não para explicar cada pixel. Se o
+mesmo efeito aparecer um dia na intro do Guile, é por aqui que se começa a ler. As
+observações de agarrão e cancelamento e as linhas de intro de rival estão prontas, então
+nada neste ticket fica aberto._
 
 _PT-BR — Chamas presas do Orochinagi separadas no ticket 19._
 

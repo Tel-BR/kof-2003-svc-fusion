@@ -55,6 +55,16 @@ The completed Graphics Set growth is a prerequisite, not a Guile phase. The seco
 
 ## Comments
 
+### 2026-11-20 — What is left of the Kyo rehearsal
+
+Every ticket of the rehearsal (13, 14, 15, 16, 17, 19, 20) now has all its acceptance criteria met; ticket 19's one open criterion is Guile's phase 4 work, not the rehearsal's. The five defects the rehearsal was there to find are fixed: the routine dispatchers that indexed a 37-entry table with the imported ID, the per-opponent rows that needed a proxy, the frames that needed a per-ID bank, the hit-box kind set that had to come from the source fighter, and the selection presentation. Two cosmetic residuals were accepted by owner decision (the clone's intro flame, the generic win quote against a losing `$30`), and on 2026-11-20 the owner closed the search for the intro flame's cause as not worth pursuing.
+
+**One thing is left before the first criterion can be ticked:** a single consolidated run, on a build that carries all of those fixes, proving the three parts together — `$30` is selectable through the shortcut, it completes a lone match, and the original fighters are unchanged. The evidence for each part exists but is spread across builds from 2026-11-18, before the later fixes. After that run, phase 3 (Guile's minimum solo slice) opens.
+
+_PT-BR — **O que falta do ensaio com o Kyo.** Todos os tickets do ensaio (13, 14, 15, 16, 17, 19, 20) estão com os critérios cumpridos; o único critério aberto do 19 é trabalho do Guile na fase 4, não do ensaio. Os cinco defeitos que o ensaio existia para achar estão corrigidos: os despachantes de rotina que indexavam uma tabela de 37 entradas com o ID importado, as linhas por adversário que precisavam de proxy, os quadros que precisavam de banco por ID, o conjunto de tipos de caixa de colisão que tinha de vir do lutador de origem e a apresentação da seleção. Dois resíduos cosméticos foram aceitos por decisão do dono (a chama da intro do clone e a frase genérica de vitória contra um `$30` derrotado), e em 20/11/2026 o dono encerrou a busca pela causa da chama como não valendo a pena._
+
+_**Falta uma coisa para marcar o primeiro critério:** uma execução única, num build com todas essas correções, provando as três partes juntas — o `$30` selecionável pelo atalho, uma luta solo até o fim e os lutadores originais inalterados. A evidência de cada parte existe, mas espalhada em builds de 18/11, antes das correções seguintes. Depois dessa execução, abre a fase 3, a fatia solo mínima do Guile._
+
 ### 2026-11-18 — Rehearsal preparation and same-team check
 
 The owner asked to select the original Kyo and the `$30` Kyo rehearsal together
