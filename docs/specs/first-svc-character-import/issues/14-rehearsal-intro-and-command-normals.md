@@ -408,9 +408,11 @@ changed by the fix; it is clone-only presentation of the intro effect
 and its cause is not established. The intended palette change remains (1,574 px at
 frame 6,100, largest channel difference 24).
 
-**Owner decision for later.** The map entry of `$30` now decides both the presentation
-source and which fighters treat it as a rival. For Guile the two may need to differ;
-nothing is needed before Guile's phase 4.
+**Owner decision, 2026-11-20.** The map entry of `$30` decides both the presentation
+source and which fighters treat it as a rival, and it keeps doing both: the entry is not
+split. Rivalry is left to a future wave, so an imported fighter inherits the rivalries of
+whoever lends it its presentation, and nothing changes before Guile's phase 4. If the two
+ever have to differ, that is the wave that splits them.
 
 _PT-BR — Divergência de luta do outro lado: causa encontrada e corrigida (linhas de
 intro de rivais)._
@@ -475,9 +477,11 @@ amostrados, e a correção não o muda; é apresentação do efeito de intro só
 clone e a causa não foi estabelecida. A mudança de paleta pretendida permanece (1.574 px
 no quadro 6.100, maior diferença de canal 24)._
 
-_**Decisão do dono para depois.** A entrada do `$30` no mapa agora decide tanto a origem
-da apresentação quanto quais lutadores o tratam como rival. Para o Guile as duas podem
-precisar diferir; nada é necessário antes da fase 4 do Guile._
+_**Decisão do dono, 20/11/2026.** A entrada do `$30` no mapa decide tanto a origem da
+apresentação quanto quais lutadores o tratam como rival, e continua decidindo as duas: a
+entrada não é separada. A rivalidade fica para uma onda futura, então o importado herda as
+rivalidades de quem empresta a apresentação a ele e nada muda antes da fase 4 do Guile. Se
+um dia as duas precisarem diferir, é essa onda que as separa._
 
 ### 2026-11-19 — Stuck Orochinagi flames split into ticket 19
 

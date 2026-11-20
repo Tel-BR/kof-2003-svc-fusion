@@ -59,8 +59,9 @@ def main(argv=None):
                "-snapshot_directory", str(out), "-video", "none", "-sound", "none", "-nothrottle",
                "-seconds_to_run", str(args.last // 59 + 60)]  # safety stop; the Lua script exits first
     if args.playback:
+        lua = args.lua.resolve() if args.lua else HERE / "playback_shots.lua"
         command += ["-input_directory", str(args.playback.resolve().parent),
-                    "-playback", args.playback.name, "-autoboot_script", str(HERE / "playback_shots.lua")]
+                    "-playback", args.playback.name, "-autoboot_script", str(lua)]
     else:
         script = parse(args.script.replace(";", "\n"))
         if args.session:

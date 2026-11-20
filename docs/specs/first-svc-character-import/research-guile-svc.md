@@ -24,6 +24,7 @@ The SVC list comes from StrategyWiki's move list for the arcade game. The "delta
 - SuperCombo describes SVC charge moves as needing 30 frames of charge, and calls Guile the only full-charge character that adapts well to SVC. [SuperCombo: Guile](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Guile)
 - SVC requires the stick to pass through neutral on the way from a down charge to up. The PS2 and Xbox releases offer an option for SNK's usual input instead. [Weblio (Japanese Wikipedia)](https://www.weblio.jp/content/SVC+CHAOS)
 - A character can start charging again only after returning to neutral. Supers can be charged while dashing, special moves cannot. [SuperCombo: Mechanics](https://srk.shib.live/w/SvC_Chaos:_SNK_Vs_Capcom/Mechanics)
+- **Owner's test, 2026-11-20, supersedes the web claims above for the import.** Guile does not charge from a neutral position; in his special moves he plays like Ash. His charge supers are distinctive and still undescribed. See [35](../../wayfinder/guile-adelheid-slot/tickets/35-guile-charge-rule.md).
 - Holding down-back charges both Sonic Boom and Flash Kick. A review of the 2024 re-release reports that the stick must first go to down or back before down-back charges both. [SuperCombo: FAQ](https://wiki.supercombo.gg/w/SvC_Chaos:_SNK_Vs_Capcom/FAQ) · [Final Weapon review](https://finalweapon.net/2024/08/03/snk-vs-capcom-svc-chaos-review-its-m-u-g-e-n-but-you-have-to-pay-for-it)
 
 ## Power Gauge, MAX and Exceed
@@ -70,7 +71,7 @@ Giant Bomb's description that a missed throw costs a quarter of a gauge level in
 SVC has no evasive roll. Imported fighters get KOF 2003's rolls built from their recovery roll: [ADR 0002](../../adr/0002-evasive-rolls-from-recovery-animation.md).
 
 
-KOF 2003 uses whole stocks, with a limit from 3 to 5 and a Leader Super. SVC uses three gauge levels with an automatic MAX mode and an Exceed. Guile's supers map naturally to one KOF stock each. KOF 2003 has no Exceed, so how to treat Sonic Hurricane in KOF is an owner decision for later. SVC's charge rule with a neutral position differs from SNK's usual input, so importing Guile also means deciding which charge rule applies in KOF 2003, where Ash already uses charge commands.
+KOF 2003 uses whole stocks, with a limit from 3 to 5 and a Leader Super. SVC uses three gauge levels with an automatic MAX mode and an Exceed. Guile's supers map naturally to one KOF stock each. KOF 2003 has no Exceed; the owner decided on 2026-11-20 that Sonic Hurricane becomes a Leader Super, so it comes out only when Guile leads the team ([34](../../wayfinder/guile-adelheid-slot/tickets/34-exceed-super-in-kof.md)). On the charge rule the owner tested the game and corrected this note: Guile does **not** charge from a neutral position, and in his special moves he plays like Ash, so the specials follow KOF 2003's usual charge rule with no adaptation. His **charge supers** are the distinctive part and are not described anywhere yet ([35](../../wayfinder/guile-adelheid-slot/tickets/35-guile-charge-rule.md)).
 
 ---
 
@@ -100,6 +101,7 @@ A lista do SVC vem do StrategyWiki para a versão arcade. O movimento em "delta"
 - O SuperCombo descreve 30 quadros de carga para golpes de carga no SVC e considera o Guile o único personagem de carga completa bem adaptado ao jogo.
 - O SVC exige que a alavanca passe pela posição neutra entre a carga para baixo e o comando para cima. As versões de PS2 e Xbox têm opção para o comando usual da SNK.
 - Só é possível carregar de novo depois de voltar à posição neutra. Supers podem ser carregados durante a corrida, especiais não.
+- **Teste do dono, 20/11/2026, vale mais que as afirmações da web acima para a importação.** O Guile não carrega em posição neutra; nos golpes especiais ele joga como o Ash. Os supers de carga dele é que são bem exclusivos, e seguem sem descrição. Ver o [35](../../wayfinder/guile-adelheid-slot/tickets/35-guile-charge-rule.md).
 - Segurar baixo-trás carrega Sonic Boom e Flash Kick juntos. Uma análise do relançamento de 2024 relata que é preciso ir primeiro para baixo ou para trás antes de baixo-trás carregar os dois.
 
 ## Barra de poder, MAX e Exceed
@@ -146,4 +148,4 @@ A descrição do Giant Bomb de que errar um arremesso no SVC custa um quarto de 
 O SVC não tem esquiva. Os importados recebem as esquivas do KOF 2003 feitas a partir da cambalhota de recuperação: [ADR 0002](../../adr/0002-evasive-rolls-from-recovery-animation.md).
 
 
-O KOF 2003 usa estoques inteiros, com limite de 3 a 5 e Leader Super. O SVC usa três níveis de barra, com modo MAX automático e Exceed. Os supers do Guile se encaixam naturalmente em um estoque do KOF cada. O KOF 2003 não tem Exceed, então como tratar o Sonic Hurricane no KOF é uma decisão do dono para depois. A regra de carga do SVC, com posição neutra, difere do comando usual da SNK. Importar o Guile também exige decidir qual regra de carga vale no KOF 2003, onde o Ash já usa comandos de carga.
+O KOF 2003 usa estoques inteiros, com limite de 3 a 5 e Leader Super. O SVC usa três níveis de barra, com modo MAX automático e Exceed. Os supers do Guile se encaixam naturalmente em um estoque do KOF cada. O KOF 2003 não tem Exceed; o dono decidiu em 20/11/2026 que o Sonic Hurricane vira Leader Super, então ele só sai quando o Guile for líder da equipe ([34](../../wayfinder/guile-adelheid-slot/tickets/34-exceed-super-in-kof.md)). Sobre a carga, o dono testou o jogo e corrigiu esta nota: o Guile **não** carrega em posição neutra e, nos golpes especiais, joga como o Ash, então os especiais seguem a regra de carga usual do KOF 2003 sem adaptação. Os **supers de carga** dele é que são bem exclusivos e ainda não estão descritos em lugar nenhum ([35](../../wayfinder/guile-adelheid-slot/tickets/35-guile-charge-rule.md)).
