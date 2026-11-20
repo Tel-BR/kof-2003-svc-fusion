@@ -1,0 +1,20 @@
+# Exploratory P1 solo loss. Requires KOF_REHEARSAL_LONE_ID=0x30.
+# Select the provisional $30 cell, finish team/order selection, and leave
+# the fighter idle so the CPU can finish the match.
+1200 coin
+1500 coin
+1800 coin
+2400 start
+3500 up
+3520 up
+3540 up
+3560 up
+3580 up
+3600 up
+3620 up
+3640 a
+3660 a
+3680 a
+4200 a
+4700 a
+5200 start

@@ -234,7 +234,8 @@ In a monitored native session the owner selected original Kyo and `$30` on the
 same team. He reported that basic buttons worked, then the first forward
 quarter-circle + A caused the duplicated-fighter defect. Input transitions and
 frame observations were recorded under `private/`. The native replay matched
-the original session's observed fighter state for all 3,215 recorded frames and
+the original session's logged fighter ID, state, action and frame word for all
+3,215 recorded frames and
 reproduced the duplicate. `--verify` reported zero state mismatches, 1,466
 cycle differences and 13 interpreted instructions at four uncovered entries.
 
@@ -245,6 +246,13 @@ replay reported zero state mismatches, 1,468 cycle differences and 26 interprete
 instructions at six uncovered entries. This establishes a cause for that
 observed defect in this replay, not completion of the moveset or native coverage.
 The preparation tool now installs that directory entry.
+
+Local reproduction: `private/work/first-import/check_duplicate_replay.py` runs
+the recorded private input against the preserved experimental executable and
+compares a reference detail with the affected capture. It reports the duplicate
+on the old ROM directory; `DIAGNOSTIC_ROM_PATH` can point it at the corrected
+candidate. It is a narrow visual heuristic for this recorded scene, not a
+general fighter detector. Its inputs, captures and executable stay in `private/`.
 
 The owner also reported missing selection name, team-position indicator,
 thumbnail and portrait, an absent frozen frame before the intro, and unavailable
@@ -257,8 +265,8 @@ _PT-BR: numa sessão nativa monitorada, o dono escolheu Kyo original e `$30` na
 mesma equipe. Relatou que os botões básicos funcionaram e que o primeiro quarto
 de círculo para a frente + A causou o defeito de lutadores duplicados. As
 mudanças de entrada e as observações por quadro foram gravadas em `private/`.
-A repetição nativa coincidiu com o estado observado do lutador nos 3.215
-quadros registrados e reproduziu a duplicação. O `--verify` registrou zero
+A repetição nativa coincidiu com o ID, estado, ação e palavra de quadro do
+lutador registrados nos 3.215 quadros e reproduziu a duplicação. O `--verify` registrou zero
 divergências de estado, 1.466 diferenças de ciclos e 13 instruções interpretadas
 em quatro entradas não cobertas._
 
@@ -270,6 +278,14 @@ diferenças de ciclos e 26 instruções interpretadas em seis entradas não cobe
 Isso estabelece uma causa para o defeito observado nessa repetição, não a
 conclusão do repertório nem da cobertura nativa. A ferramenta de preparação
 agora instala essa entrada de diretório._
+
+_Reprodução local: `private/work/first-import/check_duplicate_replay.py`
+executa as entradas privadas gravadas com o executável experimental preservado
+e compara um detalhe de referência com a captura afetada. Ele aponta a
+duplicação na pasta de ROMs anterior; `DIAGNOSTIC_ROM_PATH` pode apontar para a
+candidata corrigida. É uma heurística visual restrita a essa cena gravada, não
+um detector geral de lutadores. Entradas, capturas e executável ficam em
+`private/`._
 
 _O dono relatou também ausência de nome, indicador de posição na equipe,
 miniatura e retrato na seleção, falta do quadro congelado antes da intro e
@@ -293,6 +309,19 @@ continue at 11,900 (SHA-256
 `b52c9e914e239aecdfebc7dff8aea9e220750b744128a40d5d6530850740fdd7`).
 This checks an interpreter loss path only; the native replay, zero-fallback
 requirement, original-roster regression and other reported defects remain open.
+The reusable input route is `tools/kof2003/import_slot/kyo-lone-match.txt`.
+
+The subsequent native profiling run followed the same scripted solo loss and
+its winner/continue captures matched the interpreter's at frames 11,600 and
+11,900. It reported 58,621 interpreted instructions at 38 uncovered entries;
+those entries were collected for recompilation. This run was not `--verify`
+and does not establish zero state mismatches or zero fallback.
+
+An independent static comparison against the control checked the 37 original
+rows in the 16 relocated tables, both original-ID axes of the pair matrix,
+the 37 original entries in eight modified directories, and Kyo's original
+frame directory; they matched. This is not a gameplay regression for all 37.
+Local command: `python private/work/first-import/verify_original_tables.py`.
 
 _PT-BR: o atalho opcional de desenvolvimento esvazia a segunda e terceira vagas
 do P1 somente depois de o primeiro ID corresponder ao solicitado e as duas
@@ -304,7 +333,20 @@ azuis. Sem novos comandos de combate, a CPU venceu: a tela normal de vencedor
 foi capturada no quadro 11.600 e a tela de continuação no 11.900, com os hashes
 acima. Isso confere apenas o caminho de derrota no interpretador; continuam
 abertos a repetição nativa, a exigência de zero fallback, a regressão do elenco
-original e os demais defeitos relatados._
+original e os demais defeitos relatados. A rota de entradas reaproveitável é
+`tools/kof2003/import_slot/kyo-lone-match.txt`._
+
+_O perfil nativo posterior percorreu a mesma derrota solo por roteiro e suas
+capturas de vencedor/continuação coincidiram com as do interpretador nos quadros
+11.600 e 11.900. Ele registrou 58.621 instruções interpretadas em 38 entradas
+não cobertas, recolhidas para recompilação. Essa execução não usou `--verify` e
+não comprova zero divergências de estado ou zero fallback._
+
+_Uma comparação estática independente com o controle conferiu as 37 linhas
+originais nas 16 tabelas movidas, os dois eixos de IDs originais da matriz de
+pares, as 37 entradas originais em oito diretórios alterados e o diretório de
+quadros original do Kyo; eles coincidiram. Isso não é uma regressão jogável dos
+37 lutadores. Comando local: `python private/work/first-import/verify_original_tables.py`._
 
 ### 2026-11-18 — Owner checked the move-directory candidate
 
@@ -324,3 +366,16 @@ instruções interpretadas e 32 entradas não cobertas. A sessão não usou
 `--verify`; esse retorno não encerra as verificações de comandos ou cobertura
 nativa. A investigação comportamental restante está registrada no
 [ticket 14](14-rehearsal-intro-and-command-normals.md)._
+
+**Effort record.** This session's active wall-clock effort was not measured, so
+no duration or estimate is claimed. Reusable work includes the partial table,
+frame, palette and selection preparation, the monitor and replay route; the
+Kyo-specific work includes the cloned frame/palette candidates and the diagnosed
+move-directory entry. These observations do not establish Guile's effort.
+
+_**Registro de esforço.** O tempo ativo desta sessão não foi medido, portanto
+nenhuma duração ou estimativa é afirmada. O trabalho reaproveitável inclui a
+preparação parcial de tabelas, quadros, paletas e seleção, o monitor e a rota de
+repetição; o trabalho específico do Kyo inclui as candidatas de quadros/paletas
+do clone e a entrada de diretório de golpes diagnosticada. Essas observações não
+estabelecem o esforço do Guile._

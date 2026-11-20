@@ -197,12 +197,73 @@ the environment variable `KOF_REHEARSAL_MONITOR` is set. Set
 `KOF_REHEARSAL_TRACE` too to include a P1 object state on every frame. Keep stderr and any captures under
 `private/`. The hook is off unless both the build option and environment
 variable are enabled; it does not establish that a match finished successfully.
+`replay_recording.py PRIVATE_SESSION_LOG PRIVATE_NEW_INPUT_SCRIPT` converts a
+completed or interrupted traced session into native-player input intervals. It
+requires input transitions and per-frame records, preserves P1 directions,
+buttons, start and coin, and refuses unordered logs, logs without the required
+records, and existing outputs. It does not record P2, select, service or test inputs. Both paths must remain
+inside `private/`.
 For a development-only lone-fighter check, set `KOF_REHEARSAL_LONE_ID` to the
 chosen ID (for example `0x30`). After that ID is picked as P1's first fighter
 and both team copies agree, the hook empties P1's two remaining slots once per
 process. This is a test aid, not the normal team-selection path; without the
 option it does not write team memory. A scripted interpreter check reached the
 normal winner screen after a loss; native verification remains open.
+
+### Recreate the current experimental candidate
+
+From the repository root in PowerShell 7.4+, the following creates a fresh
+private work area without overwriting the control. It uses the pinned local
+port, runtime and SDL paths from the
+[Windows build guide](../../../docs/specs/first-svc-character-import/native-mvs-windows.md).
+The result remains experimental: presentation and behaviour checks are open,
+and Guile's palette gate is not satisfied.
+
+```powershell
+$ErrorActionPreference = 'Stop'
+$PSNativeCommandUseErrorActionPreference = $true
+$root = (Get-Location).Path
+$work = Join-Path $root 'private/work/first-import'
+$run = Join-Path $work ('candidate-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+New-Item -ItemType Directory -Path $run | Out-Null
+python tools/kof2003/import_slot/prepare_workspace.py "$work/roms" "$run/roms"
+$controlHash = 'f6ad2e2d7496eb094b92108b85aca6c71cf6fb397c690e49a04048da27143215'
+python tools/kof2003/import_slot/relocate_action_tables.py "$run/roms/271-pd.bin" "$run/tables.bin" --sha256 $controlHash --fighter-id 0x1e
+$hash = (Get-FileHash -Algorithm SHA256 "$run/tables.bin").Hash
+python tools/kof2003/import_slot/relocate_frames.py "$run/tables.bin" "$run/frames.bin" --sha256 $hash --fighter-id 0x1e --file-offset 0x700000
+$hash = (Get-FileHash -Algorithm SHA256 "$run/frames.bin").Hash
+python tools/kof2003/import_slot/rehearsal_palettes.py "$run/frames.bin" "$run/palettes.bin" --sha256 $hash --fighter-id 0x1e
+$hash = (Get-FileHash -Algorithm SHA256 "$run/palettes.bin").Hash
+python tools/kof2003/import_slot/selection_table.py "$run/palettes.bin" "$run/selection.bin" --sha256 $hash
+Copy-Item -LiteralPath "$run/selection.bin" -Destination "$run/roms/271-pd.bin" -Force
+
+New-Item -ItemType Directory -Path "$run/port/src" | Out-Null
+Copy-Item -LiteralPath "$root/private/work/kof2003-port/src/game.h", "$root/private/work/kof2003-port/src/main.c", "$root/private/work/kof2003-port/src/recomp_main.c" -Destination "$run/port/src"
+$descriptor = "$root/private/work/kof2003-port/src/game.c"
+$hash = (Get-FileHash -Algorithm SHA256 $descriptor).Hash
+python tools/kof2003/import_slot/rehearsal_descriptor.py $descriptor "$run/port/src/game.c" --sha256 $hash
+Copy-Item -LiteralPath "$root/private/work/samsho-runtime-source/neogeorecomp" -Destination "$run/runtime" -Recurse
+$source = "$run/runtime/src/neogeo.c"
+$hash = (Get-FileHash -Algorithm SHA256 $source).Hash
+python tools/kof2003/import_slot/monitor_hook.py $source "$run/runtime/src/neogeo-hook.c" --sha256 $hash
+Move-Item -LiteralPath "$run/runtime/src/neogeo-hook.c" -Destination $source -Force
+$source = "$run/runtime/src/window_sdl.c"
+$hash = (Get-FileHash -Algorithm SHA256 $source).Hash
+python tools/kof2003/import_slot/manual_keys.py $source "$run/runtime/src/window-manual.c" --sha256 $hash
+Move-Item -LiteralPath "$run/runtime/src/window-manual.c" -Destination $source -Force
+
+Copy-Item -LiteralPath "$root/private/work/mvs-native-build/entries.txt" -Destination "$run/entries.txt"
+$sdl = "$root/private/work/SDL2-2.32.10/x86_64-w64-mingw32/lib/cmake/SDL2"
+cmake -S tools/kof2003 -B "$run/build" -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ "-DKOF2003_SOURCE=$run/port" "-DNEOGEORECOMP_SOURCE=$run/runtime" "-DKOF2003_ROMS=$run/roms" "-DKOF2003_ENTRIES=$run/entries.txt" "-DSDL2_DIR=$sdl" -DKOF2003_REHEARSAL_MONITOR=ON
+cmake --build "$run/build" --target kof2003_player --parallel 1
+```
+
+The copied `entries.txt` is only a starting profile, not a guarantee of native
+coverage. Keep the generated images, descriptor, executable, profile and logs
+under `private/`, and never stage them. For a monitored manual run, use the
+candidate's executable and ROM directory, set `KOF2003_REHEARSAL_MONITOR` at
+build time and the two environment variables described above at run time, and
+redirect stderr to a private log.
 
 ## Preparação para o primeiro personagem importado
 
@@ -285,6 +346,12 @@ também `KOF_REHEARSAL_TRACE` para incluir o estado de um objeto do P1 a cada
 quadro. Mantenha stderr e capturas em
 `private/`. A sonda só liga com a opção de build e a variável; ela não comprova
 que a luta terminou normalmente.
+O `replay_recording.py LOG_PRIVADO NOVO_ROTEIRO_PRIVADO` converte uma sessão
+com rastreio, concluída ou interrompida, em intervalos de entrada para o player
+nativo. Ele exige eventos de entrada e registros por quadro; preserva direções,
+botões, start e ficha do P1; e recusa logs fora de ordem, sem os registros
+necessários, ou com saída já existente. Não grava entradas do P2, select, serviço ou teste. Os dois caminhos precisam
+ficar em `private/`.
 Para a conferência de lutador solo apenas de desenvolvimento, defina
 `KOF_REHEARSAL_LONE_ID` com o ID escolhido (por exemplo `0x30`). Depois que esse
 ID for escolhido como primeiro lutador do P1 e as duas cópias da equipe
@@ -396,3 +463,15 @@ tratador de palavra. Confere o SHA-256 do arquivo, recusa caminhos fora de
 `private/` e arquivo já corrigido, e mantém as quebras de linha. O player v0.1.0
 publicado e o `main` do upstream têm o mesmo defeito.
 
+### Recriar a candidata experimental atual
+
+O bloco PowerShell em inglês cria uma pasta privada nova sem sobrescrever o
+controle. Execute-o a partir da raiz do repositório no PowerShell 7.4 ou mais
+recente, com os caminhos e versões fixadas no guia de build do Windows. A imagem
+continua experimental: apresentação e comportamento estão em aberto e o gate
+de paletas do Guile não foi satisfeito. O perfil copiado é apenas ponto de
+partida e não garante cobertura nativa completa. Imagens geradas, descritor,
+executável, perfil e logs ficam na pasta privada criada e nunca entram no git.
+Para teste manual monitorado, use o executável e as ROMs dessa candidata, ligue
+a opção CMake e as variáveis de ambiente descritas acima e redirecione stderr
+para um log privado.
