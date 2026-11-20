@@ -1,0 +1,12 @@
+# Ticket 08: the team match of team-match.txt with one in-fight input. Iori's C press at
+# frame 5,300 hits Whip, so P2's health changes in both runtimes. The native player starts
+# the move one frame before MAME's replay, so the two probe logs differ from frame 5,301.
+1200 coin
+1500 coin
+1800 coin
+2400 start
+3600 a
+4200 a
+4700 a
+5200 start
+5300 c

@@ -12,6 +12,10 @@ set(KOF2003_ENTRIES "${CMAKE_BINARY_DIR}/entries.txt" CACHE FILEPATH "Extra entr
 # default, so builds A and B carry neither the file nor the macro.
 option(KOF2003_ADDED_SPACE_PROOF "Plant one sprite from the Added Space (graphics-set growth, ticket 04)" OFF)
 option(KOF2003_REHEARSAL_MONITOR "Enable the optional private rehearsal event log" OFF)
+# Per-frame memory probe (docs/specs/first-svc-character-import, ticket 08). Needs the
+# hook from match/probe_hook.py in the private runtime copy; logs only when
+# KOF_NATIVE_PROBE is set at run time.
+option(KOF2003_NATIVE_PROBE "Compile the optional per-frame memory probe" OFF)
 
 if(NOT EXISTS "${KOF2003_SOURCE}/src/recomp_main.c")
     message(FATAL_ERROR "Set KOF2003_SOURCE to the KOF 2003 port checkout.")
@@ -30,6 +34,10 @@ add_subdirectory("${NEOGEORECOMP_SOURCE}" toolkit)
 if(KOF2003_REHEARSAL_MONITOR)
     target_sources(neogeorecomp PRIVATE "${CMAKE_CURRENT_LIST_DIR}/import_slot/rehearsal_monitor.c")
     target_compile_definitions(neogeorecomp PRIVATE KOF2003_REHEARSAL_MONITOR)
+endif()
+if(KOF2003_NATIVE_PROBE)
+    target_sources(neogeorecomp PRIVATE "${CMAKE_CURRENT_LIST_DIR}/match/native_probe.c")
+    target_compile_definitions(neogeorecomp PRIVATE KOF2003_NATIVE_PROBE)
 endif()
 if(NOT TARGET SDL2::SDL2)
     message(FATAL_ERROR "Set SDL2_DIR to the Windows x64 SDL2 development package's CMake directory.")

@@ -36,26 +36,34 @@ def shot_name(frame):
     return f"frame-{frame:05d}.png"
 
 
-def _run_to_log(command, stream):
-    subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=True)
+def _run_to_log(command, stream, env=None):
+    subprocess.run(command, stdout=stream, stderr=subprocess.STDOUT, check=True, env=env)
 
 
-def run_native(script_path, frames, shots, out, player=PLAYER, runner=_run_to_log, rom_path=None):
+def run_native(script_path, frames, shots, out, player=PLAYER, runner=_run_to_log, rom_path=None,
+               verify=True, environment=None):
+    """Run the native player; return its --verify summary, or None without --verify.
+
+    `environment` adds variables to this process's own and passes them to the runner as env.
+    """
     if len(shots) > NATIVE_MAX_SHOTS:
         raise ValueError(f"the native player takes at most {NATIVE_MAX_SHOTS} captures per run")
     out.mkdir(parents=True)
-    command = [str(player), "--headless", "--verify", "--mute",
+    command = [str(player), "--headless", *(["--verify"] if verify else []), "--mute",
                "--rom-path", str(rom_path or cached_path("KOF2003_ROMS")), "--bios", "sp-s2.sp1",
                "--frames", str(frames), "--input", str(script_path)]
     for frame in shots:
         command += ["--screenshot", f"{frame}:{out / shot_name(frame)}"]
     log = out / "player.log"
     with log.open("w") as stream:
-        runner(command, stream)
-    return read_report(log.read_text())
+        if environment:
+            runner(command, stream, env=dict(os.environ, **environment))
+        else:
+            runner(command, stream)
+    return read_report(log.read_text()) if verify else None
 
 
-def run_mame(script, frames, shots, out):
+def run_mame(script, frames, shots, out, lua=REPLAY_LUA, environment=None):
     used = set().union(*(event.buttons for event in script.events))
     if used & MAME_UNAVAILABLE:
         raise ValueError(f"MAME's MVS replay cannot press {sorted(used & MAME_UNAVAILABLE)}")
@@ -65,7 +73,7 @@ def run_mame(script, frames, shots, out):
         f"{frame}\t{'+'.join(sorted(held)) or '-'}\n" for frame, held in script.transitions()))
     shot_list = out / "shots.tsv"
     shot_list.write_text("".join(f"{frame}\t{shot_name(frame)}\n" for frame in shots))
-    environment = dict(os.environ, REPLAY_TRANSITIONS=str(transitions),
+    environment = dict(os.environ, **(environment or {}), REPLAY_TRANSITIONS=str(transitions),
                        REPLAY_SHOTS=str(shot_list), REPLAY_FRAMES=str(frames))
     roms = f"{ROOT / 'private' / 'dumps' / 'kof2003'};{ROOT / 'private' / 'bios'}"
     command = [str(MAME), "kof2003", "-bios", "euro", "-noreadconfig", "-skip_gameinfo",
@@ -73,7 +81,7 @@ def run_mame(script, frames, shots, out):
                "-nvram_directory", str(out / "nvram"), "-snapshot_directory", str(out),
                "-video", "none", "-sound", "none", "-nothrottle",
                "-seconds_to_run", str(frames // 59 + 60),  # safety stop; replay.lua exits first
-               "-autoboot_script", str(REPLAY_LUA)]
+               "-autoboot_script", str(lua)]
     with (out / "mame.log").open("w") as stream:
         subprocess.run(command, cwd=MAME.parent, env=environment,
                        stdout=stream, stderr=subprocess.STDOUT, check=True)
