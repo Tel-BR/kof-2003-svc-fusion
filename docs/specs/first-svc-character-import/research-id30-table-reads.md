@@ -222,9 +222,11 @@ The tracer of ticket 17 was then run natively on Windows (Desktop shell), so the
    fighter's move. It does not change the answer for `$30` (the read lands on Kyo's
    set), so it matters only to a future slot whose source fighter has a different set.
 2. Whether `$0641E8` is read on screens outside this route (endings, story demos).
-3. The victory-screen rival lists see a losing `$30` as no rival (raw byte at
-   `+$148`). If Kyo's specific win quotes against certain losers should also apply
-   to the clone as loser, `$E0A2` or `$E8F2` needs the map too: an owner decision.
+
+**Decided (owner, 2026-11-20):** the victory-screen rival lists keep seeing a losing
+`$30` as no rival (raw byte at `+$148`, copied at `$E0A2`): whoever beats the clone uses
+the generic win quote. Accepted as cosmetic; `$E0A2` and `$E8F2` stay unpatched for the
+loser.
 
 ---
 
@@ -332,6 +334,8 @@ nova" acima não vale mais para estes pontos.
    qual lutador. Não muda a resposta para o `$30` (a leitura cai no conjunto do Kyo);
    só importa para uma vaga futura cujo lutador de origem tenha outro conjunto.
 2. Se o `$0641E8` é lido em telas fora dessa rota (finais, demonstrações de história).
-3. As listas de rivais da tela de vitória não reconhecem um `$30` perdedor. Se as
-   frases específicas do Kyo contra certos perdedores devem valer para o clone como
-   perdedor, `$E0A2` ou `$E8F2` precisa do mapa: decisão do dono.
+
+**Decidido (dono, 20/11/2026):** as listas de rivais da tela de vitória continuam sem
+reconhecer um `$30` perdedor (byte cru em `+$148`, copiado em `$E0A2`): quem vence o clone
+usa a frase de vitória genérica. Aceito como detalhe visual; `$E0A2` e `$E8F2` ficam sem
+remendo para o perdedor.
