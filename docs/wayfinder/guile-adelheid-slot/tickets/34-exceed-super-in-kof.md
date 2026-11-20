@@ -27,7 +27,7 @@ _PT-BR: o SVC Chaos dá ao Guile o Sonic Hurricane como golpe de Exceed. O KOF 2
 
 Consequences. The move comes out only when Guile leads the team, which is the shape KOF 2003 already has for a fighter's strongest move, so no new system is invented and the Exceed gauge is not recreated. Guile without the leader position has the supers that fit one stock each and nothing else. The restriction is the price of keeping the move as the rare one it is in SVC.
 
-Still open, to be measured when the moveset slice runs (spec ticket 05), not here: what a Leader Super costs in stocks in KOF 2003, and whether a fighter is marked as having one in data or in code. Whether every other SVC Exclusive Character's Exceed also becomes a Leader Super is not decided: this ticket decides Guile, and the second Exceed returns to the owner.
+Nothing in the seven phases of ticket 04 uses this decision: that slice has no supers, so the Leader Super first matters in the moveset slice. Still open, to be measured when it runs (spec ticket 05), not here: what a Leader Super costs in stocks in KOF 2003, and whether a fighter is marked as having one in data or in code. Whether every other SVC Exclusive Character's Exceed also becomes a Leader Super is not decided: this ticket decides Guile, and the second Exceed returns to the owner.
 
 _PT-BR: **decisão do dono, 20/11/2026: o Sonic Hurricane vira Leader Super.**_
 
