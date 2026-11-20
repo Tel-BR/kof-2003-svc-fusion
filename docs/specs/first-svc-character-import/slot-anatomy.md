@@ -29,7 +29,7 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | ID guards `≤$24`/`<$25` before relocated tables | `$166A8`, `$240F0`, `$24124`, `$27E06` | raise to `$3F`/`$40` | `wire_slot_lookups.py` |
 | 64-entry tables whose entries above `$24` share a default | `$79672`, `$79772`, `$B8250` (pointers); `$79872`, `$798F2` (command lists); file `$62B9AC` (banked proximity directory) | own entry | `wire_slot_lookups.py` |
 | Word-offset header with free room | `$B3204` (command → action) | own entry | `wire_slot_lookups.py` |
-| Directories | master `$704A2`, move scripts `$7DC28`, four palette tables, banked `$200000` (frames) and `$380000` (step scripts) | own entry | tools; frames see §3 |
+| Directories | master `$704A2`, move scripts `$7DC28`, four palette tables, banked `$200000` (frames) and `$380000` (step scripts) | own entry; frames: own bank (the frame-bank entry keeps the source's) | tools; frames see §3 (`relocate_frames.py`) |
 | Per-opponent rows, 42 bytes × 37 | under file `$62B9AC`: self ID → 8 modes → 6 tables; readers `$216AC`, `$21836` | proxy byte per imported ID (owner decision): 64-byte table at `$532C0` (identity for originals, `$30` = `--proxy`), routine at `$53300` | `map_opponent_rows.py` ([ticket 16](issues/16-imported-opponent-proxy.md)) |
 | Fighter-pair byte table, 64 × 64 | `$6F312` (word row offsets, then rows), read at `$21332` | row and column; zero for Kyo | already equal to Kyo's on both axes for `$30` (ticket 16 check); no tool needed for a clone |
 | Identity lists | `$A5F1F` (FF-separated ID groups used by intro codes `$D0`+); 64-bit set `$25028` (tested via `$277E6`) | membership only if the import should belong | per character |
@@ -48,6 +48,8 @@ at Kyo's entry through the presentation map.
 
 **Known and accepted ([ticket 14](issues/14-rehearsal-intro-and-command-normals.md), owner decision; cause not identified):** with the clone as the other player's fighter, a short flame effect in the clone's intro differs from original Kyo (124 px at frame 5,000 and 17 px at frame 5,040 on the recorded route; identical from frame 5,400). It is almost unnoticeable and no fix was attempted. A new slot may show the same difference; do not treat it as a regression of the tools.
 
+**Known and accepted ([ticket 15](issues/15-imported-frame-bank.md), owner decision):** the frame-bank routines add CPU time to every sprite the drawer draws. The game logic of original fighters is unchanged (identical per-frame traces), but whether a fighter's ground shadow is shown in a given frame depends on that time, so in some frames an original fighter's shadow appears or disappears one frame apart from the unmodified game (bottom strip only; 52–716 px in the recorded routes, both in the interpreter and native). Adding one instruction more or fewer to the drawer path changes which frames are affected. Do not treat it as a regression of a later tool.
+
 **Guards left on purpose:** `$7A9C` (object `$2C` uses ID + `$176` as an
 animation), `$19396` (team group as ID ÷ 3), the selection guards around
 `$118FE` and the boss/Maki checks (`$9056`, `$D62C`).
@@ -62,11 +64,20 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
   the fighter-routine index `$53280`–`$532BF`, the opponent proxy table `$532C0`–`$532FF`
   and its routine `$53300`–`$5333F`; `$53340`–`$5FFFF` is free (filler, unread in the
   observed runs).
-- **Frame bank.** The frame lookup (`$010AB8`–`$010B42`) always selects one bank;
-  every original frame directory lives there. KOF 2003's NEO-PVC protection chip
-  maps 8 KiB of RAM over `$2FE000`–`$2FFFFF` of that window: file data placed
-  there reads back as chip RAM. Only about 12 KiB is free below it, less than one
-  fighter. Imported frames go to a per-ID bank ([ticket 15](issues/15-imported-frame-bank.md)).
+- **Frame bank.** Every original frame directory lives in one bank (file
+  `$200000`, bank value `$100000`). KOF 2003's NEO-PVC protection chip maps 8 KiB
+  of RAM over `$2FE000`–`$2FFFFF` of the window: file data placed there reads back
+  as chip RAM. Only about 12 KiB is free below it, less than one fighter. Imported
+  frames have a bank per ID ([ticket 15](issues/15-imported-frame-bank.md),
+  `relocate_frames.py`): a 64-entry table of bank values at `$53340` and routines
+  at `$53440`–`$534B3`. The only frame readers are the lookup (`$0109F4`, three
+  layers, bank select at `$010AB8`/`$010BF8`/`$010D26`, directory at
+  `$010B0A`/`$010C38`/`$010D66`) and the drawer (three layers, bank select at
+  `$0F85D4`/`$0F8704`/`$0F8834`, body reads under `$0F9452`); both select the bank
+  themselves. An own-bank frame pointer (`+$60`, `+$6E`, `+$7C`) carries its ID in
+  the top byte, so the copies made at `$028B14` and `$04143E` keep their bank. The
+  Rehearsal's copy is at file `$700000`; free banked space is `$300000`–`$37FFFF`
+  and `$69D1C6`–`$8FFFFF` (bank values below `$100000` mean "fixed area").
 - **Bank switching.** Writes to `$2FFFF0`/`$2FFFF2` select the window; the current
   bank is kept at `$2FF000` (PVC RAM), and several routines convert pointers
   between banks (`$010A82`, `$02162E`).
@@ -128,7 +139,7 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 
 - [ ] Run `relocate_action_tables.py`, then `wire_slot_lookups.py`, for the ID.
 - [ ] Check the scan-only tables of §2.
-- [ ] Place frames in the per-ID bank (ticket 15) and set the opponent proxy (ticket 16).
+- [ ] Place frames in the per-ID bank with `relocate_frames.py --file-offset` (ticket 15; one window, after the frame bank) and set the opponent proxy (ticket 16).
 - [ ] Sound and identity lists as the character needs. Presentation: `wire_slot_lookups.py` maps the lookups; the character's own art and icon go in their tables (ticket 13 sites).
 - [ ] Run `map_victory_screen.py` after `wire_slot_lookups.py`; check the winner screen in all three positions and both sides.
 - [ ] Run `map_intro_opponent.py` after `map_victory_screen.py`; the map entry of `$30` decides which fighters treat it as a rival (the same entry is its presentation source).
@@ -185,6 +196,8 @@ na entrada do Kyo, pelo mapa de apresentação.
 
 **Tela de vitória (ticket 17):** a cópia dos três bytes da equipe vencedora em `$E202` passa pelo mapa de apresentação (rotina em `$53200`, bits de cor preservados), pelo `map_victory_screen.py`. Isso corrige sprite, animação, frase e placa de nome do clone.
 
+**Conhecido e aceito ([ticket 15](issues/15-imported-frame-bank.md), decisão do dono):** as rotinas do banco de quadros acrescentam tempo de CPU a cada sprite desenhado. A lógica dos originais não muda (traces por quadro idênticos), mas a sombra de um lutador no chão aparecer ou não num quadro depende desse tempo, então em alguns quadros a sombra de um original aparece ou some um quadro antes ou depois do jogo sem modificação (só a faixa de baixo; 52 a 716 px nas rotas gravadas, no interpretador e no nativo). Uma instrução a mais ou a menos no desenhista muda quais quadros são afetados. Não tratar como regressão de uma ferramenta posterior.
+
 **Travas mantidas de propósito:** `$7A9C`, `$19396`, as travas da seleção perto
 de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 
@@ -195,12 +208,18 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
   `$52E00`–`$530FF` voltou a ficar livre (o `map_opponent_rows.py` remove o proxy de
   diagnóstico). O mapa de apresentação usa `$53100`–`$531FF`; rotinas e tabelas dos
   tickets 17, 14, 19 e 16 ocupam `$53200`–`$5333F`; `$53340`–`$5FFFF` está livre.
-- **Banco de quadros.** A busca de quadros (`$010AB8`–`$010B42`) sempre escolhe
-  um único banco, onde estão todos os diretórios originais. O chip de proteção
-  NEO-PVC mapeia 8 KiB de RAM sobre `$2FE000`–`$2FFFFF` dessa janela: dado do
-  arquivo colocado ali é lido como RAM do chip. Só cerca de 12 KiB estão livres
-  abaixo dela, menos que um lutador. Os quadros importados vão para um banco por
-  ID ([ticket 15](issues/15-imported-frame-bank.md)).
+- **Banco de quadros.** Todos os diretórios originais ficam num banco (arquivo
+  `$200000`, valor de banco `$100000`). O chip de proteção NEO-PVC mapeia 8 KiB de
+  RAM sobre `$2FE000`–`$2FFFFF` da janela: dado do arquivo colocado ali é lido como
+  RAM do chip. Só cerca de 12 KiB estão livres abaixo dela, menos que um lutador.
+  Os importados têm banco por ID ([ticket 15](issues/15-imported-frame-bank.md),
+  `relocate_frames.py`): tabela de 64 valores de banco em `$53340` e rotinas em
+  `$53440`–`$534B3`. Os únicos leitores de quadros são a busca (`$0109F4`, três
+  camadas) e o desenhista (três camadas, leituras sob `$0F9452`), e os dois
+  escolhem o banco por conta própria. O ponteiro de quadro de banco próprio leva o
+  ID no byte de cima, então as cópias feitas em `$028B14` e `$04143E` continuam no
+  banco certo. A cópia do Ensaio fica no arquivo em `$700000`; espaço livre com
+  banco: `$300000`–`$37FFFF` e `$69D1C6`–`$8FFFFF`.
 - **Troca de banco.** Escritas em `$2FFFF0`/`$2FFFF2` escolhem a janela; o banco
   atual fica em `$2FF000` (RAM do PVC), e várias rotinas convertem ponteiros
   entre bancos (`$010A82`, `$02162E`).
@@ -263,7 +282,7 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 
 - [ ] Rodar `relocate_action_tables.py` e depois `wire_slot_lookups.py` para o ID.
 - [ ] Conferir as tabelas só achadas por varredura (seção 2).
-- [ ] Quadros no banco por ID (ticket 15) e proxy de adversário (ticket 16).
+- [ ] Quadros no banco por ID com `relocate_frames.py --file-offset` (ticket 15; uma janela, depois do banco de quadros) e proxy de adversário (ticket 16).
 - [ ] Som e listas de identidade conforme o personagem. Apresentação: `wire_slot_lookups.py` mapeia as buscas; a arte e o ícone do personagem entram nas tabelas dos pontos do ticket 13.
 - [ ] Rodar `map_victory_screen.py` depois do `wire_slot_lookups.py`; conferir a tela de vencedor nas três posições e nos dois lados.
 - [ ] Rodar `map_intro_opponent.py` depois do `map_victory_screen.py`; a entrada do `$30` no mapa decide quais lutadores o tratam como rival (a mesma entrada é a origem da apresentação).

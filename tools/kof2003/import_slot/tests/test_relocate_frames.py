@@ -10,12 +10,10 @@ ROOT = Path(__file__).resolve().parents[4]
 TOOL = ROOT / 'tools/kof2003/import_slot/relocate_frames.py'
 sys.path.insert(0, str(TOOL.parent))
 from relocate_frames import (AREA, AREA_END, BANK_ROUTINE, DIRECTORY_ROUTINE,  # noqa: E402
-                             DRAW_ROUTINE, ROUTINES, TABLE)
+                             DIRECTORY_SITES, DRAW_ROUTINE, DRAW_SITES, LOOKUP_SITES,
+                             ROUTINES, TABLE)
 
 DESTINATION = 0x700000
-LOOKUP_SITES = (0x10AB8, 0x10BF8, 0x10D26)
-DIRECTORY_SITES = (0x10B0A, 0x10C38, 0x10D66)
-DRAW_SITES = (0xF85D4, 0xF8704, 0xF8834)
 FRAME = bytes.fromhex('0001 00010101 0001 1234 80 0000000000')
 MOVED = bytes.fromhex('0001 00010101 0009 1234 80 0000000000')
 

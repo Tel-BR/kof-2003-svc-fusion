@@ -40,11 +40,21 @@ This image does not yet provide the new fighter: the remaining tables, guards,
 selection, graphics and lone-fighter shortcut are not implemented. Do not use
 it as the rehearsal build. The input and output must stay in `private/`.
 
-`relocate_frames.py` takes that intermediate image, copies the selected fighter's
-frame directory to unused banked space and redirects ID `$30` to the copy. It
-keeps each frame's palette header and changes the decoded tile indices by
-`$80000`. It checks the input identity and refuses unknown or truncated frame
-layouts. This is still not playable: use a 128 MiB descriptor that loads the
+`relocate_frames.py` takes that intermediate image and places the selected
+fighter's frame directory in a bank of its own, by the owner's decision (ticket
+15): all original directories share one bank whose top 8 KiB is NEO-PVC RAM, so
+there is no room there. `--file-offset` names the program file offset of the
+copy; it must be even, after the frame bank (`0x300000` or later), inside the
+program, fit in one window below the PVC RAM, and be unused (`$FF`). The
+Rehearsal uses `0x700000`. The copy keeps each frame's palette header and changes
+the decoded tile indices by `$80000`. The tool adds a 64-entry bank table at
+`$53340` (the frame bank for every ID except `$30`) and three routines at
+`$53440`: the three frame-lookup layers select the object's bank and tag an
+own-bank frame pointer with its ID in the top byte (ignored by the 24-bit bus),
+and the three drawer layers select the bank named by that byte. The frame bank
+and its directory table are not changed. It checks the input identity, every
+reader site and the empty table area, and refuses unknown or truncated frame
+layouts. Rebuild native code afterwards. This is still not playable: use a 128 MiB descriptor that loads the
 same four graphics pairs a second time, and complete the remaining ID and
 selection work. `rehearsal_descriptor.py` can create a separate private
 descriptor with those duplicated pair references without copying game files;
@@ -226,11 +236,22 @@ Essa imagem ainda não oferece o novo lutador: faltam as demais tabelas, os
 limites, a seleção, os gráficos e o atalho de lutador solo. Não a use como
 build do ensaio.
 
-O `relocate_frames.py` recebe essa imagem intermediária, copia o diretório de
-quadros do lutador escolhido para espaço livre com banco e aponta o ID `$30`
-para a cópia. Preserva o cabeçalho de paleta de cada quadro e aumenta os índices
-de tile decodificados em `$80000`. Confere a identidade da entrada e recusa
-formatos desconhecidos ou incompletos. Ainda não é jogável: é necessário um
+O `relocate_frames.py` recebe essa imagem intermediária e coloca o diretório de
+quadros do lutador escolhido num banco próprio, por decisão do dono (ticket 15):
+todos os diretórios originais dividem um banco cujos 8 KiB finais são RAM do
+NEO-PVC, então não há espaço ali. `--file-offset` indica a posição da cópia no
+arquivo do programa; precisa ser par, depois do banco de quadros (`0x300000` em
+diante), dentro do programa, caber numa janela abaixo da RAM do PVC e estar livre
+(`$FF`). O Ensaio usa `0x700000`. A cópia preserva o cabeçalho de paleta de cada
+quadro e aumenta os índices de tile decodificados em `$80000`. A ferramenta grava
+uma tabela de bancos de 64 entradas em `$53340` (banco de quadros para todo ID
+menos o `$30`) e três rotinas em `$53440`: as três camadas da busca de quadros
+escolhem o banco do objeto e marcam o ponteiro de quadro de banco próprio com o
+ID no byte de cima (ignorado pelo barramento de 24 bits), e as três camadas do
+desenhista escolhem o banco indicado por esse byte. O banco de quadros e sua
+tabela de diretórios não mudam. Confere a identidade da entrada, cada ponto de
+leitura e a área vazia da tabela, e recusa formatos desconhecidos ou incompletos.
+Depois, recompile o código nativo. Ainda não é jogável: é necessário um
 descritor de 128 MiB que carregue os quatro pares gráficos novamente e concluir
 o restante do trabalho de IDs e seleção. O `rehearsal_descriptor.py` cria um
 descritor privado separado com essas referências duplicadas, sem copiar arquivos

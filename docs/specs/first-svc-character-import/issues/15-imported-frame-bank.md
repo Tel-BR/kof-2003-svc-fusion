@@ -20,15 +20,15 @@ place the clone's frame copy there with its tiles in the Added Space.
 
 ## Acceptance criteria
 
-- [ ] List every routine that reads frame directories or frame bodies, with how
+- [x] List every routine that reads frame directories or frame bodies, with how
   it selects the bank; record any reader that assumes the current bank.
-- [ ] The preparation tooling places the `$30` frame copy outside the frame bank
+- [x] The preparation tooling places the `$30` frame copy outside the frame bank
   and the PVC window, and refuses unchecked placements.
-- [ ] In the differential loop, the clone's frozen pre-intro frame, intro and
+- [x] In the differential loop, the clone's frozen pre-intro frame, intro and
   in-fight trace equal original Kyo's; the native build reports no new fallback.
-- [ ] Original fighters are unchanged: no original frame directory is
+- [x] Original fighters are unchanged: no original frame directory is
   overwritten, and a regression check covers originals beyond Kyo, including
-  `$00`.
+  `$00`. (Shadow-phase residual accepted by the owner; see the last comment.)
 
 ## Português (Brasil)
 
@@ -45,15 +45,16 @@ colocar ali a cópia de quadros do clone, com os tiles no Espaço acrescentado._
 
 ### Critérios de aceitação
 
-- [ ] Listar toda rotina que lê diretórios ou corpos de quadro e como ela
+- [x] Listar toda rotina que lê diretórios ou corpos de quadro e como ela
   escolhe o banco; registrar qualquer leitor que suponha o banco atual.
-- [ ] As ferramentas de preparo colocam a cópia de quadros do `$30` fora do
+- [x] As ferramentas de preparo colocam a cópia de quadros do `$30` fora do
   banco de quadros e da janela do PVC e recusam posições não verificadas.
-- [ ] No ciclo diferencial, o quadro congelado antes da intro, a intro e o trace
+- [x] No ciclo diferencial, o quadro congelado antes da intro, a intro e o trace
   em luta do clone igualam os do Kyo original; o build nativo não mostra novo
   fallback.
-- [ ] Os originais ficam inalterados: nenhum diretório original é sobrescrito, e
+- [x] Os originais ficam inalterados: nenhum diretório original é sobrescrito, e
   uma conferência de regressão cobre originais além do Kyo, inclusive o `$00`.
+  (Resíduo de fase das sombras aceito pelo dono; ver o último comentário.)
 
 ## Comments
 
@@ -92,7 +93,7 @@ frames step at `0x700000` → the existing steps): the result differs from `roms
 in the nine reader sites, `$53340`–`$534B3`, the restored fighter `$00` directory and entry
 `$30`, the removed old copy at `$2FB000` and the new copy at `$700000`. A private Musashi
 check with a NEO-PVC bank model (`diag-t15/cpu15.c`): 22,200 original lookups (37 IDs ×
-600 frames × three layers) identical to the control program; all 585 clone frames give
+600 frames, each running all three layers) identical to the control program; all 585 clone frames give
 Kyo's results with the pointer tagged `$30` at the same directory offset; unassigned IDs
 untagged; drawer bank correct for all 64 tags with registers kept.
 
@@ -129,3 +130,73 @@ iguais aos do Kyo._
 _**Falta.** Build nativo `build-t15` (iniciado) e cobertura; ciclo diferencial (quadro
 congelado, intro, luta); regressão dos originais com o `$00`; censo no `roms-t15`; README,
 anatomia da vaga, `/code-review` e o atalho do Ensaio._
+
+### 2026-11-20 — Resolution: checks done; shadow-phase residual accepted
+
+**Native build.** `diag-t15/build-t15` (runtime with the PVC byte-write fix, `roms-t15`)
+links. On the four ticket 16 routes (attack, grabbed, P2 route, original regression) its
+per-frame traces equal those of the ticket 20 candidate (`build-t16`, `roms-t20`, the
+diagnostic frame placement) on all 6,101 or 9,001 frames, with the same interpreted
+instruction counts (20, 20, 0, 6,755) and the same missed entry points (dumped for two
+routes): no new fallback.
+
+**Differential loop (third criterion).** Creation swap (`KOF_REHEARSAL_FORCE=0x1e:0x30@4874`,
+`diag-t14/moves.txt`, 7,000 frames), same image, original Kyo against the clone: state
+words equal on all 7,000 frames, in the interpreter and native. Screenshots at 4,930
+(before the fighters appear), 4,960 and 5,000 (frozen pre-intro frame and intro), 5,100–6,400
+(intro and fight) and 6,900: no pixel differs by more than 25 per channel (the clone's
+intended palette change); 4,930 and 6,900 are identical. The clone's screenshots equal
+those of the diagnostic placement (`roms-t20`) exactly.
+
+**Census on the new image.** With the clone playing (creation swap route, frames 0–7,000)
+every read under the clone's bank comes from the lookup (`$010B1C`–`$010B3E`) or the
+drawer's body readers (`$0F9772`–`$0FA7D4`); no other routine reads there. On the
+original-only P1 route (frames 0–6,000) no read happened under the clone's bank.
+
+**Regression (fourth criterion).** Interpreter, unmodified control program against
+`roms-t15`: the P2-attacking route is identical at tolerance 0 (traces on 9,001 frames,
+screenshots at 5,400–9,000). The P1 route, also with P1's leader forced to `$00` after team
+order, has identical traces on all 9,001 frames; its screenshots differ only in the bottom
+strip (52–716 px at six frames): a fighter's ground shadow is shown one frame earlier or
+later. Ablation located it: the copy of the frames and the table changes nothing; patching
+only the drawer reproduces it; the same drawer code returning a constant, or with three
+extra no-ops, does not; with one extra no-op it does. It is therefore a timing effect of the
+CPU time added to every sprite, not a wrong bank: the drawer's table read always returns the
+frame bank for originals (no original pointer is tagged; checked by a probe). The native
+player shows the same kind of difference (5,000–6,000, identical from 7,000).
+
+**Review notes.** The one-window size check in the tool cannot fail for a source that lies in
+the frame bank below the PVC RAM; it is kept as a guard. The fallback comparison is against
+the ticket 20 candidate, whose native coverage was itself compared with the earlier builds
+(tickets 14, 16 and 20).
+
+**Owner decision.** Accept the shadow-phase residual and record it (slot anatomy §2). It is
+cosmetic and transient; any later change in the drawer path can move it.
+
+**Candidate.** `private/work/first-import/diag-t15/roms-t15` with `build-t15`; the
+`Jogar-Ensaio.cmd` shortcut opens it.
+
+_PT-BR — Resolução: conferências feitas; resíduo de fase das sombras aceito._
+
+_**Build nativo.** O `diag-t15/build-t15` compila. Nas quatro rotas do ticket 16 os traces
+por quadro são iguais aos do candidato do ticket 20 em todos os quadros, com as mesmas
+contagens de instruções interpretadas e os mesmos pontos de entrada não cobertos: nenhum
+fallback novo._
+
+_**Ciclo diferencial.** Troca na criação, mesma imagem, Kyo original contra o clone: estados
+iguais nos 7.000 quadros, no interpretador e no nativo. Capturas do quadro congelado antes
+da intro, da intro e da luta: nenhuma diferença acima de 25 por canal (a mudança de paleta
+pretendida do clone). As capturas do clone são idênticas às da posição de diagnóstico._
+
+_**Regressão.** Programa de controle contra o `roms-t15`: a rota com o P2 atacando é idêntica
+com tolerância 0. A rota do P1, também com o líder do P1 trocado pelo `$00`, tem traces
+idênticos nos 9.001 quadros; as capturas só diferem na faixa de baixo: a sombra de um
+lutador aparece um quadro antes ou depois. A ablação mostrou que é efeito de tempo de CPU do
+desenhista (uma instrução a mais reproduz, três a mais não), não um banco errado. O player
+nativo mostra o mesmo tipo de diferença._
+
+_**Decisão do dono.** Aceitar o resíduo de fase das sombras e registrá-lo (anatomia da vaga
+§2)._
+
+_**Candidato.** `private/work/first-import/diag-t15/roms-t15` com `build-t15`; o atalho
+`Jogar-Ensaio.cmd` abre esse candidato._

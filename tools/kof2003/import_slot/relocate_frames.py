@@ -8,7 +8,7 @@ outside the frame bank, at the start of its own window, and redirects its tiles 
 Added Space. It installs a 64-entry table of bank values (the frame bank for every ID
 except $30) and three short routines:
 
-* the three directory lookups ($010AF8-$010DA2) select the bank of the object's ID and,
+* the three layers of the frame lookup ($0109F4; directory sites $010B0A, $010C38, $010D66) select the bank of the object's ID and,
   for an ID with its own bank, take the directory from the start of that window; the
   frame pointers they store (+$60, +$6E, +$7C) then carry that ID in their top byte,
   which the 68000's 24-bit address bus ignores;
@@ -38,9 +38,9 @@ FRAME_BANK_VALUE = 0x100000
 # so only $FE000 bytes of a window read back as program data.
 PVC_WINDOW = 0x2FE000
 WINDOW_DATA = PVC_WINDOW - 0x200000
-FRAME_BANK_END = BANK + 0x100000
 # Bank values below $100000 mean "fixed area" to the game's pointer conversions, so an own
-# bank must start after the frame bank.
+# bank must start after the frame bank and its PVC-shadowed top.
+FRAME_BANK_END = BANK + 0x100000
 # Free fixed space after the opponent proxy routine ($53300-$5333F).
 AREA, AREA_END = 0x53340, 0x53500
 TABLE = AREA
