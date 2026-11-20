@@ -21,6 +21,7 @@ Scripted, silent runs of the native KOF 2003 player and of MAME's Neo Geo games.
 | `probe_hook.py` | Adds the probe's call to a private copy of the runtime's frame loop. |
 | `probe_log.py` | Reads the probe address list and logs shared by both runtimes, and compares two logs. |
 | `probe_run.py` | Probes one script on the native player and on MAME and compares the logs. |
+| `svc_id_static.py` | Static reader inventory for SVC Chaos fighter IDs (wayfinder 28): sweeps the decrypted program and follows each ID read to the tables it indexes. Needs `pip install capstone`; reports go under `private/`. `svc_id_readers.lua` dumps the fighter objects in MAME (its read taps do not work). |
 
 Recording a session: start MAME with `-record <name>.inp -autoboot_script log_inputs.lua` and `INPUT_LOG` set. Do not use MAME's soft reset (F3) while recording. Close MAME and start again instead. Tests: `py -3 -m pytest match` from `tools/kof2003`.
 
