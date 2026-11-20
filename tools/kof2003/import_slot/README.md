@@ -134,6 +134,22 @@ writes and that `$53280`–`$532BF` is empty.
 python tools/kof2003/import_slot/map_fighter_handlers.py $in $out --sha256 $hash
 ```
 
+`map_opponent_rows.py` takes the image after `map_fighter_handlers.py` and writes a
+new private image. The readers at `$216AC` and `$21836` index 42-byte per-opponent
+rows (tables of 37 rows) by the other fighter's ID, so an imported ID read past the
+tables. By the owner's decision an imported ID is read through a proxy: the tool writes
+a 64-byte table at `$532C0` (identity for `$00`–`$24`, the `--proxy` value for `$30`,
+`$1E` for the other IDs until each import chooses its own) and a 24-byte routine at
+`$53300` that reads the other fighter's ID, maps it and returns the row offset. Both
+readers call it. The input may have the original readers (checked by fingerprint) or
+the old diagnostic patch, which the tool removes from `$52E00`–`$52E11`. It checks that
+`$532C0`–`$5333F` is empty and that `--proxy` names an original fighter. The proxy only
+chooses these rows; presentation, rival intros and fighter routines keep their own maps.
+
+```powershell
+python tools/kof2003/import_slot/map_opponent_rows.py $in $out --sha256 $hash --proxy 0x1E
+```
+
 `pvc_byte_writes.py` is a runtime patch, not a program-image step. The NEO-PVC
 chip's colour pack and unpack run only on 16-bit writes in the pinned runtime,
 but the game fills those inputs with byte writes, so every palette fade it
@@ -299,6 +315,23 @@ esperados dos dois pontos, que o mapa é o que o `wire_slot_lookups.py` grava e 
 
 ```powershell
 python tools/kof2003/import_slot/map_fighter_handlers.py $in $out --sha256 $hash
+```
+
+O `map_opponent_rows.py` recebe a imagem depois do `map_fighter_handlers.py` e grava
+uma nova imagem privada. Os leitores em `$216AC` e `$21836` indexam linhas de 42 bytes
+por adversário (tabelas de 37 linhas) pelo ID do outro lutador, então um ID importado
+lia além das tabelas. Por decisão do dono, um ID importado é lido por um proxy: a
+ferramenta grava uma tabela de 64 bytes em `$532C0` (identidade de `$00` a `$24`, o valor
+de `--proxy` no `$30`, `$1E` nos demais IDs até cada importação escolher o seu) e uma
+rotina de 24 bytes em `$53300` que lê o ID do outro lutador, passa pela tabela e devolve
+o deslocamento da linha. Os dois leitores chamam essa rotina. A entrada pode ter os
+leitores originais (conferidos por impressão digital) ou o antigo remendo de
+diagnóstico, que a ferramenta remove de `$52E00`–`$52E11`. Confere que `$532C0`–`$5333F`
+está vazio e que `--proxy` é um lutador original. O proxy só escolhe essas linhas;
+apresentação, intros de rivais e rotinas por lutador continuam com os próprios mapas.
+
+```powershell
+python tools/kof2003/import_slot/map_opponent_rows.py $in $out --sha256 $hash --proxy 0x1E
 ```
 
 O `pvc_byte_writes.py` é um ajuste do runtime, não um passo da imagem do

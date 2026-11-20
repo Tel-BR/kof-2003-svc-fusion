@@ -30,9 +30,10 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 | 64-entry tables whose entries above `$24` share a default | `$79672`, `$79772`, `$B8250` (pointers); `$79872`, `$798F2` (command lists); file `$62B9AC` (banked proximity directory) | own entry | `wire_slot_lookups.py` |
 | Word-offset header with free room | `$B3204` (command → action) | own entry | `wire_slot_lookups.py` |
 | Directories | master `$704A2`, move scripts `$7DC28`, four palette tables, banked `$200000` (frames) and `$380000` (step scripts) | own entry | tools; frames see §3 |
-| Per-opponent rows, 42 bytes × 37 | under file `$62B9AC`: self ID → 8 modes → 6 tables; readers `$216AC`, `$21836` | proxy byte per imported ID (owner decision) | [ticket 16](issues/16-imported-opponent-proxy.md) |
-| Fighter-pair byte table, 64 × 64 | `$6F312` (word row offsets, then rows) | row and column; zero for Kyo | not yet in tools |
+| Per-opponent rows, 42 bytes × 37 | under file `$62B9AC`: self ID → 8 modes → 6 tables; readers `$216AC`, `$21836` | proxy byte per imported ID (owner decision): 64-byte table at `$532C0` (identity for originals, `$30` = `--proxy`), routine at `$53300` | `map_opponent_rows.py` ([ticket 16](issues/16-imported-opponent-proxy.md)) |
+| Fighter-pair byte table, 64 × 64 | `$6F312` (word row offsets, then rows), read at `$21332` | row and column; zero for Kyo | already equal to Kyo's on both axes for `$30` (ticket 16 check); no tool needed for a clone |
 | Identity lists | `$A5F1F` (FF-separated ID groups used by intro codes `$D0`+); 64-bit set `$25028` (tested via `$277E6`) | membership only if the import should belong | per character |
+| Hit-box kind sets, 64 pointers to 16-byte bit sets | `$6C62E`, read by the box owner's ID at `$15D08` and `$169CA` | own entry (entries above `$24` share fighter `$24`'s set) | not yet in tools ([ticket 20](issues/20-imported-hitbox-kind-set.md)) |
 | Sound | 16 tables of 37 words at `$6CF1E` (via `$18EAA`), flags `$18D38`; guards `$18D08`, `$18E90` | relocation or own data | tickets 10–12 |
 | Presentation: name, portraits, thumbnail, group/palette, in-fight name plate | selection per-ID readers add a constant to the ID and only handle IDs up to `$24`: name `$9042`, portrait `$9124`, thumbnail `$91FE`, group `$9338`; order screen portrait `$9E00` and group `$9F26`; the in-fight name plate is written by `$1F864`–`$1F8CE` from byte table `$6E9D0` (read at `$1F886`), then drawn by the fix-layer text engine (`$1ED44`, offsets `$6EA9E`) | a shared presentation map: 64-byte table at `$53100` (identity, `$30` = source fighter), routine `$53140`, trampolines from `$53150`, jumped to from the seven sites | `wire_slot_lookups.py` for the clone; Guile phase 4 adds its own art ([ticket 13](issues/13-rehearsal-selection-presentation.md)) |
 | Victory screen: winner sprite and animation, win quote, name plate | the winning team's three bytes (colour bits 7-6, ID 5-0) are copied at `$E202` into the screen object (`$144`–`$146`), which then reads a word table of 37 entries at `$E756` (animation, zero for `$30`), a 16-byte-per-ID quote table in the `$200000` bank (read at `$E44A`), the rival-pair lists behind `$06BDC0` (via `$E8F2`; 64 entries, shared default) and the name table at `$0B8D90` | route the copy through the presentation map: routine at `$53200` keeps the colour bits and maps the ID (`$30` = source fighter) | `map_victory_screen.py` ([ticket 17](issues/17-victory-screen-native-and-clone.md)) |
@@ -53,9 +54,12 @@ animation), `$19396` (team group as ID ÷ 3), the selection guards around
 
 - **Fixed area.** Relocated tables use `$44020`–`$52A20`; the palette and
   selection steps write up to `$52B51`; the intro tables use `$52C00`–`$52DFF`.
-  `$52E00`–`$52E11` holds proxy code in the diagnostic candidate; `$52E12`–`$5FFFF`
-  is free (filler, unread in the observed runs). The presentation map uses
-  `$53100`–`$531FF`, the victory-screen routine `$53200`–`$5323F` and the intro-opponent routine `$53240`–`$5327F`.
+  `$52E00`–`$530FF` is free again (`map_opponent_rows.py` removes the diagnostic proxy
+  that used `$52E00`–`$52E11`). The presentation map uses `$53100`–`$531FF`, the
+  victory-screen routine `$53200`–`$5323F`, the intro-opponent routine `$53240`–`$5327F`,
+  the fighter-routine index `$53280`–`$532BF`, the opponent proxy table `$532C0`–`$532FF`
+  and its routine `$53300`–`$5333F`; `$53340`–`$5FFFF` is free (filler, unread in the
+  observed runs).
 - **Frame bank.** The frame lookup (`$010AB8`–`$010B42`) always selects one bank;
   every original frame directory lives there. KOF 2003's NEO-PVC protection chip
   maps 8 KiB of RAM over `$2FE000`–`$2FFFFF` of that window: file data placed
@@ -158,7 +162,7 @@ A tabela da seção 2 em inglês vale para as duas línguas (endereços, ferrame
 e situação). Resumo: tabelas de 37 linhas e a matriz de pares são movidas por
 `relocate_action_tables.py`; as duas tabelas de intro, as quatro travas e as
 entradas de tabelas de 64 com padrão comum são tratadas por
-`wire_slot_lookups.py`; as linhas por adversário usam proxy (ticket 16); os
+`wire_slot_lookups.py`; as linhas por adversário usam proxy (ticket 16, `map_opponent_rows.py`: tabela em `$532C0`, rotina em `$53300`); os conjuntos de tipos de caixa em `$6C62E` ainda faltam (ticket 20); os
 quadros vão para um banco por ID (ticket 15); som (tickets 10–12) e apresentação
 (ticket 13: mapa compartilhado em `$53100`, pelo `wire_slot_lookups.py`; arte própria na fase 4 do Guile); listas de identidade são
 decididas por personagem.
@@ -184,8 +188,9 @@ de `$118FE` e as checagens de chefes/Maki (`$9056`, `$D62C`).
 
 - **Área fixa.** Tabelas movidas em `$44020`–`$52A20`; os passos de paletas e
   seleção escrevem até `$52B51`; as tabelas de intro usam `$52C00`–`$52DFF`.
-  `$52E00`–`$52E11` guarda código de proxy no candidato de diagnóstico;
-  `$52E12`–`$5FFFF` está livre. O mapa de apresentação usa `$53100`–`$531FF`.
+  `$52E00`–`$530FF` voltou a ficar livre (o `map_opponent_rows.py` remove o proxy de
+  diagnóstico). O mapa de apresentação usa `$53100`–`$531FF`; rotinas e tabelas dos
+  tickets 17, 14, 19 e 16 ocupam `$53200`–`$5333F`; `$53340`–`$5FFFF` está livre.
 - **Banco de quadros.** A busca de quadros (`$010AB8`–`$010B42`) sempre escolhe
   um único banco, onde estão todos os diretórios originais. O chip de proteção
   NEO-PVC mapeia 8 KiB de RAM sobre `$2FE000`–`$2FFFFF` dessa janela: dado do
