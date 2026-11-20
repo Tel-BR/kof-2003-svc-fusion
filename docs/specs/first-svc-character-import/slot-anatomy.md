@@ -40,7 +40,9 @@ sizes and counts stay in `private/`. A Portuguese version follows._
 
 **Found by scan, not yet exercised:** 64-entry tables with a shared default above
 `$24` at `$0641E8`, `$06BDC0` (exercised by the victory screen, ticket 17), `$06D32A`, `$06D374` and `$06E9D0`. Each new slot
-should check them before relying on the Rehearsal result.
+should check them before relying on the Rehearsal result. For `$30`, see the
+[research note](research-id30-table-reads.md): only `$06BDC0` and `$06E9D0` are read,
+at Kyo's entry through the presentation map.
 
 **Known and accepted ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), owner decision; the lookup was not located):** the fight stage and the victory-screen background follow the leader's ID, so a team led by `$30` gets the default stage and background instead of the source fighter's. A second route to the same screen with the clone not leading (position 2 or 3) shows the right background.
 
@@ -169,7 +171,9 @@ decididas por personagem.
 
 **Achadas por varredura, ainda não exercitadas:** tabelas de 64 entradas com
 padrão comum acima de `$24` em `$0641E8`, `$06BDC0` (exercitada pela tela de vitória, ticket 17), `$06D32A`, `$06D374` e
-`$06E9D0`. Cada nova vaga deve conferi-las.
+`$06E9D0`. Cada nova vaga deve conferi-las. Para o `$30`, veja a
+[nota de pesquisa](research-id30-table-reads.md): só `$06BDC0` e `$06E9D0` são lidas,
+na entrada do Kyo, pelo mapa de apresentação.
 
 **Conhecido e aceito ([ticket 18](issues/18-stage-and-victory-background-clone-leader.md), decisão do dono; a busca não foi localizada):** o cenário da luta e o fundo da tela de vitória seguem o ID do líder; uma equipe liderada pelo `$30` recebe o cenário e o fundo padrão em vez dos do lutador de origem. Uma segunda rota até a mesma tela com o clone fora da liderança (posição 2 ou 3) mostra o fundo certo.
 

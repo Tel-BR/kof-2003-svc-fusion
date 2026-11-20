@@ -81,7 +81,9 @@ against entry `$1E`), now with the **same bytes** (it was the one DIFFERENT read
 The other ID-indexed reads in all five windows are unchanged from ticket 16 and all read
 the same bytes or banked frame data. **Open:** the second reader, `$169CA`, was not reached
 in these windows, so it has no runtime check yet; it reads the same table entry, which now
-holds Kyo's pointer.
+holds Kyo's pointer. Follow-up in the
+[research note](../research-id30-table-reads.md): a 39,300-frame sweep enters `$169A2` but
+never passes its box-kind check, on either ROM; when reached, the read is Kyo's set.
 
 **Regression and native build.** No rebuild: the native player compiles the program's
 code, and this step changes one pointer in a data table that the code reads at run time
@@ -108,7 +110,9 @@ a cadeia inteira. **Conferência de pares:** na janela do ticket 13 a leitura em
 agora traz os mesmos bytes do Kyo (antes era a única DIFERENTE); as demais leituras nas
 cinco janelas não mudaram. **Em aberto:** o segundo leitor, `$169CA`, não foi alcançado
 nessas janelas e ainda não tem conferência em execução; ele lê a mesma entrada, que agora
-tem o ponteiro do Kyo. **Regressão e build nativo:** sem recompilar, porque só muda um
+tem o ponteiro do Kyo. Continuação na [nota de pesquisa](../research-id30-table-reads.md):
+uma varredura de 39.300 quadros chama o `$169A2`, mas nunca passa da checagem de tipo de
+caixa, em nenhuma das ROMs; quando alcançado, lê o conjunto do Kyo. **Regressão e build nativo:** sem recompilar, porque só muda um
 ponteiro numa tabela de dados lida em execução; com o player do ticket 16, os quatro roteiros dão linhas por quadro iguais às do candidato do
 ticket 16 e a mesma cobertura nativa (nenhum fallback novo); originais contra o controle sem
 modificação, roteiros de P1 e P2: VERDE com tolerância 0 nas capturas dos quadros 5.400 a
