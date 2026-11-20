@@ -150,6 +150,21 @@ chooses these rows; presentation, rival intros and fighter routines keep their o
 python tools/kof2003/import_slot/map_opponent_rows.py $in $out --sha256 $hash --proxy 0x1E
 ```
 
+`map_hitbox_kinds.py` takes the image after `map_opponent_rows.py` and writes a new
+private image. The collision routine reads, at `$15D08` and `$169CA`, a 64-entry table
+of pointers at `$6C62E` by the box owner's ID; each pointer leads to a 16-byte bit set
+of hit-box kinds. Entries `$25`–`$3F` share fighter `$24`'s set, so the imported `$30`
+classified its boxes with a set that differs from original Kyo's. The tool copies the
+`--fighter-id` fighter's pointer to entry `$30`; nothing else changes and no code is
+added, so the native player needs no rebuild. It checks that every unused entry still
+holds fighter `$24`'s pointer, that `$30` has no own entry yet, that the source fighter
+has its own set and that each original set lies in the fixed area (below `$100000`) and
+off the table.
+
+```powershell
+python tools/kof2003/import_slot/map_hitbox_kinds.py $in $out --sha256 $hash --fighter-id 0x1e
+```
+
 `pvc_byte_writes.py` is a runtime patch, not a program-image step. The NEO-PVC
 chip's colour pack and unpack run only on 16-bit writes in the pinned runtime,
 but the game fills those inputs with byte writes, so every palette fade it
@@ -332,6 +347,22 @@ apresentação, intros de rivais e rotinas por lutador continuam com os próprio
 
 ```powershell
 python tools/kof2003/import_slot/map_opponent_rows.py $in $out --sha256 $hash --proxy 0x1E
+```
+
+O `map_hitbox_kinds.py` recebe a imagem depois do `map_opponent_rows.py` e grava uma
+nova imagem privada. A rotina de colisão lê, em `$15D08` e `$169CA`, uma tabela de 64
+ponteiros em `$6C62E` pelo ID do dono da caixa; cada ponteiro leva a um conjunto de 16
+bytes de tipos de caixa de golpe. As entradas `$25`–`$3F` compartilham o conjunto do
+lutador `$24`, então o `$30` importado classificava as caixas com um conjunto diferente
+do Kyo original. A ferramenta copia o ponteiro do lutador de `--fighter-id` para a
+entrada `$30`; nada mais muda e nenhum código é acrescentado, então o player nativo não
+precisa ser recompilado. Confere que toda entrada sem uso ainda tem o ponteiro do lutador
+`$24`, que o `$30` ainda não tem entrada própria, que o lutador de origem tem conjunto
+próprio e que cada conjunto original fica na área fixa (abaixo de `$100000`) e fora da
+tabela.
+
+```powershell
+python tools/kof2003/import_slot/map_hitbox_kinds.py $in $out --sha256 $hash --fighter-id 0x1e
 ```
 
 O `pvc_byte_writes.py` é um ajuste do runtime, não um passo da imagem do
